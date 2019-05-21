@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div class="display-section" id="display-1">
+            <div class="display-frame">
+            </div>
+            <div class="input-frame">
+                <button type="button" class="trigger" id="trigger-1" onClick="showNext(1)">I'm bored!</button>
+            </div>
+        </div>
+        <div class="display-section" id="display-2" hidden>
+            <div class="display-frame">
+                <h2>Would you rather go out or stay in?</h2>
+            </div>
+            <div class="input-frame">
+                <button type="button" class="trigger" id="trigger-2" onClick="showNext(2)">Go out</button>
+                <button type="button">Stay in</button>
+            </div>
+        </div>
+        <div class="display-section" id="display-3" hidden>
+            <div class="display-frame">
+                <h2>Where are you?</h2>
+            </div>
+            <div class="input-frame">
+                <select>
+                    <option value="home">Home</option>
+                    <option value="work">Work</option>
+                    <option value="other">Other</option>
+                </select>
+                <button type="button" class="trigger" id="trigger-3" onClick="showNext(3)">Go</button>
+            </div>
+        </div>
+        <div class="display-section" id="display-4" hidden>
+            <div class="display-frame">
+                <h2>Home is 234 Porgrammer Lane.  Is this correct?</h2>
+            </div>
+            <button type="button" class="trigger" id="trigger-4" onClick="showNext(4)">Yes</button>
+            <button type="button">No</button>
+        </div>
+        <div class="display-section" id="display-5" hidden>
+            <div class="display-frame">
+                <h2>How long will you be bored?</h2>
+            </div>
+            <div class="input-frame">
+                <input type="number" name="hours" min="0"> hours<br/>
+                <input type="number" name="minutes" min="0" max="59"> minutes
+                <button type="button" class="trigger" id="trigger-5" onClick="showNext(5)">Go</button>
+            </div>
+        </div>
+        <div class="display-section" id="display-6" hidden>
+            <div class="display-frame">
+                <h2>What are you in the mood for?</h2>
+            </div>
+            <div class="input-frame">
+                <select>
+                    <option>Partying</option>
+                    <option>Learning</option>
+                    <option>Culture/The Arts</option>
+                    <option>Entertainment</option>
+                    <option>Watching Sports</option>
+                    <option>Physical Activity</option>
+                    <option>Sightseeing</option>
+                    <option>Food/Drink</option>
+                </select>
+                <button type="button" class="trigger" id="trigger-6" onClick="showNext(6)">Go</button> 
+            </div>
+        </div>
+        <div class="display-section" id="display-7" hidden>
+            <div class="display-frame">
+                <h2>What would you like to learn about</h2>
+            </div>
+            <div class="input-frame">
+                <select>
+                    <option>Science & Technology</option>
+                    <option>Arts & Humanities</option>
+                    <option>Other</option>
+                </select>
+                <button type="button" class="trigger" id="trigger-7" onClick="showNext(7)">Go</button> 
+            </div>
+        </div>
+        <div class="display-section" id="display-8" hidden>
+            <div class="display-frame">
+                <h2>What setting would you like to learn in?</h2>
+            </div>
+            <div class="input-frame">
+                <select>
+                    <option>Museum</option>
+                    <option>Library</option>
+                    <option>Lecture</option>
+                </select>
+                <button type="button" class="trigger" id="trigger-8" onClick="showNext(8)">Go</button> 
+            </div>
+        </div>
+        <div class="display-section" id="display-9" hidden>
+            <div class="display-frame">
+                <h2>What fields interest you? Check all that apply.</h2>
+            </div>
+            <div class="input-frame">
+                <input type="checkbox"> Physics<br/>
+                <input type="checkbox"> Mathematics<br/>
+                <input type="checkbox"> Chemistry<br/>
+                <input type="checkbox"> Social Sciences<br/>
+                <input type="checkbox"> Astronomy<br/>
+                <input type="checkbox"> Medicine<br/>
+                <input type="checkbox"> Technology<br/>
+                <button type="button" class="trigger" id="trigger-9" onClick="showNext(9)">Go</button> 
+            </div>
+        </div>
+        <div class="display-section" id="display-10" hidden>
+            <div class="display-frame">
+                <h2>What is your level of experience?</h2>
+            </div>
+            <div class="input-frame">
+                <select>
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                </select>
+                <button type="button" class="trigger" id="trigger-10" onClick="showNext(10)">Go</button> 
+            </div>
+        </div>
+        <div class="display-section" id="display-11" hidden>
+            <div class="display-frame">
+                <h2>Here's what's available:</h2>
+                <h4>CSE 5914</h4>
+            </div>
+        </div>
+        <script>
+            function showNext(num) {
+                var next = parseInt(num) + 1;
+                var x = document.getElementById("display-" + num);
+                var y = document.getElementById("display-" + next);
+                x.style.display = "none";
+                y.style.display = "block";
+            }
+        </script>
+    </body>
+</html>
