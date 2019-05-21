@@ -1,7 +1,7 @@
 # TheUnboringCompany
 CSE 5914 Capstone Project
 
-Aaron Arbour
+Aaron Arbour\n
 Rebecca Haninger
 Kavin Kaviarasan
 Woonkib Lee
