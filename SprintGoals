@@ -1,0 +1,10 @@
+First Sprint Goals:
+  Back End: Movies and Food documents in Discovery, have time esitmations for each item, create and standardize document format
+  Front End: Just Questions, unfiltered User responses, displays Discovery Response
+  Middleware: Parse User Responses, Filter and Order Discovery Responses, Add time restrictions
+  
+ 
+Second Sprint Goals:
+  Front End: User Profile, Surprise Me! button, location services
+  Middleware: Add machine learning to manipulate results based on user profile and past searches, keep list of past choices
+  Back End: Add Sporting Events, Physical Activities (Gym, bike rides, outdoors), maps and location services, 
