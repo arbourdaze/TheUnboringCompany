@@ -1,0 +1,29 @@
+
+.likert td, .likert th {
+    width:15%;
+    text-align:center;
+}
+
+.likert[name="openness"] table {
+    background-color:purple;
+}
+
+.likert[name="conscientiousness"] table {
+    background-color:green;
+}
+
+.likert[name="extroversion"] table {
+    background-color:red;
+}
+
+.likert[name="agreeableness"] table {
+    background-color:yellow;
+}
+
+.likert[name="neuroticism"] table {
+    background-color:blue;
+}
+
+.likert {
+    margin-bottom:3em;
+}
