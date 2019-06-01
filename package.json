@@ -1,0 +1,24 @@
+{
+  "name": "TheUnboringCompany",
+  "version": "1.0.0",
+  "description": "CSE 5914 Capstone Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arbourdaze/TheUnboringCompany.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arbourdaze/TheUnboringCompany/issues"
+  },
+  "homepage": "https://github.com/arbourdaze/TheUnboringCompany#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2"
+  }
+}
