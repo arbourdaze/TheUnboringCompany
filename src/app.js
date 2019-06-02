@@ -21,7 +21,7 @@ class Likert extends React.Component {
   render() {
     return (
         <div className="likert" name={this.props.name} onChange={this.handleChange}>
-            <h3>{this.props.trait}</h3>
+            <h3>{this.props.question}</h3>
             <table>
                 <tbody>
                     <tr>
@@ -45,19 +45,19 @@ class Likert extends React.Component {
                 <tbody>
                     <tr>
                         <th>
-                            Strongly disagree
+                            {this.props.low}
                         </th>
                         <th>
-                            Disagree
+
                         </th>
                         <th>
-                            Neutral
+                        Neutral
                         </th>
                         <th>
-                            Agree
+
                         </th>
                         <th>
-                            Strongly agree
+                            {this.props.high}
                         </th>
                     </tr>
                 </tbody>
@@ -76,11 +76,12 @@ class Mood extends React.Component {
   render() {
     return (
         <div className="mood">
-            <Likert name="openness" trait="Creative" />
-            <Likert name="conscientiousness" trait="Ambitious" />
-            <Likert name="extroversion" trait="Social" />
-            <Likert name="agreeableness" trait="Nice" />
-            <Likert name="neuroticism" trait="Stressed" />            
+            <h1>How are you feeling right now?</h1>
+            <Likert name="openness" low="Dumb" high="Smart" />
+            <Likert name="conscientiousness" low="Lazy" high="Overachieving" />
+            <Likert name="extroversion" low="Shy" high="Social" />
+            <Likert name="agreeableness" low="Rude" high="Friendly" />
+            <Likert name="neuroticism" low="Chill" high="Stressed" />            
         </div>
     );
   }

@@ -1,4 +1,8 @@
 
+.likert table {
+    width:100%;
+}
+
 .likert td, .likert th {
     width:15%;
     text-align:center;

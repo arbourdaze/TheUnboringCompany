@@ -42,7 +42,7 @@ var Likert = function (_React$Component) {
                 React.createElement(
                     "h3",
                     null,
-                    this.props.trait
+                    this.props.question
                 ),
                 React.createElement(
                     "table",
@@ -89,27 +89,19 @@ var Likert = function (_React$Component) {
                             React.createElement(
                                 "th",
                                 null,
-                                "Strongly disagree"
+                                this.props.low
                             ),
-                            React.createElement(
-                                "th",
-                                null,
-                                "Disagree"
-                            ),
+                            React.createElement("th", null),
                             React.createElement(
                                 "th",
                                 null,
                                 "Neutral"
                             ),
+                            React.createElement("th", null),
                             React.createElement(
                                 "th",
                                 null,
-                                "Agree"
-                            ),
-                            React.createElement(
-                                "th",
-                                null,
-                                "Strongly agree"
+                                this.props.high
                             )
                         )
                     )
@@ -136,11 +128,16 @@ var Mood = function (_React$Component2) {
             return React.createElement(
                 "div",
                 { className: "mood" },
-                React.createElement(Likert, { name: "openness", trait: "Creative" }),
-                React.createElement(Likert, { name: "conscientiousness", trait: "Ambitious" }),
-                React.createElement(Likert, { name: "extroversion", trait: "Social" }),
-                React.createElement(Likert, { name: "agreeableness", trait: "Nice" }),
-                React.createElement(Likert, { name: "neuroticism", trait: "Stressed" })
+                React.createElement(
+                    "h1",
+                    null,
+                    "How are you feeling right now?"
+                ),
+                React.createElement(Likert, { name: "openness", low: "Dumb", high: "Smart" }),
+                React.createElement(Likert, { name: "conscientiousness", low: "Lazy", high: "Overachieving" }),
+                React.createElement(Likert, { name: "extroversion", low: "Shy", high: "Social" }),
+                React.createElement(Likert, { name: "agreeableness", low: "Rude", high: "Friendly" }),
+                React.createElement(Likert, { name: "neuroticism", low: "Chill", high: "Stressed" })
             );
         }
     }]);
