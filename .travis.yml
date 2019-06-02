@@ -1,3 +1,5 @@
 language: python
 script:
   - pytest
+
+language: node_js
