@@ -5,7 +5,7 @@
   "description": "CSE 5914 Capstone Project",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo 'test script executed'",
     "build": "echo 'build script executed'"
   },
   "repository": {
