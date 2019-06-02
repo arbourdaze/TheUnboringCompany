@@ -7,5 +7,9 @@
      	"build": "echo 'build script executed'"
      },
      "author": "",
-     "license": ""
+     "license": "",
+     "repository": {
+        "type": "git",
+        "url": "https://github.com/arbourdaze/TheUnboringCompany.git"
+     }
     }
