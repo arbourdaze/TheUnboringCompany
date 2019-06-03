@@ -1,5 +1,7 @@
 'use strict';
 
+//npx babel --watch src --out-dir . --presets react-app/prod 
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10,141 +12,65 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var debug = true;
 
-var Likert = function (_React$Component) {
-    _inherits(Likert, _React$Component);
+var root = document.querySelector('#root');
 
-    function Likert(props) {
-        _classCallCheck(this, Likert);
+var BoredForm = function (_React$Component) {
+    _inherits(BoredForm, _React$Component);
 
-        var _this = _possibleConstructorReturn(this, (Likert.__proto__ || Object.getPrototypeOf(Likert)).call(this, props));
+    function BoredForm(props) {
+        _classCallCheck(this, BoredForm);
 
-        _this.state = { value: null };
+        var _this = _possibleConstructorReturn(this, (BoredForm.__proto__ || Object.getPrototypeOf(BoredForm)).call(this, props));
 
-        _this.handleChange = _this.handleChange.bind(_this);
+        _this.state = { time: null, mood: {
+                openness: null,
+                conscientiousness: null,
+                extroversion: null,
+                agreeableness: null,
+                neuroticism: null
+            }
+        };
+        var boredTime = React.createElement(BoredTime, { time: _this.state.time, updateForm: _this.changeTime });
+        var mood = React.createElement(Mood, { mood: _this.state.mood, updateForm: _this.changeMood });
+        _this.pages = [boredTime, mood];
+        _this.page = _this.pages[0];
         return _this;
     }
 
-    _createClass(Likert, [{
-        key: "handleChange",
-        value: function handleChange(event) {
-            this.setState({ value: event.target.value }, function () {
+    _createClass(BoredForm, [{
+        key: 'changeTime',
+        value: function changeTime(value) {
+            this.setState({ time: value }, function () {
                 if (debug) {
-                    console.log(this.state.value);
+                    console.log(this.state.time);
                 }
             });
         }
     }, {
-        key: "render",
+        key: 'changeMood',
+        value: function changeMood(value) {
+            this.setState({ mood: value }, function () {
+                if (debug) {
+                    console.log(this.state.mood);
+                }
+            });
+        }
+    }, {
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
-                { className: "likert", name: this.props.name, onChange: this.handleChange },
+                'div',
+                { className: 'form' },
                 React.createElement(
-                    "h3",
-                    null,
-                    this.props.question
-                ),
-                React.createElement(
-                    "table",
-                    null,
-                    React.createElement(
-                        "tbody",
-                        null,
-                        React.createElement(
-                            "tr",
-                            null,
-                            React.createElement(
-                                "td",
-                                null,
-                                React.createElement("input", { name: this.props.name, type: "radio", value: "0" })
-                            ),
-                            React.createElement(
-                                "td",
-                                null,
-                                React.createElement("input", { name: this.props.name, type: "radio", value: "0.25" })
-                            ),
-                            React.createElement(
-                                "td",
-                                null,
-                                React.createElement("input", { name: this.props.name, type: "radio", value: "0.5" })
-                            ),
-                            React.createElement(
-                                "td",
-                                null,
-                                React.createElement("input", { name: this.props.name, type: "radio", value: "0.75" })
-                            ),
-                            React.createElement(
-                                "td",
-                                null,
-                                React.createElement("input", { name: this.props.name, type: "radio", value: "1" })
-                            )
-                        )
-                    ),
-                    React.createElement(
-                        "tbody",
-                        null,
-                        React.createElement(
-                            "tr",
-                            null,
-                            React.createElement(
-                                "th",
-                                null,
-                                this.props.low
-                            ),
-                            React.createElement("th", null),
-                            React.createElement(
-                                "th",
-                                null,
-                                "Neutral"
-                            ),
-                            React.createElement("th", null),
-                            React.createElement(
-                                "th",
-                                null,
-                                this.props.high
-                            )
-                        )
-                    )
+                    'div',
+                    { className: 'page' },
+                    this.page
                 )
             );
         }
     }]);
 
-    return Likert;
+    return BoredForm;
 }(React.Component);
 
-var Mood = function (_React$Component2) {
-    _inherits(Mood, _React$Component2);
-
-    function Mood(props) {
-        _classCallCheck(this, Mood);
-
-        return _possibleConstructorReturn(this, (Mood.__proto__ || Object.getPrototypeOf(Mood)).call(this, props));
-    }
-
-    _createClass(Mood, [{
-        key: "render",
-        value: function render() {
-            return React.createElement(
-                "div",
-                { className: "mood" },
-                React.createElement(
-                    "h1",
-                    null,
-                    "How are you feeling right now?"
-                ),
-                React.createElement(Likert, { name: "openness", low: "Dumb", high: "Smart" }),
-                React.createElement(Likert, { name: "conscientiousness", low: "Lazy", high: "Overachieving" }),
-                React.createElement(Likert, { name: "extroversion", low: "Shy", high: "Social" }),
-                React.createElement(Likert, { name: "agreeableness", low: "Rude", high: "Friendly" }),
-                React.createElement(Likert, { name: "neuroticism", low: "Chill", high: "Stressed" })
-            );
-        }
-    }]);
-
-    return Mood;
-}(React.Component);
-
-var root = document.querySelector('#root');
-
-ReactDOM.render(React.createElement(Mood, null), root);
+ReactDOM.render(React.createElement(BoredForm, null), root);

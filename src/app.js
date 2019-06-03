@@ -1,96 +1,59 @@
 'use strict';
 
+//npx babel --watch src --out-dir . --presets react-app/prod 
+
 let debug = true;
-
-class Likert extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: null };
-    
-    this.handleChange = this.handleChange.bind(this);
-  }
-  
-  handleChange(event) {
-      this.setState({value: event.target.value}, function () {
-          if (debug) {
-            console.log(this.state.value);
-          }
-      });
-  }
-
-  render() {
-    return (
-        <div className="likert" name={this.props.name} onChange={this.handleChange}>
-            <h3>{this.props.question}</h3>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <input name={this.props.name} type="radio" value="0" />
-                        </td>
-                        <td>
-                            <input name={this.props.name} type="radio" value="0.25" />
-                        </td>
-                        <td>
-                            <input name={this.props.name} type="radio" value="0.5" />
-                        </td>
-                        <td>
-                            <input name={this.props.name} type="radio" value="0.75" />
-                        </td>
-                        <td>
-                            <input name={this.props.name} type="radio" value="1" />
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                        <th>
-                            {this.props.low}
-                        </th>
-                        <th>
-
-                        </th>
-                        <th>
-                        Neutral
-                        </th>
-                        <th>
-
-                        </th>
-                        <th>
-                            {this.props.high}
-                        </th>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    );
-  }
-}
-
-
-class Mood extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-        <div className="mood">
-            <h1>How are you feeling right now?</h1>
-            <Likert name="openness" low="Dumb" high="Smart" />
-            <Likert name="conscientiousness" low="Lazy" high="Overachieving" />
-            <Likert name="extroversion" low="Shy" high="Social" />
-            <Likert name="agreeableness" low="Rude" high="Friendly" />
-            <Likert name="neuroticism" low="Chill" high="Stressed" />            
-        </div>
-    );
-  }
-}
-
 
 let root = document.querySelector('#root');
 
+
+class BoredForm extends React.Component {
+    
+    
+    constructor(props) {
+        super(props);
+        this.state = { time: null, mood: {
+            openness: null,
+            conscientiousness: null,
+            extroversion: null,
+            agreeableness: null,
+            neuroticism: null
+            }
+        };
+        let boredTime = <BoredTime time={this.state.time} updateForm={this.changeTime} />;
+        let mood = <Mood mood={this.state.mood} updateForm={this.changeMood} />;
+        this.pages = [boredTime, mood];
+        this.page = this.pages[0];
+    }
+    
+    changeTime(value) {
+      this.setState({time: value}, function () {
+          if (debug) {
+            console.log(this.state.time);
+          }
+      });
+    }
+    
+    changeMood(value) {
+        this.setState({mood: value}, function() {
+            if (debug) {
+                console.log(this.state.mood);
+            }
+        });
+    }
+    
+    render() {
+        return (
+            <div className="form">
+                <div className="page">
+                    {this.page}
+                </div>
+            </div>
+        );
+    }
+}
+
 ReactDOM.render(
-    <Mood />,
+    <BoredForm />,
     root
 );
