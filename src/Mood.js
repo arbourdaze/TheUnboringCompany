@@ -10,6 +10,11 @@ class Mood extends React.Component {
         agreeableness: this.props.mood.agreeableness,
         neuroticism: this.props.mood.neuroticism
     };
+    this.changeOpenness = this.changeOpenness.bind(this);
+    this.changeConscientiousness = this.changeConscientiousness.bind(this);
+    this.changeExtroversion = this.changeExtroversion.bind(this);
+    this.changeAgreeableness = this.changeAgreeableness.bind(this);
+    this.changeNeuroticism = this.changeNeuroticism.bind(this);
   }
   
   changeOpenness(value) {
@@ -39,8 +44,8 @@ class Mood extends React.Component {
       });
   }
   
-  changeAgreeableness(value) {
-      this.setState({ agreeableness: value }, function () {
+  changeAgreeableness(e) {
+      this.setState({ agreeableness: e.target.value }, function () {
           if (debug) {
             console.log(this.state);
           }

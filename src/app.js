@@ -12,42 +12,62 @@ class BoredForm extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = { time: null, mood: {
-            openness: null,
-            conscientiousness: null,
-            extroversion: null,
-            agreeableness: null,
-            neuroticism: null
-            }
+        this.state = {
+            data: {
+                time: {
+                    hours: 0,
+                    minutes: 0
+                },
+                mood: {
+                    openness: null,
+                    conscientiousness: null,
+                    extroversion: null,
+                    agreeableness: null,
+                    neuroticism: null
+                }
+            },
+            pageIndex: 0
         };
-        let boredTime = <BoredTime time={this.state.time} updateForm={this.changeTime} />;
-        let mood = <Mood mood={this.state.mood} updateForm={this.changeMood} />;
+        this.changeTime = this.changeTime.bind(this);
+        this.changeMood = this.changeMood.bind(this);
+        this.nextPage = this.nextPage.bind(this);
+        let boredTime = <BoredTime time={this.state.data.time} updateForm={this.changeTime} />;
+        let mood = <Mood mood={this.state.data.mood} updateForm={this.changeMood} />;
         this.pages = [boredTime, mood];
-        this.page = this.pages[0];
     }
     
     changeTime(value) {
-      this.setState({time: value}, function () {
+      let newData = Object.assign({}, this.state.data, {time: value});
+      this.setState({data: newData}, function () {
           if (debug) {
-            console.log(this.state.time);
+            console.log(this.state);
           }
       });
     }
-    
+
     changeMood(value) {
-        this.setState({mood: value}, function() {
+        let newData = Object.assign({}, this.state.data, {mood: value});
+        this.setState({data: newData}, function() {
             if (debug) {
-                console.log(this.state.mood);
+                console.log(this.state);
             }
         });
+    }
+    
+    nextPage() {
+        let nextIndex = this.state.pageIndex;
+        if (nextIndex < this.pages.length) {
+            this.setState({pageIndex: nextIndex + 1});
+        }
     }
     
     render() {
         return (
             <div className="form">
                 <div className="page">
-                    {this.page}
+                    {this.pages[this.state.pageIndex]}
                 </div>
+                <button type="button" className="next-page" onClick={this.nextPage}>Next</button>
             </div>
         );
     }

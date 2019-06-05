@@ -22,38 +22,58 @@ var BoredForm = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (BoredForm.__proto__ || Object.getPrototypeOf(BoredForm)).call(this, props));
 
-        _this.state = { time: null, mood: {
-                openness: null,
-                conscientiousness: null,
-                extroversion: null,
-                agreeableness: null,
-                neuroticism: null
-            }
+        _this.state = {
+            data: {
+                time: {
+                    hours: 0,
+                    minutes: 0
+                },
+                mood: {
+                    openness: null,
+                    conscientiousness: null,
+                    extroversion: null,
+                    agreeableness: null,
+                    neuroticism: null
+                }
+            },
+            pageIndex: 0
         };
-        var boredTime = React.createElement(BoredTime, { time: _this.state.time, updateForm: _this.changeTime });
-        var mood = React.createElement(Mood, { mood: _this.state.mood, updateForm: _this.changeMood });
+        _this.changeTime = _this.changeTime.bind(_this);
+        _this.changeMood = _this.changeMood.bind(_this);
+        _this.nextPage = _this.nextPage.bind(_this);
+        var boredTime = React.createElement(BoredTime, { time: _this.state.data.time, updateForm: _this.changeTime });
+        var mood = React.createElement(Mood, { mood: _this.state.data.mood, updateForm: _this.changeMood });
         _this.pages = [boredTime, mood];
-        _this.page = _this.pages[0];
         return _this;
     }
 
     _createClass(BoredForm, [{
         key: 'changeTime',
         value: function changeTime(value) {
-            this.setState({ time: value }, function () {
+            var newData = Object.assign({}, this.state.data, { time: value });
+            this.setState({ data: newData }, function () {
                 if (debug) {
-                    console.log(this.state.time);
+                    console.log(this.state);
                 }
             });
         }
     }, {
         key: 'changeMood',
         value: function changeMood(value) {
-            this.setState({ mood: value }, function () {
+            var newData = Object.assign({}, this.state.data, { mood: value });
+            this.setState({ data: newData }, function () {
                 if (debug) {
-                    console.log(this.state.mood);
+                    console.log(this.state);
                 }
             });
+        }
+    }, {
+        key: 'nextPage',
+        value: function nextPage() {
+            var nextIndex = this.state.pageIndex;
+            if (nextIndex < this.pages.length) {
+                this.setState({ pageIndex: nextIndex + 1 });
+            }
         }
     }, {
         key: 'render',
@@ -64,7 +84,12 @@ var BoredForm = function (_React$Component) {
                 React.createElement(
                     'div',
                     { className: 'page' },
-                    this.page
+                    this.pages[this.state.pageIndex]
+                ),
+                React.createElement(
+                    'button',
+                    { type: 'button', className: 'next-page', onClick: this.nextPage },
+                    'Next'
                 )
             );
         }

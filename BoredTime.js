@@ -8,31 +8,63 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var BoredTime = function (_Input) {
-  _inherits(BoredTime, _Input);
+var BoredTime = function (_React$Component) {
+    _inherits(BoredTime, _React$Component);
 
-  function BoredTime(props) {
-    _classCallCheck(this, BoredTime);
+    function BoredTime(props) {
+        _classCallCheck(this, BoredTime);
 
-    return _possibleConstructorReturn(this, (BoredTime.__proto__ || Object.getPrototypeOf(BoredTime)).call(this, props));
-  }
+        var _this = _possibleConstructorReturn(this, (BoredTime.__proto__ || Object.getPrototypeOf(BoredTime)).call(this, props));
 
-  _createClass(BoredTime, [{
-    key: "render",
-    value: function render() {
-      var time = this.props.time;
-      return React.createElement(
-        "div",
-        { onChange: this.handleChange },
-        React.createElement(
-          "h3",
-          null,
-          "\"How long will you be bored?\""
-        ),
-        React.createElement("input", { type: "time", name: "bored-time", value: time })
-      );
+        _this.state = {
+            hours: _this.props.time.hours,
+            minutes: _this.props.time.minutes
+        };
+        _this.changeHours = _this.changeHours.bind(_this);
+        _this.changeMinutes = _this.changeMinutes.bind(_this);
+        return _this;
     }
-  }]);
 
-  return BoredTime;
-}(Input);
+    _createClass(BoredTime, [{
+        key: "changeHours",
+        value: function changeHours(e) {
+            this.setState({ hours: e.target.value }, function () {
+                this.props.updateForm(this.state);
+            });
+        }
+    }, {
+        key: "changeMinutes",
+        value: function changeMinutes(e) {
+            this.setState({ minutes: e.target.value }, function () {
+                this.props.updateForm(this.state);
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                null,
+                React.createElement(
+                    "h3",
+                    null,
+                    "How long will you be bored?"
+                ),
+                React.createElement(
+                    "label",
+                    { htmlFor: "bored-hours" },
+                    "Hours: "
+                ),
+                React.createElement("input", { type: "number", name: "bored-hours", value: this.state.hours, min: "0", max: "6", onChange: this.changeHours }),
+                React.createElement(
+                    "label",
+                    { htmlFor: "bored-minutes" },
+                    "Minutes: "
+                ),
+                React.createElement("input", { type: "number", name: "bored-minutes", value: this.state.minutes, min: "0", max: "59", onChange: this.changeMinutes })
+            );
+        }
+    }]);
+
+    return BoredTime;
+}(React.Component);

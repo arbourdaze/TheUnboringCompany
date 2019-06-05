@@ -23,6 +23,11 @@ var Mood = function (_React$Component) {
             agreeableness: _this.props.mood.agreeableness,
             neuroticism: _this.props.mood.neuroticism
         };
+        _this.changeOpenness = _this.changeOpenness.bind(_this);
+        _this.changeConscientiousness = _this.changeConscientiousness.bind(_this);
+        _this.changeExtroversion = _this.changeExtroversion.bind(_this);
+        _this.changeAgreeableness = _this.changeAgreeableness.bind(_this);
+        _this.changeNeuroticism = _this.changeNeuroticism.bind(_this);
         return _this;
     }
 
@@ -58,8 +63,8 @@ var Mood = function (_React$Component) {
         }
     }, {
         key: "changeAgreeableness",
-        value: function changeAgreeableness(value) {
-            this.setState({ agreeableness: value }, function () {
+        value: function changeAgreeableness(e) {
+            this.setState({ agreeableness: e.target.value }, function () {
                 if (debug) {
                     console.log(this.state);
                 }

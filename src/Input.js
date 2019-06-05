@@ -6,7 +6,7 @@ class Input extends React.Component {
         this.state = { value: null }
         this.handleChange = this.handleChange.bind(this);
     }
-    
+
     handleChange(event) {
       this.setState({value: event.target.value}, function () {
           if (debug) {
