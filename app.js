@@ -41,8 +41,15 @@ var BoredForm = function (_React$Component) {
         _this.changeTime = _this.changeTime.bind(_this);
         _this.changeMood = _this.changeMood.bind(_this);
         _this.nextPage = _this.nextPage.bind(_this);
+        _this.previousPage = _this.previousPage.bind(_this);
+        _this.canGoNext = _this.canGoNext.bind(_this);
+        _this.canGoPrevious = _this.canGoPrevious.bind(_this);
+        _this.timeIsValid = _this.timeIsValid.bind(_this);
+        _this.moodIsValid = _this.moodIsValid.bind(_this);
+        _this.isValid = _this.isValid.bind(_this);
         var boredTime = React.createElement(BoredTime, { time: _this.state.data.time, updateForm: _this.changeTime });
-        var mood = React.createElement(Mood, { mood: _this.state.data.mood, updateForm: _this.changeMood });
+        _this.moodValues = ["0", "0.25", "0.5", "0.75", "1"];
+        var mood = React.createElement(Mood, { mood: _this.state.data.mood, updateForm: _this.changeMood, moodValues: _this.moodValues });
         _this.pages = [boredTime, mood];
         return _this;
     }
@@ -70,10 +77,43 @@ var BoredForm = function (_React$Component) {
     }, {
         key: 'nextPage',
         value: function nextPage() {
-            var nextIndex = this.state.pageIndex;
-            if (nextIndex < this.pages.length) {
-                this.setState({ pageIndex: nextIndex + 1 });
+            if (this.canGoNext()) {
+                this.setState({ pageIndex: this.state.pageIndex + 1 });
             }
+        }
+    }, {
+        key: 'previousPage',
+        value: function previousPage() {
+            if (this.canGoPrevious()) {
+                this.setState({ pageIndex: this.state.pageIndex - 1 });
+            }
+        }
+    }, {
+        key: 'canGoPrevious',
+        value: function canGoPrevious() {
+            return this.state.pageIndex > 0;
+        }
+    }, {
+        key: 'canGoNext',
+        value: function canGoNext() {
+            return this.state.pageIndex < this.pages.length - 1;
+        }
+    }, {
+        key: 'timeIsValid',
+        value: function timeIsValid() {
+            var time = this.state.data.time;
+            return (time.hours > 0 || time.minutes > 0) && time.hours >= 0 && time.hours <= 12 && time.minutes >= 0 && time.minutes <= 59;
+        }
+    }, {
+        key: 'moodIsValid',
+        value: function moodIsValid() {
+            var mood = this.state.data.mood;
+            return this.moodValues.includes(mood.openness) && this.moodValues.includes(mood.conscientiousness) && this.moodValues.includes(mood.extroversion) && this.moodValues.includes(mood.agreeableness) && this.moodValues.includes(mood.neuroticism);
+        }
+    }, {
+        key: 'isValid',
+        value: function isValid() {
+            return this.timeIsValid() && this.moodIsValid();
         }
     }, {
         key: 'render',
@@ -88,8 +128,18 @@ var BoredForm = function (_React$Component) {
                 ),
                 React.createElement(
                     'button',
-                    { type: 'button', className: 'next-page', onClick: this.nextPage },
+                    { type: 'button', onClick: this.previousPage, disabled: !this.canGoPrevious() },
+                    'Previous'
+                ),
+                React.createElement(
+                    'button',
+                    { type: 'button', onClick: this.nextPage, disabled: !this.canGoNext() },
                     'Next'
+                ),
+                React.createElement(
+                    'button',
+                    { type: 'button', disabled: !this.isValid() },
+                    'Submit'
                 )
             );
         }

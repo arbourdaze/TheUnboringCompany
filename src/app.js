@@ -31,8 +31,15 @@ class BoredForm extends React.Component {
         this.changeTime = this.changeTime.bind(this);
         this.changeMood = this.changeMood.bind(this);
         this.nextPage = this.nextPage.bind(this);
+        this.previousPage = this.previousPage.bind(this);
+        this.canGoNext = this.canGoNext.bind(this);
+        this.canGoPrevious = this.canGoPrevious.bind(this);
+        this.timeIsValid = this.timeIsValid.bind(this);
+        this.moodIsValid = this.moodIsValid.bind(this);
+        this.isValid = this.isValid.bind(this);
         let boredTime = <BoredTime time={this.state.data.time} updateForm={this.changeTime} />;
-        let mood = <Mood mood={this.state.data.mood} updateForm={this.changeMood} />;
+        this.moodValues = ["0", "0.25", "0.5", "0.75", "1"];
+        let mood = <Mood mood={this.state.data.mood} updateForm={this.changeMood} moodValues={this.moodValues} />;
         this.pages = [boredTime, mood];
     }
     
@@ -55,10 +62,43 @@ class BoredForm extends React.Component {
     }
     
     nextPage() {
-        let nextIndex = this.state.pageIndex;
-        if (nextIndex < this.pages.length) {
-            this.setState({pageIndex: nextIndex + 1});
+        if (this.canGoNext()) {
+            this.setState({pageIndex: this.state.pageIndex + 1});
         }
+    }
+
+    previousPage() {
+        if (this.canGoPrevious()) {
+            this.setState({pageIndex: this.state.pageIndex - 1});
+        }
+    }
+    
+    canGoPrevious() {
+        return this.state.pageIndex > 0;
+    }
+    
+    canGoNext() {
+        return this.state.pageIndex < this.pages.length - 1;
+    }
+    
+    timeIsValid() {
+        let time = this.state.data.time;
+        return (time.hours > 0 || time.minutes > 0) &&
+        (time.hours >= 0 && time.hours <= 12) &&
+        (time.minutes >= 0 && time.minutes <= 59);
+    }
+    
+    moodIsValid() {
+        let mood = this.state.data.mood;
+        return this.moodValues.includes(mood.openness) &&
+        this.moodValues.includes(mood.conscientiousness) &&
+        this.moodValues.includes(mood.extroversion) &&
+        this.moodValues.includes(mood.agreeableness) &&
+        this.moodValues.includes(mood.neuroticism);
+    }
+    
+    isValid() {
+        return this.timeIsValid() && this.moodIsValid();
     }
     
     render() {
@@ -67,7 +107,9 @@ class BoredForm extends React.Component {
                 <div className="page">
                     {this.pages[this.state.pageIndex]}
                 </div>
-                <button type="button" className="next-page" onClick={this.nextPage}>Next</button>
+                <button type="button" onClick={this.previousPage} disabled={!this.canGoPrevious()}>Previous</button>
+                <button type="button" onClick={this.nextPage} disabled={!this.canGoNext()}>Next</button>
+                <button type="button" disabled={!this.isValid()}>Submit</button>
             </div>
         );
     }

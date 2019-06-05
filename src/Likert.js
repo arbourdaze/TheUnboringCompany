@@ -6,41 +6,50 @@ class Likert extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
   
-  handleChange(e) {
-      this.props.updateForm(e.target.value);
+  handleChange(event) {
+      this.props.updateForm(event.target.value);
+  }
+
+  createRow() {
+      let row = [];
+      for (let i = 0; i < this.props.moodValues.length; i++) {
+        row.push(<Radio key={i} name={this.props.name} val={this.props.moodValues[i]} />);  
+      }
+      return row;
+  }
+  
+  createRowHeader() {
+      let header = [];
+      for (let i = 0; i < this.props.moodValues.length; i++) {
+        header.push(<th key={i}>{this.createRowHeaderCell(i)}</th>);
+      }
+      return header;
+  }
+  
+  createRowHeaderCell(i) {
+    if (i == 0) {
+        return this.props.low;
+    }
+    else if (i == Math.floor(this.props.moodValues.length / 2)) {
+        return <span>Neutral</span>;
+    }
+    else if (i == this.props.moodValues.length - 1) {
+        return this.props.high;
+    }
   }
 
   render() {
     return (
         <div className="likert" name={this.props.name} onChange={this.handleChange}>
-            <h3>{this.props.question}</h3>
             <table>
                 <tbody>
                     <tr>
-                        <Radio name={this.props.name} val="0" />
-                        <Radio name={this.props.name} val="0.25" />
-                        <Radio name={this.props.name} val="0.5" />
-                        <Radio name={this.props.name} val="0.75" />
-                        <Radio name={this.props.name} val="1" />
+                    {this.createRow()}
                     </tr>
                 </tbody>
                 <tbody>
                     <tr>
-                        <th>
-                            {this.props.low}
-                        </th>
-                        <th>
-
-                        </th>
-                        <th>
-                        Neutral
-                        </th>
-                        <th>
-
-                        </th>
-                        <th>
-                            {this.props.high}
-                        </th>
+                    {this.createRowHeader()}
                     </tr>
                 </tbody>
             </table>

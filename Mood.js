@@ -35,9 +35,6 @@ var Mood = function (_React$Component) {
         key: "changeOpenness",
         value: function changeOpenness(value) {
             this.setState({ openness: value }, function () {
-                if (debug) {
-                    console.log(this.state);
-                }
                 this.props.updateForm(this.state);
             });
         }
@@ -45,9 +42,6 @@ var Mood = function (_React$Component) {
         key: "changeConscientiousness",
         value: function changeConscientiousness(value) {
             this.setState({ conscientiousness: value }, function () {
-                if (debug) {
-                    console.log(this.state);
-                }
                 this.props.updateForm(this.state);
             });
         }
@@ -55,19 +49,13 @@ var Mood = function (_React$Component) {
         key: "changeExtroversion",
         value: function changeExtroversion(value) {
             this.setState({ extroversion: value }, function () {
-                if (debug) {
-                    console.log(this.state);
-                }
                 this.props.updateForm(this.state);
             });
         }
     }, {
         key: "changeAgreeableness",
-        value: function changeAgreeableness(e) {
-            this.setState({ agreeableness: e.target.value }, function () {
-                if (debug) {
-                    console.log(this.state);
-                }
+        value: function changeAgreeableness(value) {
+            this.setState({ agreeableness: value }, function () {
                 this.props.updateForm(this.state);
             });
         }
@@ -75,9 +63,6 @@ var Mood = function (_React$Component) {
         key: "changeNeuroticism",
         value: function changeNeuroticism(value) {
             this.setState({ neuroticism: value }, function () {
-                if (debug) {
-                    console.log(this.state);
-                }
                 this.props.updateForm(this.state);
             });
         }
@@ -92,11 +77,11 @@ var Mood = function (_React$Component) {
                     null,
                     "How are you feeling right now?"
                 ),
-                React.createElement(Likert, { name: "openness", low: "Dumb", high: "Smart", score: this.state.openness, updateForm: this.changeOpenness }),
-                React.createElement(Likert, { name: "conscientiousness", low: "Lazy", high: "Overachieving", score: this.state.conscientiousness, updateForm: this.changeConscientiousness }),
-                React.createElement(Likert, { name: "extroversion", low: "Shy", high: "Social", score: this.state.extroversion, updateForm: this.changeExtroversion }),
-                React.createElement(Likert, { name: "agreeableness", low: "Rude", high: "Friendly", score: this.state.agreeableness, updateForm: this.changeAgreeableness }),
-                React.createElement(Likert, { name: "neuroticism", low: "Chill", high: "Stressed", score: this.state.neuroticism, updateForm: this.changeNeuroticism })
+                React.createElement(Likert, { name: "openness", low: "Dumb", high: "Smart", score: this.state.openness, updateForm: this.changeOpenness, moodValues: this.props.moodValues }),
+                React.createElement(Likert, { name: "conscientiousness", low: "Lazy", high: "Overachieving", score: this.state.conscientiousness, updateForm: this.changeConscientiousness, moodValues: this.props.moodValues }),
+                React.createElement(Likert, { name: "extroversion", low: "Shy", high: "Social", score: this.state.extroversion, updateForm: this.changeExtroversion, moodValues: this.props.moodValues }),
+                React.createElement(Likert, { name: "agreeableness", low: "Rude", high: "Friendly", score: this.state.agreeableness, updateForm: this.changeAgreeableness, moodValues: this.props.moodValues }),
+                React.createElement(Likert, { name: "neuroticism", low: "Chill", high: "Stressed", score: this.state.neuroticism, updateForm: this.changeNeuroticism, moodValues: this.props.moodValues })
             );
         }
     }]);

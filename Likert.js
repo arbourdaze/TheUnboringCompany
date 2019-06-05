@@ -22,8 +22,45 @@ var Likert = function (_React$Component) {
 
     _createClass(Likert, [{
         key: "handleChange",
-        value: function handleChange(e) {
-            this.props.updateForm(e.target.value);
+        value: function handleChange(event) {
+            this.props.updateForm(event.target.value);
+        }
+    }, {
+        key: "createRow",
+        value: function createRow() {
+            var row = [];
+            for (var i = 0; i < this.props.moodValues.length; i++) {
+                row.push(React.createElement(Radio, { key: i, name: this.props.name, val: this.props.moodValues[i] }));
+            }
+            return row;
+        }
+    }, {
+        key: "createRowHeader",
+        value: function createRowHeader() {
+            var header = [];
+            for (var i = 0; i < this.props.moodValues.length; i++) {
+                header.push(React.createElement(
+                    "th",
+                    { key: i },
+                    this.createRowHeaderCell(i)
+                ));
+            }
+            return header;
+        }
+    }, {
+        key: "createRowHeaderCell",
+        value: function createRowHeaderCell(i) {
+            if (i == 0) {
+                return this.props.low;
+            } else if (i == Math.floor(this.props.moodValues.length / 2)) {
+                return React.createElement(
+                    "span",
+                    null,
+                    "Neutral"
+                );
+            } else if (i == this.props.moodValues.length - 1) {
+                return this.props.high;
+            }
         }
     }, {
         key: "render",
@@ -31,11 +68,6 @@ var Likert = function (_React$Component) {
             return React.createElement(
                 "div",
                 { className: "likert", name: this.props.name, onChange: this.handleChange },
-                React.createElement(
-                    "h3",
-                    null,
-                    this.props.question
-                ),
                 React.createElement(
                     "table",
                     null,
@@ -45,11 +77,7 @@ var Likert = function (_React$Component) {
                         React.createElement(
                             "tr",
                             null,
-                            React.createElement(Radio, { name: this.props.name, val: "0" }),
-                            React.createElement(Radio, { name: this.props.name, val: "0.25" }),
-                            React.createElement(Radio, { name: this.props.name, val: "0.5" }),
-                            React.createElement(Radio, { name: this.props.name, val: "0.75" }),
-                            React.createElement(Radio, { name: this.props.name, val: "1" })
+                            this.createRow()
                         )
                     ),
                     React.createElement(
@@ -58,23 +86,7 @@ var Likert = function (_React$Component) {
                         React.createElement(
                             "tr",
                             null,
-                            React.createElement(
-                                "th",
-                                null,
-                                this.props.low
-                            ),
-                            React.createElement("th", null),
-                            React.createElement(
-                                "th",
-                                null,
-                                "Neutral"
-                            ),
-                            React.createElement("th", null),
-                            React.createElement(
-                                "th",
-                                null,
-                                this.props.high
-                            )
+                            this.createRowHeader()
                         )
                     )
                 )
