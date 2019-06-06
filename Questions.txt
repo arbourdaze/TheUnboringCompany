@@ -1,0 +1,9 @@
+Questions:
+
+1. Are you feeling bored?
+2. How much time do you have?
+3. Do you like movies?
+	What type of movies do you like?
+4. Do you like cooking?
+	What type of food do you like?
+5. Feeling Adventurous?
