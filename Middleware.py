@@ -2,20 +2,26 @@
 from ibm_watson import DiscoveryV1
 
 
-def function(responses, mood):
+def middleware(responses, mood):
 
     discovery = DiscoveryV1(version={version},iam_apikey={apikey},url={url})
-    makeQuery(responses)
+
+    #Format into keywords
+    
+
+    for each topic:
+        if response is not no:
+            results = makeQuery(keywords)
+            #save top 3
+
+    #Convert json objects into something not terrible for reading
     
 
 
-def makeQuery(responses, discovery):
-
-    if not isinstance(responses, dict):
-        print("Responses should in format of python dict. {Question : Response} ")
-        exit(-1)
-
+def makeQuery(keywords, discovery):
     result = None
+
+
 
     #Query Fields{env_id, col_id, filter, query, nl_query, passages,
      #  agg, count, ret_fields, offset, sort, highlight, 
@@ -25,8 +31,3 @@ def makeQuery(responses, discovery):
         
 
     return result
-
-    #0. Parse Q/A into keywords
-    #1. Format Q/A into queries + how to format queries
-    #2. From responses apply personality results & time restrictions
-    #3. Format results into activities string: Activity name + description
