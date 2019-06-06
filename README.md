@@ -4,7 +4,7 @@ CSE 5914 Capstone Project
 Aaron Arbour  
 Rebecca Haninger   
 Kavin Kaviarasan  
-Woonkib Lee  
+Woongki Lee  
 Christopher Luikart  
 Noah Zhang  
 
