@@ -28,33 +28,63 @@ var BoredForm = function (_React$Component) {
                     hours: 0,
                     minutes: 0
                 },
-                mood: {
-                    openness: null,
-                    conscientiousness: null,
-                    extroversion: null,
-                    agreeableness: null,
-                    neuroticism: null
+                movies: {
+                    like: "No",
+                    types: new Set()
+                },
+                cooking: {
+                    like: "No",
+                    types: new Set()
                 }
             },
             pageIndex: 0
         };
+
+        _this.reassignData = _this.reassignData.bind(_this);
         _this.changeTime = _this.changeTime.bind(_this);
-        _this.changeMood = _this.changeMood.bind(_this);
+        _this.changeMovies = _this.changeMovies.bind(_this);
+        _this.changeCooking = _this.changeCooking.bind(_this);
+
         _this.nextPage = _this.nextPage.bind(_this);
         _this.previousPage = _this.previousPage.bind(_this);
         _this.canGoNext = _this.canGoNext.bind(_this);
         _this.canGoPrevious = _this.canGoPrevious.bind(_this);
+
         _this.timeIsValid = _this.timeIsValid.bind(_this);
-        _this.moodIsValid = _this.moodIsValid.bind(_this);
-        _this.isValid = _this.isValid.bind(_this);
-        var boredTime = React.createElement(BoredTime, { time: _this.state.data.time, updateForm: _this.changeTime });
-        _this.moodValues = ["0", "0.25", "0.5", "0.75", "1"];
-        var mood = React.createElement(Mood, { mood: _this.state.data.mood, updateForm: _this.changeMood, moodValues: _this.moodValues });
-        _this.pages = [boredTime, mood];
+
+        _this.ternaryChoiceValues = ["Yes", "Maybe", "No"];
+        _this.genres = ["Action", "Crime", "Fantasy", "Western", "Historical", "Romance", "Animation", "Horror", "Sci-Fi", "Documentary"];
+        _this.foods = ["American", "Barbecue", "Deli", "Mexican", "Chinese", "Pizza", "Italian", "Breakfast", "Sushi", "Seafood", "Indian", "Korean", "Japanese", "Dessert", "Vietnamese", "Thai", "Vegan", "Vegetarian", "Gluten-Free", "Cocktail"];
+
+        _this.getBoredTime = _this.getBoredTime.bind(_this);
+        _this.getMovies = _this.getMovies.bind(_this);
+        _this.getCooking = _this.getCooking.bind(_this);
+
+        _this.pages = [_this.getBoredTime, _this.getMovies, _this.getCooking];
+
+        _this.transformOptions = _this.transformOptions.bind(_this);
+        _this.send = _this.send.bind(_this);
         return _this;
     }
 
     _createClass(BoredForm, [{
+        key: 'getBoredTime',
+        value: function getBoredTime() {
+            return React.createElement(BoredTime, { time: this.state.data.time, updateForm: this.changeTime });
+        }
+    }, {
+        key: 'getMovies',
+        value: function getMovies() {
+            var movies = this.state.data.movies;
+            return React.createElement(Activity, { key: 'movies-activity', category: 'movies', like: movies.like, types: movies.types, options: this.genres, updateForm: this.changeMovies });
+        }
+    }, {
+        key: 'getCooking',
+        value: function getCooking() {
+            var cooking = this.state.data.cooking;
+            return React.createElement(Activity, { key: 'cooking-activity', category: 'cooking', like: cooking.like, types: cooking.types, options: this.foods, updateForm: this.changeCooking });
+        }
+    }, {
         key: 'changeTime',
         value: function changeTime(value) {
             var newData = Object.assign({}, this.state.data, { time: value });
@@ -65,9 +95,20 @@ var BoredForm = function (_React$Component) {
             });
         }
     }, {
-        key: 'changeMood',
-        value: function changeMood(value) {
-            var newData = Object.assign({}, this.state.data, { mood: value });
+        key: 'changeMovies',
+        value: function changeMovies(value) {
+            var newData = Object.assign({}, this.state.data, { movies: value });
+            this.reassignData(newData);
+        }
+    }, {
+        key: 'changeCooking',
+        value: function changeCooking(value) {
+            var newData = Object.assign({}, this.state.data, { cooking: value });
+            this.reassignData(newData);
+        }
+    }, {
+        key: 'reassignData',
+        value: function reassignData(newData) {
             this.setState({ data: newData }, function () {
                 if (debug) {
                     console.log(this.state);
@@ -105,15 +146,36 @@ var BoredForm = function (_React$Component) {
             return (time.hours > 0 || time.minutes > 0) && time.hours >= 0 && time.hours <= 12 && time.minutes >= 0 && time.minutes <= 59;
         }
     }, {
-        key: 'moodIsValid',
-        value: function moodIsValid() {
-            var mood = this.state.data.mood;
-            return this.moodValues.includes(mood.openness) && this.moodValues.includes(mood.conscientiousness) && this.moodValues.includes(mood.extroversion) && this.moodValues.includes(mood.agreeableness) && this.moodValues.includes(mood.neuroticism);
+        key: 'send',
+        value: function send() {
+            if (this.timeIsValid()) {
+                var data = { Hours: this.state.data.time.hours, Minutes: this.state.data.time.minutes };
+                var movies = this.state.data.movies;
+                var cooking = this.state.data.cooking;
+                data.LikeMovies = movies.like;
+                data.LikeCooking = cooking.like;
+                Object.assign(data, this.transformOptions(this.genres, movies.types));
+                Object.assign(data, this.transformOptions(this.foods, cooking.types));
+                var json = JSON.stringify(data);
+                console.log(json);
+                /*             $.ajax({
+                                type: 'Post',
+                                url: '/code.py',
+                                data: json
+                            }).success(function () {
+                                console.log('success');
+                            }); */
+            }
         }
     }, {
-        key: 'isValid',
-        value: function isValid() {
-            return this.timeIsValid() && this.moodIsValid();
+        key: 'transformOptions',
+        value: function transformOptions(options, choices) {
+            var newOptions = {};
+            var that = this;
+            options.forEach(function (opt) {
+                newOptions[opt] = choices.has(opt);
+            });
+            return newOptions;
         }
     }, {
         key: 'render',
@@ -124,7 +186,7 @@ var BoredForm = function (_React$Component) {
                 React.createElement(
                     'div',
                     { className: 'page' },
-                    this.pages[this.state.pageIndex]
+                    this.pages[this.state.pageIndex]()
                 ),
                 React.createElement(
                     'button',
@@ -138,7 +200,7 @@ var BoredForm = function (_React$Component) {
                 ),
                 React.createElement(
                     'button',
-                    { type: 'button', disabled: !this.isValid() },
+                    { type: 'button', onClick: this.send, disabled: !this.timeIsValid() },
                     'Submit'
                 )
             );

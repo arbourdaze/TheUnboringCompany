@@ -1,0 +1,41 @@
+i'm bored!
+time
+do you feel like watching a movie? ymn
+
+action
+crime
+fantasy
+western
+historical
+romance
+animation
+horror
+sci-fi
+
+do you feel like cooking? ymn
+do you enjoy new things? yn
+
+american
+barbecue
+deli
+mexican
+chinese
+pizza
+italian
+breakfast
+sushi
+seafood
+indian
+korean
+japanese
+dessert
+vietnamese
+thai
+vegan
+vegetarian
+gluten-free
+drinks
+
+new things?
+
+

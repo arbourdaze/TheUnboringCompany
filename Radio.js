@@ -23,7 +23,7 @@ var Radio = function (_React$Component) {
       return React.createElement(
         "td",
         { className: "radio" },
-        React.createElement("input", { name: this.props.name, type: "radio", value: this.props.val })
+        React.createElement("input", { name: this.props.name, type: "radio", value: this.props.val, checked: this.props.ticked })
       );
     }
   }]);
