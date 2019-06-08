@@ -51,7 +51,6 @@ var BoredForm = function (_React$Component) {
         _this.canGoPrevious = _this.canGoPrevious.bind(_this);
 
         _this.timeIsValid = _this.timeIsValid.bind(_this);
-        _this.isValid = _this.isValid.bind(_this);
 
         _this.ternaryChoiceValues = ["Yes", "Maybe", "No"];
         _this.genres = ["Action", "Crime", "Fantasy", "Western", "Historical", "Romance", "Animation", "Horror", "Sci-Fi", "Documentary"];
@@ -62,6 +61,9 @@ var BoredForm = function (_React$Component) {
         _this.getCooking = _this.getCooking.bind(_this);
 
         _this.pages = [_this.getBoredTime, _this.getMovies, _this.getCooking];
+
+        _this.transformOptions = _this.transformOptions.bind(_this);
+        _this.send = _this.send.bind(_this);
         return _this;
     }
 
@@ -144,22 +146,36 @@ var BoredForm = function (_React$Component) {
             return (time.hours > 0 || time.minutes > 0) && time.hours >= 0 && time.hours <= 12 && time.minutes >= 0 && time.minutes <= 59;
         }
     }, {
-        key: 'isValid',
-        value: function isValid() {
-            return this.timeIsValid();
-        }
-    }, {
         key: 'send',
         value: function send() {
-            if (isValid()) {
-                $.ajax({
-                    type: 'Post',
-                    url: '/code.py',
-                    data: this.state.data
-                }).success(function () {
-                    console.log('success');
-                });
+            if (this.timeIsValid()) {
+                var data = { Hours: this.state.data.time.hours, Minutes: this.state.data.time.minutes };
+                var movies = this.state.data.movies;
+                var cooking = this.state.data.cooking;
+                data.LikeMovies = movies.like;
+                data.LikeCooking = cooking.like;
+                Object.assign(data, this.transformOptions(this.genres, movies.types));
+                Object.assign(data, this.transformOptions(this.foods, cooking.types));
+                var json = JSON.stringify(data);
+                console.log(json);
+                /*             $.ajax({
+                                type: 'Post',
+                                url: '/code.py',
+                                data: json
+                            }).success(function () {
+                                console.log('success');
+                            }); */
             }
+        }
+    }, {
+        key: 'transformOptions',
+        value: function transformOptions(options, choices) {
+            var newOptions = {};
+            var that = this;
+            options.forEach(function (opt) {
+                newOptions[opt] = choices.has(opt);
+            });
+            return newOptions;
         }
     }, {
         key: 'render',
@@ -184,7 +200,7 @@ var BoredForm = function (_React$Component) {
                 ),
                 React.createElement(
                     'button',
-                    { type: 'button', disabled: !this.isValid() },
+                    { type: 'button', onClick: this.send, disabled: !this.timeIsValid() },
                     'Submit'
                 )
             );

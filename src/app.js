@@ -40,7 +40,6 @@ class BoredForm extends React.Component {
         this.canGoPrevious = this.canGoPrevious.bind(this);
         
         this.timeIsValid = this.timeIsValid.bind(this);
-        this.isValid = this.isValid.bind(this);
         
         this.ternaryChoiceValues = ["Yes", "Maybe", "No"];
         this.genres = ["Action", "Crime", "Fantasy", "Western", "Historical", "Romance", "Animation", "Horror", "Sci-Fi", "Documentary"];
@@ -51,6 +50,9 @@ class BoredForm extends React.Component {
         this.getCooking = this.getCooking.bind(this);
         
         this.pages = [this.getBoredTime, this.getMovies, this.getCooking];
+        
+        this.transformOptions = this.transformOptions.bind(this);
+        this.send = this.send.bind(this);
     }
     
     getBoredTime() {
@@ -121,20 +123,34 @@ class BoredForm extends React.Component {
         (time.minutes >= 0 && time.minutes <= 59);
     }
     
-    isValid() {
-        return this.timeIsValid();
-    }
-    
     send() {
-        if (isValid()) {
-            $.ajax({
+        if (this.timeIsValid()) {
+            let data = { Hours: this.state.data.time.hours, Minutes: this.state.data.time.minutes };
+            let movies = this.state.data.movies;
+            let cooking = this.state.data.cooking;
+            data.LikeMovies = movies.like;
+            data.LikeCooking = cooking.like;
+            Object.assign(data, this.transformOptions(this.genres, movies.types));
+            Object.assign(data, this.transformOptions(this.foods, cooking.types));
+            let json = JSON.stringify(data);
+            console.log(json);
+/*             $.ajax({
                 type: 'Post',
                 url: '/code.py',
-                data: this.state.data
+                data: json
             }).success(function () {
                 console.log('success');
-            });
+            }); */
         }
+    }
+    
+    transformOptions(options, choices) {
+        let newOptions = {};
+        let that = this;
+        options.forEach(function(opt) {
+            newOptions[opt] = choices.has(opt);
+        });
+        return newOptions;
     }
     
     render() {
@@ -145,7 +161,7 @@ class BoredForm extends React.Component {
                 </div>
                 <button type="button" onClick={this.previousPage} disabled={!this.canGoPrevious()}>Previous</button>
                 <button type="button" onClick={this.nextPage} disabled={!this.canGoNext()}>Next</button>
-                <button type="button" disabled={!this.isValid()}>Submit</button>
+                <button type="button" onClick={this.send} disabled={!this.timeIsValid()}>Submit</button>
             </div>
         );
     }

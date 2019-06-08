@@ -41,7 +41,7 @@ var Activity = function (_React$Component) {
         key: "removeType",
         value: function removeType(type) {
             var newTypes = this.state.types;
-            newTypes.remove(type);
+            newTypes.delete(type);
             this.setState({ types: newTypes }, function () {
                 this.props.updateForm(this.state);
             });

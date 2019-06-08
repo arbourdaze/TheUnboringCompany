@@ -24,7 +24,7 @@ class Activity extends React.Component {
   
   removeType(type) {
       let newTypes = this.state.types;
-      newTypes.remove(type);
+      newTypes.delete(type);
       this.setState({ types: newTypes }, function() {
           this.props.updateForm(this.state);
       });
