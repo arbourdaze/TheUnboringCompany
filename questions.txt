@@ -12,7 +12,6 @@ animation
 horror
 sci-fi
 
-
 do you feel like cooking? ymn
 do you enjoy new things? yn
 
