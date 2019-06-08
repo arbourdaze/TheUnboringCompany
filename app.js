@@ -1,6 +1,6 @@
 'use strict';
 
-//npx babel --watch src --out-dir . --presets react-app/prod 
+//npx babel --watch src --out-dir . --presets react-app/prod
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -158,13 +158,22 @@ var BoredForm = function (_React$Component) {
                 Object.assign(data, this.transformOptions(this.foods, cooking.types));
                 var json = JSON.stringify(data);
                 console.log(json);
-                /*             $.ajax({
-                                type: 'Post',
-                                url: '/code.py',
-                                data: json
-                            }).success(function () {
-                                console.log('success');
-                            }); */
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: 'middleware.py',
+                    data: json,
+                    success: function success() {
+                        if (debug) {
+                            console.log('success');
+                        }
+                    },
+                    error: function error() {
+                        if (debug) {
+                            console.log('error');
+                        }
+                    }
+                });
             }
         }
     }, {
