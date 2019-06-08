@@ -51,11 +51,11 @@ class Mood extends React.Component {
     return (
         <div className="mood">
             <h1>How are you feeling right now?</h1>
-            <Likert name="openness" low="Dumb" high="Smart" score={this.state.openness} updateForm={this.changeOpenness} moodValues={this.props.moodValues} />
-            <Likert name="conscientiousness" low="Lazy" high="Overachieving" score={this.state.conscientiousness} updateForm={this.changeConscientiousness} moodValues={this.props.moodValues} />
-            <Likert name="extroversion" low="Shy" high="Social" score={this.state.extroversion} updateForm={this.changeExtroversion} moodValues={this.props.moodValues} />
-            <Likert name="agreeableness" low="Rude" high="Friendly" score={this.state.agreeableness} updateForm={this.changeAgreeableness} moodValues={this.props.moodValues} />
-            <Likert name="neuroticism" low="Chill" high="Stressed" score={this.state.neuroticism} updateForm = {this.changeNeuroticism} moodValues={this.props.moodValues} />            
+            <Likert name="openness" low="Dumb" high="Smart" score={this.state.openness} updateForm={this.changeOpenness} values={this.props.moodValues} />
+            <Likert name="conscientiousness" low="Lazy" high="Overachieving" score={this.state.conscientiousness} updateForm={this.changeConscientiousness} values={this.props.moodValues} />
+            <Likert name="extroversion" low="Shy" high="Social" score={this.state.extroversion} updateForm={this.changeExtroversion} values={this.props.moodValues} />
+            <Likert name="agreeableness" low="Rude" high="Friendly" score={this.state.agreeableness} updateForm={this.changeAgreeableness} values={this.props.moodValues} />
+            <Likert name="neuroticism" low="Chill" high="Stressed" score={this.state.neuroticism} updateForm = {this.changeNeuroticism} values={this.props.moodValues} />            
         </div>
     );
   }

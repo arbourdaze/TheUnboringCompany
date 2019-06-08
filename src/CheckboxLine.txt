@@ -1,0 +1,6 @@
+'use strict';
+
+class CheckboxLine extends React.Component {
+    constructor(props) {
+    }
+}

@@ -16,6 +16,9 @@ var Likert = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Likert.__proto__ || Object.getPrototypeOf(Likert)).call(this, props));
 
+        _this.state = {
+            choice: null
+        };
         _this.handleChange = _this.handleChange.bind(_this);
         return _this;
     }
@@ -23,14 +26,21 @@ var Likert = function (_React$Component) {
     _createClass(Likert, [{
         key: "handleChange",
         value: function handleChange(event) {
-            this.props.updateForm(event.target.value);
+            this.setState({ choice: event.target.value }, function () {
+                this.props.updateForm(this.state.choice);
+            });
         }
     }, {
         key: "createRow",
         value: function createRow() {
             var row = [];
-            for (var i = 0; i < this.props.moodValues.length; i++) {
-                row.push(React.createElement(Radio, { key: i, name: this.props.name, val: this.props.moodValues[i] }));
+            for (var i = 0; i < this.props.options.length; i++) {
+                row.push(React.createElement(Radio, {
+                    key: this.props.category + "likert-radio" + i,
+                    name: "like-" + this.props.category,
+                    val: this.props.options[i],
+                    ticked: this.props.score == this.props.options[i]
+                }));
             }
             return row;
         }
@@ -38,36 +48,21 @@ var Likert = function (_React$Component) {
         key: "createRowHeader",
         value: function createRowHeader() {
             var header = [];
-            for (var i = 0; i < this.props.moodValues.length; i++) {
+            for (var i = 0; i < this.props.options.length; i++) {
                 header.push(React.createElement(
                     "th",
-                    { key: i },
-                    this.createRowHeaderCell(i)
+                    { key: this.props.category + "likert-header" + i },
+                    this.props.options[i]
                 ));
             }
             return header;
-        }
-    }, {
-        key: "createRowHeaderCell",
-        value: function createRowHeaderCell(i) {
-            if (i == 0) {
-                return this.props.low;
-            } else if (i == Math.floor(this.props.moodValues.length / 2)) {
-                return React.createElement(
-                    "span",
-                    null,
-                    "Neutral"
-                );
-            } else if (i == this.props.moodValues.length - 1) {
-                return this.props.high;
-            }
         }
     }, {
         key: "render",
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "likert", name: this.props.name, onChange: this.handleChange },
+                { onChange: this.handleChange },
                 React.createElement(
                     "table",
                     null,

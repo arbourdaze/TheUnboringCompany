@@ -3,44 +3,48 @@
 class Likert extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+        choice: null
+    }
     this.handleChange = this.handleChange.bind(this);
   }
   
   handleChange(event) {
-      this.props.updateForm(event.target.value);
+      this.setState({ choice: event.target.value }, function () {
+          this.props.updateForm(this.state.choice);
+      });
   }
 
   createRow() {
       let row = [];
-      for (let i = 0; i < this.props.moodValues.length; i++) {
-        row.push(<Radio key={i} name={this.props.name} val={this.props.moodValues[i]} />);  
+      for (let i = 0; i < this.props.options.length; i++) {
+        row.push(
+            <Radio
+                key={this.props.category + "likert-radio" + i}
+                name={"like-" + this.props.category}
+                val={this.props.options[i]}
+                ticked={this.props.score == this.props.options[i]}
+            />
+        );  
       }
       return row;
   }
   
   createRowHeader() {
       let header = [];
-      for (let i = 0; i < this.props.moodValues.length; i++) {
-        header.push(<th key={i}>{this.createRowHeaderCell(i)}</th>);
+      for (let i = 0; i < this.props.options.length; i++) {
+        header.push(
+            <th key={this.props.category + "likert-header" + i}>
+                {this.props.options[i]}
+            </th>
+        );
       }
       return header;
   }
   
-  createRowHeaderCell(i) {
-    if (i == 0) {
-        return this.props.low;
-    }
-    else if (i == Math.floor(this.props.moodValues.length / 2)) {
-        return <span>Neutral</span>;
-    }
-    else if (i == this.props.moodValues.length - 1) {
-        return this.props.high;
-    }
-  }
-
   render() {
     return (
-        <div className="likert" name={this.props.name} onChange={this.handleChange}>
+        <div onChange={this.handleChange}>
             <table>
                 <tbody>
                     <tr>
