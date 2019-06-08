@@ -1,6 +1,6 @@
 'use strict';
 
-//npx babel --watch src --out-dir . --presets react-app/prod 
+//npx babel --watch src --out-dir . --presets react-app/prod
 
 let debug = true;
 
@@ -134,13 +134,22 @@ class BoredForm extends React.Component {
             Object.assign(data, this.transformOptions(this.foods, cooking.types));
             let json = JSON.stringify(data);
             console.log(json);
-/*             $.ajax({
-                type: 'Post',
-                url: '/code.py',
-                data: json
-            }).success(function () {
-                console.log('success');
-            }); */
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: 'middleware.py',
+                data: json,
+                success: function () {
+                    if (debug) {
+                        console.log('success');
+                    }
+                },
+                error: function () {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
         }
     }
     
