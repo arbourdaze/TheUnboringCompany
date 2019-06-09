@@ -20,7 +20,7 @@ class Likert extends React.Component {
       for (let i = 0; i < this.props.options.length; i++) {
         row.push(
             <Radio
-                key={this.props.category + "likert-radio" + i}
+                key={this.props.category + "-likert-radio" + i}
                 name={"like-" + this.props.category}
                 val={this.props.options[i]}
                 ticked={this.props.score == this.props.options[i]}
@@ -34,7 +34,7 @@ class Likert extends React.Component {
       let header = [];
       for (let i = 0; i < this.props.options.length; i++) {
         header.push(
-            <th key={this.props.category + "likert-header" + i}>
+            <th key={this.props.category + "-likert-header" + i}>
                 {this.props.options[i]}
             </th>
         );

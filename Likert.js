@@ -36,7 +36,7 @@ var Likert = function (_React$Component) {
             var row = [];
             for (var i = 0; i < this.props.options.length; i++) {
                 row.push(React.createElement(Radio, {
-                    key: this.props.category + "likert-radio" + i,
+                    key: this.props.category + "-likert-radio" + i,
                     name: "like-" + this.props.category,
                     val: this.props.options[i],
                     ticked: this.props.score == this.props.options[i]
@@ -51,7 +51,7 @@ var Likert = function (_React$Component) {
             for (var i = 0; i < this.props.options.length; i++) {
                 header.push(React.createElement(
                     "th",
-                    { key: this.props.category + "likert-header" + i },
+                    { key: this.props.category + "-likert-header" + i },
                     this.props.options[i]
                 ));
             }

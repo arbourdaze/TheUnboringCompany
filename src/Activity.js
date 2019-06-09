@@ -3,38 +3,35 @@
 class Activity extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-        like: this.props.like,
-        types: this.props.types
-    };
-    this.addType = this.addType.bind(this);
-    this.removeType = this.removeType.bind(this);
+    this.state = this.props.data;
+    this.addChoice = this.addChoice.bind(this);
+    this.removeChoice = this.removeChoice.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.createChecklist = this.createChecklist.bind(this);
     this.changeLike = this.changeLike.bind(this);
   }
 
-  addType(type) {
-      let newTypes = this.state.types;
-      newTypes.add(type);
-      this.setState({ types: newTypes }, function () {
+  addChoice(choice) {
+      let newChoices = this.state.choices;
+      newChoices.add(choice);
+      this.setState({ choices: newChoices }, function () {
           this.props.updateForm(this.state);
       });
   }
   
-  removeType(type) {
-      let newTypes = this.state.types;
-      newTypes.delete(type);
-      this.setState({ types: newTypes }, function() {
+  removeChoice(choice) {
+      let newChoices = this.state.choices;
+      newChoices.delete(choice);
+      this.setState({ choices: newChoices }, function() {
           this.props.updateForm(this.state);
       });
   }
   
   handleChange(event) {
       if (event.target.checked) {
-          this.addType(event.target.value);
+          this.addChoice(event.target.value);
       } else {
-          this.removeType(event.target.value);
+          this.removeChoice(event.target.value);
       }
   }
   
@@ -42,12 +39,12 @@ class Activity extends React.Component {
       let checklist = [];
       let that = this;
       let i = 0;
-      this.props.options.forEach(function(opt) {
-        let line = <input key={that.props.category + "-checkbox" + i} type="checkbox" name={that.props.category} value={opt} checked={that.state.types.has(opt)} onChange={that.handleChange} />;
+      this.state.options.forEach(function(opt) {
+        let line = <input key={that.state.name + "-checkbox" + i} type="checkbox" name={that.state.name} value={opt} checked={that.state.choices.has(opt)} onChange={that.handleChange} />;
         checklist.push(line);
         i++;
-        checklist.push(<label key={that.props.category + "-label" + i}>{opt}</label>)
-        checklist.push(<br key={that.props.category + "-newline" + i}/>);
+        checklist.push(<label key={that.state.name + "-label" + i}>{opt}</label>)
+        checklist.push(<br key={that.state.name + "-newline" + i}/>);
         i++;
       });
       return checklist;
@@ -56,7 +53,7 @@ class Activity extends React.Component {
   changeLike(value) {
       this.setState({ like: value }, function () {
           if (this.state.like == "No") {
-            this.setState({ types: new Set() });
+            this.setState({ choices: new Set() });
           }
           this.props.updateForm(this.state);
       });
@@ -65,12 +62,12 @@ class Activity extends React.Component {
   render() {
     return (
         <div>
-            <h1>Do you like {this.props.category}?</h1>
-            <Likert score={this.state.like} updateForm={this.changeLike} options={["Yes","Maybe","No"]} category={this.props.category} />
+            <h1>Do you like {this.state.name.toLowerCase()}?</h1>
+            <Likert score={this.state.like} updateForm={this.changeLike} options={["Yes","Maybe","No"]} category={this.state.name} />
             <br/>
             {(this.state.like == "Yes" || this.state.like == "Maybe") && 
                 <div>
-                    <h1>What kind of {this.props.category} do you like?</h1>
+                    <h1>What kind of {this.state.name.toLowerCase()} do you like?</h1>
                     {this.createChecklist()}
                 </div>
             }
