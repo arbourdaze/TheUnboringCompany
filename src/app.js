@@ -17,13 +17,51 @@ class BoredForm extends React.Component {
                     hours: 0,
                     minutes: 0
                 },
-                movies: {
-                    like: "No",
-                    types: new Set()
-                },
-                cooking: {
-                    like: "No",
-                    types: new Set()
+                activities: {
+                    movies: {
+                        name: "Movies",
+                        like: "No",
+                        options: [
+                            "Action",
+                            "Crime",
+                            "Fantasy",
+                            "Western",
+                            "Historical",
+                            "Romance",
+                            "Animation",
+                            "Horror",
+                            "Sci-Fi",
+                            "Documentary"
+                            ],
+                        choices: new Set()
+                    },
+                    cooking: {
+                        name: "Cooking",
+                        like: "No",
+                        options: [
+                            "American",
+                            "Barbecue",
+                            "Deli",
+                            "Mexican",
+                            "Chinese",
+                            "Pizza",
+                            "Italian",
+                            "Breakfast",
+                            "Sushi",
+                            "Seafood",
+                            "Indian",
+                            "Korean",
+                            "Japanese",
+                            "Dessert",
+                            "Vietnamese",
+                            "Thai",
+                            "Vegan",
+                            "Vegetarian",
+                            "Gluten-Free",
+                            "Cocktail"
+                            ],
+                        choices: new Set()
+                    }
                 }
             },
             pageIndex: 0
@@ -31,8 +69,7 @@ class BoredForm extends React.Component {
         
         this.reassignData = this.reassignData.bind(this);
         this.changeTime = this.changeTime.bind(this);
-        this.changeMovies = this.changeMovies.bind(this);
-        this.changeCooking = this.changeCooking.bind(this);
+        this.changeActivity = this.changeActivity.bind(this);
         
         this.nextPage = this.nextPage.bind(this);
         this.previousPage = this.previousPage.bind(this);
@@ -40,51 +77,43 @@ class BoredForm extends React.Component {
         this.canGoPrevious = this.canGoPrevious.bind(this);
         
         this.timeIsValid = this.timeIsValid.bind(this);
-        
-        this.ternaryChoiceValues = ["Yes", "Maybe", "No"];
-        this.genres = ["Action", "Crime", "Fantasy", "Western", "Historical", "Romance", "Animation", "Horror", "Sci-Fi", "Documentary"];
-        this.foods = ["American", "Barbecue", "Deli", "Mexican", "Chinese", "Pizza", "Italian", "Breakfast", "Sushi", "Seafood", "Indian", "Korean", "Japanese", "Dessert", "Vietnamese", "Thai", "Vegan", "Vegetarian", "Gluten-Free", "Cocktail"];
-        
-        this.getBoredTime = this.getBoredTime.bind(this);
+
+        this.getTimeDOM = this.getTimeDOM.bind(this);
+        this.getActivityDOM = this.getActivityDOM.bind(this);
         this.getMovies = this.getMovies.bind(this);
         this.getCooking = this.getCooking.bind(this);
         
-        this.pages = [this.getBoredTime, this.getMovies, this.getCooking];
+        this.pages = [this.getTimeDOM, this.getMovies, this.getCooking];
         
-        this.transformOptions = this.transformOptions.bind(this);
+        this.transformActivityData = this.transformActivityData.bind(this);
         this.send = this.send.bind(this);
     }
     
-    getBoredTime() {
+    getTimeDOM() {
         return <BoredTime time={this.state.data.time} updateForm={this.changeTime} />;
     }
     
+    getActivityDOM(activity) {
+        return <Activity key={activity.name + '-activity'} data={activity} updateForm={this.changeActivity} />;
+    }
+    
     getMovies() {
-        let movies = this.state.data.movies;
-        return <Activity key='movies-activity' category='movies' like={movies.like} types={movies.types} options={this.genres} updateForm={this.changeMovies} />;
+        return this.getActivityDOM(this.state.data.activities.movies);
     }
     
     getCooking() {
-        let cooking = this.state.data.cooking;
-        return <Activity key='cooking-activity' category='cooking' like={cooking.like} types={cooking.types} options={this.foods} updateForm={this.changeCooking} />;
+        return this.getActivityDOM(this.state.data.activities.cooking);
     }
     
     changeTime(value) {
-      let newData = Object.assign({}, this.state.data, {time: value});
-      this.setState({data: newData}, function () {
-          if (debug) {
-            console.log(this.state);
-          }
-      });
-    }
-
-    changeMovies(value) {
-        let newData = Object.assign({}, this.state.data, {movies: value});
+        let newData = Object.assign({}, this.state.data, {time: value});
         this.reassignData(newData);
     }
-    
-    changeCooking(value) {
-        let newData = Object.assign({}, this.state.data, {cooking: value});
+
+    changeActivity(activity) {
+        let newActivities = this.state.data.activities;
+        newActivities[activity.name.toLowerCase()] = activity;
+        let newData = Object.assign({}, this.state.data, {activities: newActivities});
         this.reassignData(newData);
     }
     
@@ -125,13 +154,16 @@ class BoredForm extends React.Component {
     
     send() {
         if (this.timeIsValid()) {
-            let data = { Hours: this.state.data.time.hours, Minutes: this.state.data.time.minutes };
-            let movies = this.state.data.movies;
-            let cooking = this.state.data.cooking;
-            data.LikeMovies = movies.like;
-            data.LikeCooking = cooking.like;
-            Object.assign(data, this.transformOptions(this.genres, movies.types));
-            Object.assign(data, this.transformOptions(this.foods, cooking.types));
+            let data = {
+                Time: {
+                    Hours: this.state.data.time.hours,
+                    Minutes: this.state.data.time.minutes
+                },
+                Topics: ["Movies", "Cooking"],
+            };
+            
+            Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
+            Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
             let json = JSON.stringify(data);
             console.log(json);
             $.ajax({
@@ -153,13 +185,22 @@ class BoredForm extends React.Component {
         }
     }
     
-    transformOptions(options, choices) {
-        let newOptions = {};
+    transformActivityData(activity) {
+        let data = {};
+        let liked = [];
+        let disliked = [];
+        data[activity.name] = activity.like;
         let that = this;
-        options.forEach(function(opt) {
-            newOptions[opt] = choices.has(opt);
+        activity.options.forEach(function(opt) {
+            if (activity.choices.has(opt)) {
+                liked.push(opt);
+            } else {
+                disliked.push(opt);
+            }
         });
-        return newOptions;
+        data['Liked' + activity.name] = liked;
+        data['Disliked' + activity.name] = disliked;
+        return data;
     }
     
     render() {
