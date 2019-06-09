@@ -1,0 +1,90 @@
+{
+"Hours":"1",
+"Minutes":"1",
+"LikeMovies":"Yes",
+	"Action":true,
+	"Crime":false,
+	"Fantasy":false,
+	"Western":false,
+	"Historical":false,
+	"Romance":false,
+	"Animation":false,
+	"Horror":false,
+	"Sci-Fi":false,
+	"Documentary":false,
+	"American":false,
+"LikeCooking":"Maybe",
+	"Barbecue":false,
+	"Deli":false,
+	"Mexican":true,
+	"Chinese":false,
+	"Pizza":false,
+	"Italian":false,
+	"Breakfast":false,
+	"Sushi":false,
+	"Seafood":false,
+	"Indian":false,
+	"Korean":false,
+	"Japanese":false,
+	"Dessert":false,
+	"Vietnamese":false,
+	"Thai":false,
+	"Vegan":false,
+	"Vegetarian":false,
+	"Gluten-Free":false,
+	"Cocktail":false
+} app.js:160:25
+
+{
+	"Time":{
+		"Hours": "1",
+		"Minutes": "1"
+	},
+
+	"Topics":[
+		"Movies", "Cooking"
+	],
+
+	"Movies":"Yes",
+	"LikedMovieGenres":[
+		"Action"
+	],
+	"DislikedMovieGenres":[
+		"Crime",
+		"Fantasy",
+		"Western",
+		"Historical",
+		"Romance",
+		"Animation",
+		"Horror",
+		"Sci-Fi",
+		"Documentary",
+		"American"
+	],
+
+	"Cooking":"Maybe",
+	"LikedFoods":[
+		"Mexican"
+	],
+	"DislikedFoods":[
+		"Barbecue",
+		"Deli",
+		"Chinese",
+		"Pizza",
+		"Italian",
+		"Breakfast",
+		"Sushi",
+		"Seafood",
+		"Indian",
+		"Korean",
+		"Japanese",
+		"Dessert",
+		"Vietnamese",
+		"Thai",
+		"Vegan",
+		"Vegetarian",
+		"Gluten-Free",
+		"Cocktail"
+	]
+
+}
