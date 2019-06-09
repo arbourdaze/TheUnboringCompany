@@ -1,5 +1,6 @@
 #Middleware for the AI bot
 from ibm_watson import DiscoveryV1
+import json
 
 version = ""
 apikey = ""
@@ -12,13 +13,22 @@ def middleware(responses, mood):
 
     discovery = DiscoveryV1(version={version},iam_apikey={apikey},url={url})
 
-    #Format into keywords
+    #Load json object into python object
+    data = json.loads(responses)
 
+    
+    results = [] #Object containing the json objects of all results returned
+    #Parse into keywords and make query
+    for topic in data["Topics"]:
+        keywords = []
+        if data[topic] is "No":
+            continue
 
-    for each topic:
-        if response is not no:
-            results = makeQuery(keywords)
-            #save top 3
+        for catagory in data[topic + "Good"]: #Temporary, based on what rebecca decides to do
+            keywords.append(catagory)
+
+        result = makeQuery(keywords)
+        results.extend(result)
 
     #Convert json objects into something not terrible for reading
 
