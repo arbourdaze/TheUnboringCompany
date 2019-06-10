@@ -16,12 +16,9 @@ var Activity = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Activity.__proto__ || Object.getPrototypeOf(Activity)).call(this, props));
 
-        _this.state = {
-            like: _this.props.like,
-            types: _this.props.types
-        };
-        _this.addType = _this.addType.bind(_this);
-        _this.removeType = _this.removeType.bind(_this);
+        _this.state = _this.props.data;
+        _this.addChoice = _this.addChoice.bind(_this);
+        _this.removeChoice = _this.removeChoice.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
         _this.createChecklist = _this.createChecklist.bind(_this);
         _this.changeLike = _this.changeLike.bind(_this);
@@ -29,20 +26,20 @@ var Activity = function (_React$Component) {
     }
 
     _createClass(Activity, [{
-        key: "addType",
-        value: function addType(type) {
-            var newTypes = this.state.types;
-            newTypes.add(type);
-            this.setState({ types: newTypes }, function () {
+        key: "addChoice",
+        value: function addChoice(choice) {
+            var newChoices = this.state.choices;
+            newChoices.add(choice);
+            this.setState({ choices: newChoices }, function () {
                 this.props.updateForm(this.state);
             });
         }
     }, {
-        key: "removeType",
-        value: function removeType(type) {
-            var newTypes = this.state.types;
-            newTypes.delete(type);
-            this.setState({ types: newTypes }, function () {
+        key: "removeChoice",
+        value: function removeChoice(choice) {
+            var newChoices = this.state.choices;
+            newChoices.delete(choice);
+            this.setState({ choices: newChoices }, function () {
                 this.props.updateForm(this.state);
             });
         }
@@ -50,9 +47,9 @@ var Activity = function (_React$Component) {
         key: "handleChange",
         value: function handleChange(event) {
             if (event.target.checked) {
-                this.addType(event.target.value);
+                this.addChoice(event.target.value);
             } else {
-                this.removeType(event.target.value);
+                this.removeChoice(event.target.value);
             }
         }
     }, {
@@ -61,16 +58,16 @@ var Activity = function (_React$Component) {
             var checklist = [];
             var that = this;
             var i = 0;
-            this.props.options.forEach(function (opt) {
-                var line = React.createElement("input", { key: that.props.category + "-checkbox" + i, type: "checkbox", name: that.props.category, value: opt, checked: that.state.types.has(opt), onChange: that.handleChange });
+            this.state.options.forEach(function (opt) {
+                var line = React.createElement("input", { key: that.state.name + "-checkbox" + i, type: "checkbox", name: that.state.name, value: opt, checked: that.state.choices.has(opt), onChange: that.handleChange });
                 checklist.push(line);
                 i++;
                 checklist.push(React.createElement(
                     "label",
-                    { key: that.props.category + "-label" + i },
+                    { key: that.state.name + "-label" + i },
                     opt
                 ));
-                checklist.push(React.createElement("br", { key: that.props.category + "-newline" + i }));
+                checklist.push(React.createElement("br", { key: that.state.name + "-newline" + i }));
                 i++;
             });
             return checklist;
@@ -80,7 +77,7 @@ var Activity = function (_React$Component) {
         value: function changeLike(value) {
             this.setState({ like: value }, function () {
                 if (this.state.like == "No") {
-                    this.setState({ types: new Set() });
+                    this.setState({ choices: new Set() });
                 }
                 this.props.updateForm(this.state);
             });
@@ -95,10 +92,10 @@ var Activity = function (_React$Component) {
                     "h1",
                     null,
                     "Do you like ",
-                    this.props.category,
+                    this.state.name.toLowerCase(),
                     "?"
                 ),
-                React.createElement(Likert, { score: this.state.like, updateForm: this.changeLike, options: ["Yes", "Maybe", "No"], category: this.props.category }),
+                React.createElement(Likert, { score: this.state.like, updateForm: this.changeLike, options: ["Yes", "Maybe", "No"], category: this.state.name }),
                 React.createElement("br", null),
                 (this.state.like == "Yes" || this.state.like == "Maybe") && React.createElement(
                     "div",
@@ -107,7 +104,7 @@ var Activity = function (_React$Component) {
                         "h1",
                         null,
                         "What kind of ",
-                        this.props.category,
+                        this.state.name.toLowerCase(),
                         " do you like?"
                     ),
                     this.createChecklist()
