@@ -6,10 +6,10 @@ import config as cf
 
 
 version = "'2018-08-01'"
-apikey = "gAmMFF4c5rrU5pPXMgIQhXwJ3HeKGgqWYv1WhzX3yJm7"
+apikey = ""
 url = "https://gateway.watsonplatform.net/discovery/api"
-env_id = "33c919eb-2486-412f-9936-13c492f0aa6b"
-col_id = "b1e74dd2-867b-41c9-8565-adc76d396f93"
+env_id = ""
+col_id = ""
 
 
 def middleware(responses, mood):
