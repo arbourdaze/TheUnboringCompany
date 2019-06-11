@@ -7,8 +7,6 @@ install:
   -pip install ibm_watson
 install:
   -pip install data_processing
-install:
-  -pip install json
 script:
   -python Middleware.py
 language: node_js
