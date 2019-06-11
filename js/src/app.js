@@ -6,7 +6,6 @@ let debug = true;
 
 let root = document.querySelector('#root');
 
-
 class BoredForm extends React.Component {
     
     constructor(props) {
@@ -64,7 +63,10 @@ class BoredForm extends React.Component {
                     }
                 }
             },
-            pageIndex: 0
+            pageIndex: 0,
+            submitted: false,
+            results: [],
+            test: 1
         };
         
         this.reassignData = this.reassignData.bind(this);
@@ -86,6 +88,8 @@ class BoredForm extends React.Component {
         this.pages = [this.getTimeDOM, this.getMovies, this.getCooking];
         
         this.transformActivityData = this.transformActivityData.bind(this);
+        
+        this.goBack = this.goBack.bind(this);
         this.send = this.send.bind(this);
     }
     
@@ -166,6 +170,7 @@ class BoredForm extends React.Component {
             Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
             let json = JSON.stringify(data);
             console.log(json);
+            var that = this;
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
@@ -173,7 +178,7 @@ class BoredForm extends React.Component {
                 data: json,
                 success: function () {
                     if (debug) {
-                        console.log('success');
+                        that.setState({submitted: true});
                     }
                 },
                 error: function () {
@@ -203,7 +208,18 @@ class BoredForm extends React.Component {
         return data;
     }
     
+    goBack() {
+        this.setState({results: []});
+        this.setState({submitted: false});
+        this.setState({pageIndex: 0});
+    }
+    
     render() {
+        if (this.state.submitted) {
+            return (
+                <Results goBack={this.goBack} />
+            );
+        }
         return (
             <div className="form">
                 <div className="page">
