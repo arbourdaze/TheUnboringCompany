@@ -8,7 +8,7 @@ install:
 install:
   -pip install data_processing
 install:
-  -pip install JSON
+  -pip install json
 script:
   -python Middleware.py
 language: node_js
