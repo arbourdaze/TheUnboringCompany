@@ -5,8 +5,6 @@ python:
 cache: pip
 install:
   - pip install ibm_watson
-install:
-  - pip install --upgrade pip
 script:
   - python Middleware.py
 language: node_js
