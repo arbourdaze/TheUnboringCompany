@@ -45,8 +45,7 @@ var BoredForm = function (_React$Component) {
             },
             pageIndex: 0,
             submitted: false,
-            results: [],
-            test: 1
+            results: []
         };
 
         _this.reassignData = _this.reassignData.bind(_this);
@@ -151,6 +150,11 @@ var BoredForm = function (_React$Component) {
         key: 'send',
         value: function send() {
             if (this.timeIsValid()) {
+                var successCallback = function successCallback(res, that) {
+                    that.setState({ submitted: true });
+                    that.setState({ results: res });
+                };
+
                 var data = {
                     Time: {
                         Hours: this.state.data.time.hours,
@@ -164,15 +168,14 @@ var BoredForm = function (_React$Component) {
                 var json = JSON.stringify(data);
                 console.log(json);
                 var that = this;
+
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json',
                     url: 'middleware.py',
                     data: json,
-                    success: function success() {
-                        if (debug) {
-                            that.setState({ submitted: true });
-                        }
+                    success: function success(res) {
+                        successCallback(res, that);
                     },
                     error: function error() {
                         if (debug) {
@@ -212,7 +215,7 @@ var BoredForm = function (_React$Component) {
         key: 'render',
         value: function render() {
             if (this.state.submitted) {
-                return React.createElement(Results, { goBack: this.goBack });
+                return React.createElement(Results, { goBack: this.goBack, results: this.state.results });
             }
             return React.createElement(
                 'div',

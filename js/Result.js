@@ -8,59 +8,34 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Results = function (_React$Component) {
-    _inherits(Results, _React$Component);
+var Result = function (_React$Component) {
+    _inherits(Result, _React$Component);
 
-    function Results(props) {
-        _classCallCheck(this, Results);
+    function Result(props) {
+        _classCallCheck(this, Result);
 
-        var _this = _possibleConstructorReturn(this, (Results.__proto__ || Object.getPrototypeOf(Results)).call(this, props));
-
-        _this.handleBackButton = _this.handleBackButton.bind(_this);
-        _this.createRows = _this.createRows.bind(_this);
-        return _this;
+        return _possibleConstructorReturn(this, (Result.__proto__ || Object.getPrototypeOf(Result)).call(this, props));
     }
 
-    _createClass(Results, [{
-        key: 'handleBackButton',
-        value: function handleBackButton() {
-            this.props.goBack();
-        }
-    }, {
-        key: 'createRows',
-        value: function createRows() {
-            var results = this.props.results;
-            var rows = [];
-            var i = 0;
-            results.forEach(function (res) {
-                rows.push(React.createElement(Result, { key: 'result-' + i, name: res.Name, description: res.Description }));
-                i++;
-            });
-            return rows;
-        }
-    }, {
+    _createClass(Result, [{
         key: 'render',
         value: function render() {
             return React.createElement(
-                'div',
+                'tr',
                 null,
                 React.createElement(
-                    'table',
+                    'td',
                     null,
-                    React.createElement(
-                        'tbody',
-                        null,
-                        this.createRows()
-                    )
+                    this.props.name
                 ),
                 React.createElement(
-                    'button',
-                    { type: 'button', onClick: this.handleBackButton },
-                    'No, try again'
+                    'td',
+                    null,
+                    this.props.description
                 )
             );
         }
     }]);
 
-    return Results;
+    return Result;
 }(React.Component);
