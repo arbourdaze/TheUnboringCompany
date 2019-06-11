@@ -41,22 +41,16 @@ def middleware(responses, mood):
 def makeQuery(keywords, discovery, topic):
     result = None
 
-    filterParam = "extracted_metadata.filename:\"" + topic + "\""
+    # filterParam = "extracted_metadata.filename:\"" + topic + "\""
 
-"""
-    filter = excludes docs that don't mention filter
-    query = the query
-    natural_language_query = the query but using natural language processing
-    passages = T/F returns most relevant passages from results
-    aggregation = combines query search with filters
-    count = # of results to return
-"""
+    # filter = excludes docs that don't mention filter
+    # query = the query
+    # natural_language_query = the query but using natural language processing
+    # passages = T/F returns most relevant passages from results
+    # aggregation = combines query search with filters
+    # count = # of results to return
 
-
-    result = discovery.query(environment_id = sec.env_id, collection_id = sec.col_id, filter = filterParam,
-        query = ' '.join(keywords), count = cf.NUM_RESULTS)
-
-
+    result = discovery.query(environment_id = sec.env_id, collection_id = sec.col_id, filter = filterParam, query = ' '.join(keywords), count = cf.NUM_RESULTS)
     return result
 
 
