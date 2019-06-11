@@ -45,7 +45,8 @@ var BoredForm = function (_React$Component) {
             },
             pageIndex: 0,
             submitted: false,
-            results: []
+            results: [],
+            test: 1
         };
 
         _this.reassignData = _this.reassignData.bind(_this);

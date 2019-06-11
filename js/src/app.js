@@ -6,7 +6,6 @@ let debug = true;
 
 let root = document.querySelector('#root');
 
-
 class BoredForm extends React.Component {
     
     constructor(props) {
@@ -66,7 +65,8 @@ class BoredForm extends React.Component {
             },
             pageIndex: 0,
             submitted: false,
-            results: []
+            results: [],
+            test: 1
         };
         
         this.reassignData = this.reassignData.bind(this);
