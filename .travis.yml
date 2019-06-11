@@ -4,6 +4,8 @@ python:
   - "3.7"
 cache: pip
 install:
+  - pip install --upgrade pip
+install:
   - pip install ibm_watson
 script:
   - python Middleware.py
