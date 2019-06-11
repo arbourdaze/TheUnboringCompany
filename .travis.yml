@@ -5,7 +5,9 @@ python:
 cache: pip
 install:
   -pip install ibm_watson
+install:
   -pip install data_processing
+install:
   -pip install JSON
 script:
   -python Middleware.py
