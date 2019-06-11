@@ -181,6 +181,7 @@ class BoredForm extends React.Component {
                 contentType: 'application/json',
                 url: 'middleware.py',
                 data: json,
+                dataType: 'json',
                 success: function (res) {
                     successCallback(res, that);
                 },
