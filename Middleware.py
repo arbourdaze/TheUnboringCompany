@@ -25,14 +25,15 @@ def middleware(responses, mood):
         for catagory in data["Liked" + topic]: #Temporary, based on what rebecca decides to do
             keywords.append(catagory)
 
-        result = makeQuery(keywords, discovery, topic)
+        feedback = makeQuery(keywords, discovery, topic)
 
-        jobj = result.json()
+        jobj = feedback.result;
 
         #Filter by time
+        correctList = []
         for element in jobj["results"]:
-            if int(element["Runtime"]) > timeLimit:
-                jobj["results"].remove(element)
+            if int(element["Runtime"]) < timeLimit:
+                correctList.append(element)
         results.append(jobj)
 
     #Convert json objects into something not terrible for reading
@@ -77,6 +78,7 @@ def get_minutes(data):
 def get_response(responses):
 
     activities = []
+
     for response in responses:
         for result in response["results"]:
             if "Movie" in result["extracted_metadata"]["filename"]:
