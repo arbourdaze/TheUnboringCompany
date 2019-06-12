@@ -36,9 +36,9 @@ def middleware(responses, mood):
             if runtime in element
                 if int(element["Runtime"]) < timeLimit
                     correctList.append(element)
-            elif preptime in element
-                if int(element["Preptime"]) < timeLimit
-                    correctList.append(element)
+            #elif preptime in element
+                #if int(element["Preptime"]) < timeLimit
+                    #correctList.append(element)
 
 
     #Convert json objects into something not terrible for reading
