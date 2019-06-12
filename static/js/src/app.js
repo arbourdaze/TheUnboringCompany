@@ -179,11 +179,11 @@ class BoredForm extends React.Component {
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
-                url: 'middleware.py',
+                url: '/search',
                 data: json,
                 dataType: 'json',
                 success: function (res) {
-                    successCallback(res, that);
+                    successCallback(res.Data, that);
                 },
                 error: function () {
                     if (debug) {

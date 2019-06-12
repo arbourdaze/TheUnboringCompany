@@ -172,11 +172,11 @@ var BoredForm = function (_React$Component) {
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json',
-                    url: 'middleware.py',
+                    url: '/search',
                     data: json,
                     dataType: 'json',
                     success: function success(res) {
-                        successCallback(res, that);
+                        successCallback(res.Data, that);
                     },
                     error: function error() {
                         if (debug) {
