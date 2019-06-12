@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import Middleware as mw
+import json
 
 app = Flask(__name__)
 
@@ -10,7 +11,7 @@ def index():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     content = request.get_json()
-    responses = mw.middleware(content, None)
+    responses = mw.middleware(json.dumps(content), None)
     return responses
     #return '{"Data" : [ { "Name": "Hello", "Description": "World" } ]}'
     

@@ -60,7 +60,7 @@ def get_minutes(data):
     hours = time["hours"]
     minutes = time["minutes"]
 
-    totalTime = (int(hours) * 60) + int(minutes)
+    totalTime = (int(hours) * 60) + int(mintues)
 
     return totalTime
 

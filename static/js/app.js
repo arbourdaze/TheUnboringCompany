@@ -157,8 +157,8 @@ var BoredForm = function (_React$Component) {
 
                 var data = {
                     Time: {
-                        Hours: this.state.data.time.hours,
-                        Minutes: this.state.data.time.minutes
+                        hours: this.state.data.time.hours,
+                        minutes: this.state.data.time.minutes
                     },
                     Topics: ["Movies", "Cooking"]
                 };
