@@ -157,8 +157,8 @@ var BoredForm = function (_React$Component) {
 
                 var data = {
                     Time: {
-                        Hours: this.state.data.time.hours,
-                        Minutes: this.state.data.time.minutes
+                        hours: this.state.data.time.hours,
+                        minutes: this.state.data.time.minutes
                     },
                     Topics: ["Movies", "Cooking"]
                 };
@@ -172,7 +172,7 @@ var BoredForm = function (_React$Component) {
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json',
-                    url: 'middleware.py',
+                    url: '/search',
                     data: json,
                     dataType: 'json',
                     success: function success(res) {

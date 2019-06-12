@@ -159,8 +159,8 @@ class BoredForm extends React.Component {
         if (this.timeIsValid()) {
             let data = {
                 Time: {
-                    Hours: this.state.data.time.hours,
-                    Minutes: this.state.data.time.minutes
+                    hours: this.state.data.time.hours,
+                    minutes: this.state.data.time.minutes
                 },
                 Topics: ["Movies", "Cooking"],
             };
@@ -179,7 +179,7 @@ class BoredForm extends React.Component {
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
-                url: 'middleware.py',
+                url: '/search',
                 data: json,
                 dataType: 'json',
                 success: function (res) {
