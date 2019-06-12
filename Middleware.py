@@ -38,11 +38,20 @@ def middleware(responses, mood):
                 correctList.append(element)
         results.append(jobj)
         """
-        results.append(jobj)
+        correctList = []
+        runtime = "Runtime"
+        preptime = "Preptime"
+        for element in jobj["results"]:
+            if runtime in element.keys()
+                if int(element["Runtime"]) < timeLimit
+                    correctList.append(element)
+            elif preptime in element.keys()
+                if int(element["Preptime"]) < timeLimit
+                    correctList.append(element)
 
 
     #Convert json objects into something not terrible for reading
-    return get_response(results)
+    return get_response(correctList)
 
 def makeQuery(keywords, discovery, topic):
     result = None
