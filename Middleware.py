@@ -2,12 +2,11 @@
 from ibm_watson import DiscoveryV1
 import json
 import config as cf
-import secrets as sec
 
 
 def middleware(responses, mood):
 
-    discovery = DiscoveryV1(version=sec.version,iam_apikey=sec.apikey,url=sec.url)
+    discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
     #Load json object into python object
     data = json.loads(responses)
@@ -38,7 +37,7 @@ def makeQuery(keywords, discovery, topic):
 
     filterParam = "extracted_metadata.filename:\"" + topic + "\""
 
-    result = discovery.query(environment_id = sec.env_id, collection_id = sec.col_id, filter = filterParam,
+    result = discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = filterParam,
         query = ' '.join(keywords), count = cf.NUM_RESULTS)
 
     return result
