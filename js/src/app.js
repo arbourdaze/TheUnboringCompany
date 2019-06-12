@@ -6,7 +6,6 @@ let debug = true;
 
 let root = document.querySelector('#root');
 
-
 class BoredForm extends React.Component {
     
     constructor(props) {
@@ -64,7 +63,9 @@ class BoredForm extends React.Component {
                     }
                 }
             },
-            pageIndex: 0
+            pageIndex: 0,
+            submitted: false,
+            results: []
         };
         
         this.reassignData = this.reassignData.bind(this);
@@ -86,6 +87,8 @@ class BoredForm extends React.Component {
         this.pages = [this.getTimeDOM, this.getMovies, this.getCooking];
         
         this.transformActivityData = this.transformActivityData.bind(this);
+        
+        this.goBack = this.goBack.bind(this);
         this.send = this.send.bind(this);
     }
     
@@ -162,19 +165,25 @@ class BoredForm extends React.Component {
                 Topics: ["Movies", "Cooking"],
             };
             
+            function successCallback(res, that) {
+                that.setState({submitted: true});
+                that.setState({results: res});
+            }
+            
             Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
             Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
             let json = JSON.stringify(data);
             console.log(json);
+            let that = this;
+
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
                 url: 'middleware.py',
                 data: json,
-                success: function () {
-                    if (debug) {
-                        console.log('success');
-                    }
+                dataType: 'json',
+                success: function (res) {
+                    successCallback(res, that);
                 },
                 error: function () {
                     if (debug) {
@@ -203,7 +212,18 @@ class BoredForm extends React.Component {
         return data;
     }
     
+    goBack() {
+        this.setState({results: []});
+        this.setState({submitted: false});
+        this.setState({pageIndex: 0});
+    }
+    
     render() {
+        if (this.state.submitted) {
+            return (
+                <Results goBack={this.goBack} results={this.state.results} />
+            );
+        }
         return (
             <div className="form">
                 <div className="page">

@@ -43,7 +43,9 @@ var BoredForm = function (_React$Component) {
                     }
                 }
             },
-            pageIndex: 0
+            pageIndex: 0,
+            submitted: false,
+            results: []
         };
 
         _this.reassignData = _this.reassignData.bind(_this);
@@ -65,6 +67,8 @@ var BoredForm = function (_React$Component) {
         _this.pages = [_this.getTimeDOM, _this.getMovies, _this.getCooking];
 
         _this.transformActivityData = _this.transformActivityData.bind(_this);
+
+        _this.goBack = _this.goBack.bind(_this);
         _this.send = _this.send.bind(_this);
         return _this;
     }
@@ -146,6 +150,11 @@ var BoredForm = function (_React$Component) {
         key: 'send',
         value: function send() {
             if (this.timeIsValid()) {
+                var successCallback = function successCallback(res, that) {
+                    that.setState({ submitted: true });
+                    that.setState({ results: res });
+                };
+
                 var data = {
                     Time: {
                         Hours: this.state.data.time.hours,
@@ -158,15 +167,16 @@ var BoredForm = function (_React$Component) {
                 Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
                 var json = JSON.stringify(data);
                 console.log(json);
+                var that = this;
+
                 $.ajax({
                     type: 'POST',
                     contentType: 'application/json',
                     url: 'middleware.py',
                     data: json,
-                    success: function success() {
-                        if (debug) {
-                            console.log('success');
-                        }
+                    dataType: 'json',
+                    success: function success(res) {
+                        successCallback(res, that);
                     },
                     error: function error() {
                         if (debug) {
@@ -196,8 +206,18 @@ var BoredForm = function (_React$Component) {
             return data;
         }
     }, {
+        key: 'goBack',
+        value: function goBack() {
+            this.setState({ results: [] });
+            this.setState({ submitted: false });
+            this.setState({ pageIndex: 0 });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            if (this.state.submitted) {
+                return React.createElement(Results, { goBack: this.goBack, results: this.state.results });
+            }
             return React.createElement(
                 'div',
                 { className: 'form' },
