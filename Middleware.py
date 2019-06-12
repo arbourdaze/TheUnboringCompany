@@ -98,10 +98,10 @@ def get_response(responses):
             activity = json.dumps(activity)
             activity = json.loads(activity)
             activities.append(activity)
-    return activities
+    return json.dumps(activities)
 
 
-def time_filter(res, timeLimit):
+def time_filter(res, timeLimit, correctList):
     for result in res:
         if 'Runtime' in result.keys():
             if int(result["Runtime"]) < timeLimit:
