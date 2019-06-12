@@ -183,7 +183,7 @@ class BoredForm extends React.Component {
                 data: json,
                 dataType: 'json',
                 success: function (res) {
-                    successCallback(res.Data, that);
+                    successCallback(res, that);
                 },
                 error: function () {
                     if (debug) {

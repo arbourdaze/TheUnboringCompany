@@ -1,8 +1,10 @@
+import secrets as sec
+
 DATA_PATH = "test.json"
 NUM_RESULTS = 3
-version = ""
-apikey = ""
-url = ""
-env_id = ""
-col_id = ""
+version = sec.version
+apikey = sec.apikey
+url = sec.url
+env_id = sec.env_id
+col_id = sec.col_id
 

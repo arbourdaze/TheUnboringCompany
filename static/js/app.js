@@ -176,7 +176,7 @@ var BoredForm = function (_React$Component) {
                     data: json,
                     dataType: 'json',
                     success: function success(res) {
-                        successCallback(res.Data, that);
+                        successCallback(res, that);
                     },
                     error: function error() {
                         if (debug) {
