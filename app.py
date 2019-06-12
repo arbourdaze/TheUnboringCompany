@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import middleware as mw
+import Middleware as mw
 
 app = Flask(__name__)
 
@@ -9,10 +9,10 @@ def index():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    # content = request.get_json()
-    # responses = mw.middleware(content, None)
-    # return responses
-    return '{"Data" : [ { "Name": "Hello", "Description": "World" } ]}'
+    content = request.get_json()
+    responses = mw.middleware(content, None)
+    return responses
+    #return '{"Data" : [ { "Name": "Hello", "Description": "World" } ]}'
     
 if __name__ == '__main__':
     app.run(debug = True)
