@@ -2,7 +2,7 @@
 from ibm_watson import DiscoveryV1
 import json
 import config as cf
-
+import operator
 
 def middleware(responses, mood):
 
@@ -26,11 +26,14 @@ def middleware(responses, mood):
 
         response = makeQuery(keywords, discovery, topic)
         res = response.result["results"];
-
+        
         time_filter(res, timeLimit, correctList)
+
+    correctList = sorted(correctList, key=lambda k: k['result_metadata']['score'], reverse = True)
 
     #Convert json objects into something not terrible for reading
     return get_response(correctList)
+
 
 def makeQuery(keywords, discovery, topic):
     result = None
@@ -100,7 +103,7 @@ def get_response(responses):
             activity = json.dumps(activity)
             activity = json.loads(activity)
             activities.append(activity)
-    print(activities)
+
     return json.dumps(activities)
 
 
