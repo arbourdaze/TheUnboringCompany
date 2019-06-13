@@ -34,12 +34,14 @@ def middleware(responses, mood):
 
 def makeQuery(keywords, discovery, topic):
     result = None
+    if topic == "Cooking":
+        topic = "Recipe"
 
     filterParam = "extracted_metadata.filename:\"" + topic + "\""
 
     result = discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = filterParam,
         query = ' '.join(keywords), count = cf.NUM_RESULTS)
-
+    
     return result
 
 """
@@ -84,9 +86,9 @@ def get_response(responses):
             activities.append(activity)
         else:
             recipe = result["name"]
-            preptime = int(result["preptime"]) + int(result["cooktime"]) + int(result["waittime"])
-            servings = result["servings"]
-            calories = result["calories"]
+            preptime = str(int(result["preptime"]) + int(result["cooktime"]) + int(result["waittime"]))
+            servings = str(result["servings"])
+            calories = str(result["calories"])
             ingredients = ', '.join(result["ingredients"])
             instructions = result["instructions"]
 
@@ -98,6 +100,7 @@ def get_response(responses):
             activity = json.dumps(activity)
             activity = json.loads(activity)
             activities.append(activity)
+    print(activities)
     return json.dumps(activities)
 
 
