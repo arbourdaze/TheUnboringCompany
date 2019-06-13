@@ -27,7 +27,7 @@ def middleware(responses, mood):
 
         result = makeQuery(keywords, discovery, topic)
 
-        jobj = result.json()
+        jobj = json.loads(str(result))
 
         #Filter by time
         for element in jobj["results"]:
