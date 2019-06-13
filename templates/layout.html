@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    
+    <body>
+    
+        <div id="root">
+        </div>
+        
+        <script type="text/javascript" src="{{url_for('static', filename='jquery-3.4.1.min.js')}}"></script>
+        
+        <!-- Load React. -->
+        <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+        <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+        
+        <!-- Load our React component. -->
+        <script src="{{url_for('static', filename='js/BoredTime.js')}}"></script>
+        <script src="{{url_for('static', filename='js/Radio.js')}}"></script>
+        <script src="{{url_for('static', filename='js/Likert.js')}}"></script>
+        <script src="{{url_for('static', filename='js/Activity.js')}}"></script>
+        <script src="{{url_for('static', filename='js/Result.js')}}"></script>
+        <script src="{{url_for('static', filename='js/Results.js')}}"></script>
+        <script src="{{url_for('static', filename='js/app.js')}}"></script>
+        
+    </body>
+    
+</html>

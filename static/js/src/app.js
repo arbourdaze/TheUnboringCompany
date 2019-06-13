@@ -65,8 +65,7 @@ class BoredForm extends React.Component {
             },
             pageIndex: 0,
             submitted: false,
-            results: [],
-            test: 1
+            results: []
         };
         
         this.reassignData = this.reassignData.bind(this);
@@ -160,26 +159,31 @@ class BoredForm extends React.Component {
         if (this.timeIsValid()) {
             let data = {
                 Time: {
-                    Hours: this.state.data.time.hours,
-                    Minutes: this.state.data.time.minutes
+                    hours: this.state.data.time.hours,
+                    minutes: this.state.data.time.minutes
                 },
                 Topics: ["Movies", "Cooking"],
             };
+            
+            function successCallback(res, that) {
+                that.setState({submitted: true});
+                that.setState({results: res});
+            }
             
             Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
             Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
             let json = JSON.stringify(data);
             console.log(json);
-            var that = this;
+            let that = this;
+
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
-                url: 'middleware.py',
+                url: '/search',
                 data: json,
-                success: function () {
-                    if (debug) {
-                        that.setState({submitted: true});
-                    }
+                dataType: 'json',
+                success: function (res) {
+                    successCallback(res, that);
                 },
                 error: function () {
                     if (debug) {
@@ -217,7 +221,7 @@ class BoredForm extends React.Component {
     render() {
         if (this.state.submitted) {
             return (
-                <Results goBack={this.goBack} />
+                <Results goBack={this.goBack} results={this.state.results} />
             );
         }
         return (
