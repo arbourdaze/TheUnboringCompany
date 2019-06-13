@@ -2,7 +2,6 @@
 from ibm_watson import DiscoveryV1
 import json
 import config as cf
-import secrets
 
 
 def middleware(responses, mood):
@@ -29,7 +28,6 @@ def middleware(responses, mood):
         res = response.result["results"];
 
         time_filter(res, timeLimit, correctList)
-
 
     #Convert json objects into something not terrible for reading
     return get_response(correctList)
