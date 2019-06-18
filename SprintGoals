@@ -9,4 +9,4 @@ Second Sprint Goals:
   Middleware: Add machine learning to manipulate results based on user profile and past searches, keep list of past choices & learn from past choices
   Back End: add more choices (short 10 min options, indoor options), standardize document format
 
-  Everyone: Add junit & system tests as we go along. No more pusing to Master
+  Everyone: Add junit & system tests as we go along. No more pushing to Master
