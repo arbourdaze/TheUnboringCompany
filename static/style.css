@@ -1,3 +1,23 @@
+div.unboring-button {
+    background-color:lightgray;
+    float:left;
+    margin:0.5em;
+    padding:1em;
+}
+
+div.unboring-button.disabled {
+    color:gray;
+}
+
+div.unboring-button:hover {
+    background-color:gray;
+    cursor:pointer;
+}
+
+div.unboring-button.disabled:hover {
+    background-color:lightgray;
+    cursor:not-allowed;
+}
 
 .likert table {
     width:100%;
