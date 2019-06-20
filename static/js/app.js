@@ -76,11 +76,13 @@ var BoredForm = function (_React$Component) {
     _createClass(BoredForm, [{
         key: 'getTimeDOM',
         value: function getTimeDOM() {
+            //$('body').css('background-color','gray');
             return React.createElement(BoredTime, { time: this.state.data.time, updateForm: this.changeTime });
         }
     }, {
         key: 'getActivityDOM',
         value: function getActivityDOM(activity) {
+            //$('body').css('background-color','gray');
             return React.createElement(Activity, { key: activity.name + '-activity', data: activity, updateForm: this.changeActivity });
         }
     }, {
@@ -122,12 +124,22 @@ var BoredForm = function (_React$Component) {
             if (this.canGoNext()) {
                 this.setState({ pageIndex: this.state.pageIndex + 1 });
             }
+            if (this.canGoNext()) {
+                $('unboring-button.next').removeClass('disabled');
+            } else {
+                $('unboring-button.next').addClass('disabled');
+            }
         }
     }, {
         key: 'previousPage',
         value: function previousPage() {
             if (this.canGoPrevious()) {
                 this.setState({ pageIndex: this.state.pageIndex - 1 });
+            }
+            if (this.canGoPrevious()) {
+                $('unboring-button.previous').removeClass('disabled');
+            } else {
+                $('unboring-button.previous').addClass('disabled');
             }
         }
     }, {
@@ -226,21 +238,9 @@ var BoredForm = function (_React$Component) {
                     { className: 'page' },
                     this.pages[this.state.pageIndex]()
                 ),
-                React.createElement(
-                    'button',
-                    { type: 'button', onClick: this.previousPage, disabled: !this.canGoPrevious() },
-                    'Previous'
-                ),
-                React.createElement(
-                    'button',
-                    { type: 'button', onClick: this.nextPage, disabled: !this.canGoNext() },
-                    'Next'
-                ),
-                React.createElement(
-                    'button',
-                    { type: 'button', onClick: this.send, disabled: !this.timeIsValid() },
-                    'Submit'
-                )
+                React.createElement(UnboringButton, { callback: this.previousPage, enabler: this.canGoPrevious, classes: 'previous', buttonText: 'Previous' }),
+                React.createElement(UnboringButton, { callback: this.nextPage, enabler: this.canGoNext, classes: 'next', buttonText: 'Next' }),
+                React.createElement(UnboringButton, { callback: this.send, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' })
             );
         }
     }]);

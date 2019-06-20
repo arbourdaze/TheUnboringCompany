@@ -93,10 +93,12 @@ class BoredForm extends React.Component {
     }
     
     getTimeDOM() {
+        //$('body').css('background-color','gray');
         return <BoredTime time={this.state.data.time} updateForm={this.changeTime} />;
     }
     
     getActivityDOM(activity) {
+        //$('body').css('background-color','gray');
         return <Activity key={activity.name + '-activity'} data={activity} updateForm={this.changeActivity} />;
     }
     
@@ -132,11 +134,21 @@ class BoredForm extends React.Component {
         if (this.canGoNext()) {
             this.setState({pageIndex: this.state.pageIndex + 1});
         }
+        if (this.canGoNext()) {
+            $('unboring-button.next').removeClass('disabled');
+        } else {
+            $('unboring-button.next').addClass('disabled');
+        }
     }
 
     previousPage() {
         if (this.canGoPrevious()) {
             this.setState({pageIndex: this.state.pageIndex - 1});
+        }
+        if (this.canGoPrevious()) {
+            $('unboring-button.previous').removeClass('disabled');
+        } else {
+            $('unboring-button.previous').addClass('disabled');
         }
     }
     
@@ -229,9 +241,9 @@ class BoredForm extends React.Component {
                 <div className="page">
                     {this.pages[this.state.pageIndex]()}
                 </div>
-                <button type="button" onClick={this.previousPage} disabled={!this.canGoPrevious()}>Previous</button>
-                <button type="button" onClick={this.nextPage} disabled={!this.canGoNext()}>Next</button>
-                <button type="button" onClick={this.send} disabled={!this.timeIsValid()}>Submit</button>
+                <UnboringButton callback={this.previousPage} enabler={this.canGoPrevious} classes="previous" buttonText="Previous" />
+                <UnboringButton callback={this.nextPage} enabler={this.canGoNext} classes="next" buttonText="Next" />
+                <UnboringButton callback={this.send} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
             </div>
         );
     }

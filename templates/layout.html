@@ -3,7 +3,7 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     </head>
     
     <body>
@@ -19,6 +19,7 @@
         <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
         
         <!-- Load our React component. -->
+        <script src="{{url_for('static', filename='js/UnboringButton.js')}}"></script>
         <script src="{{url_for('static', filename='js/BoredTime.js')}}"></script>
         <script src="{{url_for('static', filename='js/Radio.js')}}"></script>
         <script src="{{url_for('static', filename='js/Likert.js')}}"></script>
