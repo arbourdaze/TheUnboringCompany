@@ -50,8 +50,8 @@ var Likert = function (_React$Component) {
             var header = [];
             for (var i = 0; i < this.props.options.length; i++) {
                 header.push(React.createElement(
-                    "th",
-                    { key: this.props.category + "-likert-header" + i },
+                    "div",
+                    { className: "col col-likert-header", key: this.props.category + "-likert-header" + i },
                     this.props.options[i]
                 ));
             }
@@ -64,25 +64,17 @@ var Likert = function (_React$Component) {
                 "div",
                 { onChange: this.handleChange },
                 React.createElement(
-                    "table",
-                    null,
+                    "div",
+                    { className: "likert" },
                     React.createElement(
-                        "tbody",
-                        null,
-                        React.createElement(
-                            "tr",
-                            null,
-                            this.createRow()
-                        )
+                        "div",
+                        { className: "row" },
+                        this.createRow()
                     ),
                     React.createElement(
-                        "tbody",
-                        null,
-                        React.createElement(
-                            "tr",
-                            null,
-                            this.createRowHeader()
-                        )
+                        "div",
+                        { className: "row" },
+                        this.createRowHeader()
                     )
                 )
             );

@@ -1,4 +1,78 @@
+body {
+    background-color:#f1f1f1;
+    background-image: url("img/water_tower.jpg");
+}
+
+.button-pad {
+    position:fixed;
+    bottom:0;
+    right:0;
+    margin:1em;
+}
+
+label {
+    font-family:monospace;
+}
+
+.page {
+    margin:1em;
+}
+
+.row {
+    display:table;
+    width:100%;
+    border-spacing:10px;
+}
+
+.col {
+    display:table-cell;
+}
+
+.row:first-child {
+    float:left;
+}
+
+.row::after {
+    content: <br/>;
+}
+
+.question {
+    font-family:monospace;
+}
+
+.answer {
+    display:block;
+    margin-top:auto;
+    margin-bottom:auto;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.col-label {
+    width:10%;
+    text-align:right;
+}
+
+.col-input {
+}
+
+input[type=number].form-control {
+    padding: 4px 4px;
+    border:solid 1px;
+    color:black;
+    border-radius: 4px;
+}
+
+input[type=number].form-control:focus {
+    color:blue;
+}
+
 div.unboring-button {
+    width:10em;
+    height:5%;
+    font-family:monospace;
+    border:outset;
+    text-align:center;
     background-color:lightgray;
     float:left;
     margin:0.5em;
@@ -6,48 +80,35 @@ div.unboring-button {
 }
 
 div.unboring-button.disabled {
-    color:gray;
+    color:darkgray;
+    border:solid lightgray;
 }
 
 div.unboring-button:hover {
     background-color:gray;
     cursor:pointer;
+    border:inset;
+    
 }
 
 div.unboring-button.disabled:hover {
     background-color:lightgray;
     cursor:not-allowed;
+    border:solid lightgray;
 }
 
-.likert table {
-    width:100%;
+.col-likert-header {
+    width:50px;
+    text-align:center;
+    font-family:monospace;
 }
 
-.likert td, .likert th {
-    width:15%;
+.col-likert-radio {
+    width:50px;
     text-align:center;
 }
 
-.likert[name="openness"] table {
-    background-color:purple;
-}
-
-.likert[name="conscientiousness"] table {
-    background-color:green;
-}
-
-.likert[name="extroversion"] table {
-    background-color:red;
-}
-
-.likert[name="agreeableness"] table {
-    background-color:yellow;
-}
-
-.likert[name="neuroticism"] table {
-    background-color:blue;
-}
-
 .likert {
+    background-color:lightgray;
     margin-bottom:3em;
 }

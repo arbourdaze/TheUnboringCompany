@@ -93,7 +93,6 @@ class BoredForm extends React.Component {
     }
     
     getTimeDOM() {
-        //$('body').css('background-color','gray');
         return <BoredTime time={this.state.data.time} updateForm={this.changeTime} />;
     }
     
@@ -241,9 +240,11 @@ class BoredForm extends React.Component {
                 <div className="page">
                     {this.pages[this.state.pageIndex]()}
                 </div>
-                <UnboringButton callback={this.previousPage} enabler={this.canGoPrevious} classes="previous" buttonText="Previous" />
-                <UnboringButton callback={this.nextPage} enabler={this.canGoNext} classes="next" buttonText="Next" />
-                <UnboringButton callback={this.send} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
+                <div className="button-pad">
+                    <UnboringButton callback={this.previousPage} enabler={this.canGoPrevious} classes="previous" buttonText="Previous" />
+                    <UnboringButton callback={this.nextPage} enabler={this.canGoNext} classes="next" buttonText="Next" />
+                    <UnboringButton callback={this.send} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
+                </div>
             </div>
         );
     }

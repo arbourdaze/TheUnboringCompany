@@ -76,7 +76,6 @@ var BoredForm = function (_React$Component) {
     _createClass(BoredForm, [{
         key: 'getTimeDOM',
         value: function getTimeDOM() {
-            //$('body').css('background-color','gray');
             return React.createElement(BoredTime, { time: this.state.data.time, updateForm: this.changeTime });
         }
     }, {
@@ -238,9 +237,13 @@ var BoredForm = function (_React$Component) {
                     { className: 'page' },
                     this.pages[this.state.pageIndex]()
                 ),
-                React.createElement(UnboringButton, { callback: this.previousPage, enabler: this.canGoPrevious, classes: 'previous', buttonText: 'Previous' }),
-                React.createElement(UnboringButton, { callback: this.nextPage, enabler: this.canGoNext, classes: 'next', buttonText: 'Next' }),
-                React.createElement(UnboringButton, { callback: this.send, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' })
+                React.createElement(
+                    'div',
+                    { className: 'button-pad' },
+                    React.createElement(UnboringButton, { callback: this.previousPage, enabler: this.canGoPrevious, classes: 'previous', buttonText: 'Previous' }),
+                    React.createElement(UnboringButton, { callback: this.nextPage, enabler: this.canGoNext, classes: 'next', buttonText: 'Next' }),
+                    React.createElement(UnboringButton, { callback: this.send, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' })
+                )
             );
         }
     }]);

@@ -21,8 +21,8 @@ var Radio = function (_React$Component) {
     key: "render",
     value: function render() {
       return React.createElement(
-        "td",
-        { className: "radio" },
+        "div",
+        { className: "col col-likert-radio radio" },
         React.createElement("input", { name: this.props.name, type: "radio", value: this.props.val, checked: this.props.ticked })
       );
     }

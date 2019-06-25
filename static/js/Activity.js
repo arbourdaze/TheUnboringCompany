@@ -89,8 +89,8 @@ var Activity = function (_React$Component) {
                 "div",
                 null,
                 React.createElement(
-                    "h1",
-                    null,
+                    "h2",
+                    { className: "question" },
                     "Do you like ",
                     this.state.name.toLowerCase(),
                     "?"

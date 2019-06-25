@@ -46,22 +46,50 @@ var BoredTime = function (_React$Component) {
                 "div",
                 null,
                 React.createElement(
-                    "h3",
-                    null,
+                    "h2",
+                    { className: "question" },
                     "How long will you be bored?"
                 ),
                 React.createElement(
-                    "label",
-                    { htmlFor: "bored-hours" },
-                    "Hours: "
-                ),
-                React.createElement("input", { type: "number", name: "bored-hours", value: this.state.hours, min: "0", max: "6", onChange: this.changeHours }),
-                React.createElement(
-                    "label",
-                    { htmlFor: "bored-minutes" },
-                    "Minutes: "
-                ),
-                React.createElement("input", { type: "number", name: "bored-minutes", value: this.state.minutes, min: "0", max: "59", onChange: this.changeMinutes })
+                    "div",
+                    { className: "answer" },
+                    React.createElement(
+                        "div",
+                        { className: "row" },
+                        React.createElement(
+                            "div",
+                            { className: "col col-label" },
+                            React.createElement(
+                                "label",
+                                { htmlFor: "bored-hours" },
+                                "Hours: "
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "col col-input" },
+                            React.createElement("input", { type: "number", className: "form-control", name: "bored-hours", value: this.state.hours, min: "0", max: "6", onChange: this.changeHours })
+                        )
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: "row" },
+                        React.createElement(
+                            "div",
+                            { className: "col col-label" },
+                            React.createElement(
+                                "label",
+                                { htmlFor: "bored-minutes" },
+                                "Minutes: "
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            { className: "col col-input" },
+                            React.createElement("input", { type: "number", className: "form-control", name: "bored-minutes", value: this.state.minutes, min: "0", max: "59", onChange: this.changeMinutes })
+                        )
+                    )
+                )
             );
         }
     }]);

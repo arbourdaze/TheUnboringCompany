@@ -7,9 +7,9 @@ class Radio extends React.Component {
 
   render() {
     return (
-        <td className="radio">
+        <div className="col col-likert-radio radio">
             <input name={this.props.name} type="radio" value={this.props.val} checked={this.props.ticked} />
-        </td>
+        </div>
     );
   }
 }

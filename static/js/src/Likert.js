@@ -34,9 +34,9 @@ class Likert extends React.Component {
       let header = [];
       for (let i = 0; i < this.props.options.length; i++) {
         header.push(
-            <th key={this.props.category + "-likert-header" + i}>
+            <div className="col col-likert-header" key={this.props.category + "-likert-header" + i}>
                 {this.props.options[i]}
-            </th>
+            </div>
         );
       }
       return header;
@@ -45,18 +45,14 @@ class Likert extends React.Component {
   render() {
     return (
         <div onChange={this.handleChange}>
-            <table>
-                <tbody>
-                    <tr>
+            <div className="likert">
+                <div className="row">
                     {this.createRow()}
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
+                </div>
+                <div className="row">
                     {this.createRowHeader()}
-                    </tr>
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
     );
   }
