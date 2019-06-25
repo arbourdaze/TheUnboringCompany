@@ -8,6 +8,7 @@ def middleware(responses, mood):
 
     discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
+#I hate christopher luikart
     #Load json object into python object
     data = json.loads(responses)
 
@@ -26,7 +27,7 @@ def middleware(responses, mood):
 
         response = makeQuery(keywords, discovery, topic)
         res = response.result["results"];
-        
+
         time_filter(res, timeLimit, correctList)
 
     correctList = sorted(correctList, key=lambda k: k['result_metadata']['score'], reverse = True)
@@ -44,7 +45,7 @@ def makeQuery(keywords, discovery, topic):
 
     result = discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = filterParam,
         query = ' '.join(keywords), count = cf.NUM_RESULTS)
-    
+
     return result
 
 """
