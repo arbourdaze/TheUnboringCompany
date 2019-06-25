@@ -26,11 +26,7 @@ class Results extends React.Component {
     render() {
         return (
             <div>
-                <table>
-                    <tbody>
-                    {this.createRows()}
-                    </tbody>
-                </table>
+                {this.createRows()}
                 <button type="button" onClick={this.handleBackButton}>No, try again</button>
             </div>
         );

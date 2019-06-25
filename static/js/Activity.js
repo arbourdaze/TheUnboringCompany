@@ -99,10 +99,10 @@ var Activity = function (_React$Component) {
                 React.createElement("br", null),
                 (this.state.like == "Yes" || this.state.like == "Maybe") && React.createElement(
                     "div",
-                    null,
+                    { className: "page-content-box" },
                     React.createElement(
-                        "h1",
-                        null,
+                        "h2",
+                        { classname: "question" },
                         "What kind of ",
                         this.state.name.toLowerCase(),
                         " do you like?"

@@ -66,8 +66,8 @@ class Activity extends React.Component {
             <Likert score={this.state.like} updateForm={this.changeLike} options={["Yes","Maybe","No"]} category={this.state.name} />
             <br/>
             {(this.state.like == "Yes" || this.state.like == "Maybe") && 
-                <div>
-                    <h1>What kind of {this.state.name.toLowerCase()} do you like?</h1>
+                <div className="page-content-box">
+                    <h2 classname="question">What kind of {this.state.name.toLowerCase()} do you like?</h2>
                     {this.createChecklist()}
                 </div>
             }

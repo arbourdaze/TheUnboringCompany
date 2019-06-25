@@ -13,7 +13,6 @@ def search():
     content = request.get_json()
     responses = mw.middleware(json.dumps(content), None)
     return responses
-    #return '{"Data" : [ { "Name": "Hello", "Description": "World" } ]}'
     
 if __name__ == '__main__':
     app.run(debug = True)

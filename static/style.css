@@ -1,6 +1,8 @@
 body {
     background-color:#f1f1f1;
     background-image: url("img/water_tower.jpg");
+    background-repeat: no-repeat;
+    font-family:monospace;
 }
 
 .button-pad {
@@ -37,7 +39,7 @@ label {
 }
 
 .question {
-    font-family:monospace;
+
 }
 
 .answer {
@@ -108,7 +110,44 @@ div.unboring-button.disabled:hover {
     text-align:center;
 }
 
-.likert {
+.page-content-box {
+    opacity:0.9;
     background-color:lightgray;
-    margin-bottom:3em;
+}
+
+.page {
+    margin:auto;
+}
+
+.result-row {
+    margin-top:1em;
+    margin-bottom:1em;
+}
+
+div.red {
+    background-color:tomato;
+}
+
+div.orange {
+    background-color:coral;
+}
+
+div.yellow {
+    background-color:yellow;
+}
+
+div.green {
+    background-color:lawngreen;
+}
+
+div.blue {
+    background-color:lightblue;
+}
+
+div.indigo {
+    background-color:darkorchid;
+}
+
+div.violet {
+    background-color:violet;
 }

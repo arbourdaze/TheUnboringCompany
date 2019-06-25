@@ -14,23 +14,27 @@ var Result = function (_React$Component) {
     function Result(props) {
         _classCallCheck(this, Result);
 
-        return _possibleConstructorReturn(this, (Result.__proto__ || Object.getPrototypeOf(Result)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Result.__proto__ || Object.getPrototypeOf(Result)).call(this, props));
+
+        var randomColor = new RandomColor();
+        _this.color = randomColor.getColor();
+        return _this;
     }
 
     _createClass(Result, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return React.createElement(
-                'tr',
-                null,
+                "div",
+                { className: "row page-content-box result-row " + this.color },
                 React.createElement(
-                    'td',
-                    null,
+                    "div",
+                    { className: "col result-col" },
                     this.props.name
                 ),
                 React.createElement(
-                    'td',
-                    null,
+                    "div",
+                    { className: "col result-col" },
                     this.props.description
                 )
             );

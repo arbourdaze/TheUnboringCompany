@@ -65,7 +65,7 @@ var Likert = function (_React$Component) {
                 { onChange: this.handleChange },
                 React.createElement(
                     "div",
-                    { className: "likert" },
+                    { className: "page-content-box" },
                     React.createElement(
                         "div",
                         { className: "row" },

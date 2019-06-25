@@ -44,15 +44,7 @@ var Results = function (_React$Component) {
             return React.createElement(
                 'div',
                 null,
-                React.createElement(
-                    'table',
-                    null,
-                    React.createElement(
-                        'tbody',
-                        null,
-                        this.createRows()
-                    )
-                ),
+                this.createRows(),
                 React.createElement(
                     'button',
                     { type: 'button', onClick: this.handleBackButton },
