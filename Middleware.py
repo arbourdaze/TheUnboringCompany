@@ -141,6 +141,7 @@ def get_minutes(data):
 #[{"Name":Name, "Description":Description}, {"Name":Name, "Description":Description}, ...]
 def get_response(responses):
     activities = []
+    
     for result in responses:
         if "Movie" in result["extracted_metadata"]["filename"]:
             title = result["Title"]
@@ -148,29 +149,50 @@ def get_response(responses):
             runtime = result["Runtime"]
             genre = result["Genre"]
             summary = result["Summary"]
+            
             name = "Movie: " + title
             description = year + "; " + runtime + " minutes; " + genre + ";\n" + summary
 
-            activity = {"Name":name, "Description":description}
-            activity = json.dumps(activity)
-            activity = json.loads(activity)
-            activities.append(activity)
-        else:
+        elif "recipe" in result["extracted_metadata"]["filename"]:
             recipe = result["name"]
-            preptime = int(result["preptime"]) + int(result["cooktime"]) + int(result["waittime"])
-            servings = result["servings"]
-            calories = result["calories"]
+            preptime = str(int(result["preptime"]) + int(result["cooktime"]) + int(result["waittime"]))
+            servings = str(result["servings"])
+            calories = str(result["calories"])
             ingredients = ', '.join(result["ingredients"])
             instructions = result["instructions"]
-
+            
             name = "Recipe: " + recipe
             description = ("Preptime: " + preptime + "; Servings: "
                  + servings + "; Calories: " + calories + ";\nIngredients: "
                  + ingredients + ";\nInstructions: " + instructions)
-            activity = {"Name:":name, "Description":description}
-            activity = json.dumps(activity)
-            activity = json.loads(activity)
-            activities.append(activity)
+ 
+        elif "joke" in result["extracted_metadata"]["filename"]:
+            title = result["title"]
+            body = result["body"]
+
+            name = "Joke: " + title
+            description = body
+            
+        elif "Game" in result["extracted_metadata"]["filename"]:
+            title = result["Title"]
+            genre = result["Genre"]
+            summary = result["Summary"]
+
+            name = "Game: " + title
+            description = "Genre: " + genre + ";\nSummary: " + summary
+            
+        elif "riddle" in result["extracted_metadata"]["filename"]:
+            answer = result["Answer"]
+            riddle = result["riddle"]
+
+            name = "Riddle: " + riddle
+            description = "Answer: " + answer
+
+        activity = {"Name":name, "Description":description}
+        activity = json.dumps(activity)
+        activity = json.loads(activity)
+        activities.append(activity)
+
     return json.dumps(activities)
 
 
