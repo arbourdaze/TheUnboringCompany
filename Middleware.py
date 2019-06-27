@@ -5,12 +5,15 @@ import config as cf
 import secrets
 import sys
 
+MIN_DATA_REQUIRED = 5
+
 class Account:
 
     username = ""
     password = ""
     selections = []
     rejections = []
+    enoughData = False
 
     def __init__ (self, username, password):
         self.username = username
@@ -22,6 +25,29 @@ class Account:
     def updatePassword(self, newPass):
         self.password = newPass
 
+    def addSelections(self, items):
+        if type(items) is list:
+            self.selections.extend(items)
+        else:
+            self.selections.append(items)
+
+    def addRejections(self, items):
+        if type(items) is list:
+            self.rejections.extend(items)
+        else:
+            self.rejections.append(items)
+
+    def countData(self):
+        if len(self.selections) < MIN_DATA_REQUIRED and len(self.rejections) < MIN_DATA_REQUIRED:
+            return False
+        else:
+            return True
+
+    def naiveBayes(self):
+        
+
+        
+
 def createAccount(username, password):
     account = Account(username, password)
     """
@@ -32,6 +58,22 @@ def createAccount(username, password):
     Rejections
     Naive Bayes Metadata
     """
+
+#Classifies all search results into Select or Reject categories based on what the user has selected before
+#Assumes Naive Bayes Calculations have been completed
+#If not enough data has been collected, will return false
+def classifyResults(searchResults, user):
+
+    """
+    1. Check if enough data has been collected
+        if not, skip naive bayes, use old method
+    2. Assume metadata has already been calculated, classify each results as Select or Reject
+    3. Return "Select" Results
+    """ 
+
+#Of the entries in results, returns the num top scoring results according to Discovery
+def getTopScoring(results, num):
+
 
 
 def middleware(responses, mood):
