@@ -3,6 +3,35 @@ from ibm_watson import DiscoveryV1
 import json
 import config as cf
 import secrets
+import sys
+
+class Account:
+
+    username = ""
+    password = ""
+    selections = []
+    rejections = []
+
+    def __init__ (self, username, password):
+        self.username = username
+        self.password = password
+
+    def updateUsername(self, newName):
+        self.username = newName
+
+    def updatePassword(self, newPass):
+        self.password = newPass
+
+def createAccount(username, password):
+    account = Account(username, password)
+    """
+    TODO: Write info to file
+    Username
+    Password
+    Selections
+    Rejections
+    Naive Bayes Metadata
+    """
 
 
 def middleware(responses, mood):
@@ -22,7 +51,7 @@ def middleware(responses, mood):
         if data[topic] is "No":
             continue
 
-        for catagory in data["Liked" + topic]: #Temporary, based on what rebecca decides to do
+        for catagory in data["Liked" + topic]:
             keywords.append(catagory)
 
         response = makeQuery(keywords, discovery, topic)
@@ -112,3 +141,7 @@ def time_filter(res, timeLimit, correctList):
             total = result["preptime"]+result["waittime"]+result["cooktime"]
             if total < timeLimit:
                 correctList.append(result)
+
+
+with open("InputJSON.json","r") as js:
+    print(middleware(js.read().replace('\n',''),"bad"))
