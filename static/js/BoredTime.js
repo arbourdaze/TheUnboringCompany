@@ -22,6 +22,7 @@ var BoredTime = function (_React$Component) {
         };
         _this.changeHours = _this.changeHours.bind(_this);
         _this.changeMinutes = _this.changeMinutes.bind(_this);
+        _this.randomColor = new RandomColor();
         return _this;
     }
 
@@ -68,7 +69,7 @@ var BoredTime = function (_React$Component) {
                         React.createElement(
                             "div",
                             { className: "col col-input" },
-                            React.createElement("input", { type: "number", className: "form-control", name: "bored-hours", value: this.state.hours, min: "0", max: "6", onChange: this.changeHours })
+                            React.createElement("input", { type: "number", className: "form-control " + this.randomColor.getColor(), name: "bored-hours", value: this.state.hours, min: "0", max: "6", onChange: this.changeHours })
                         )
                     ),
                     React.createElement(
@@ -86,7 +87,7 @@ var BoredTime = function (_React$Component) {
                         React.createElement(
                             "div",
                             { className: "col col-input" },
-                            React.createElement("input", { type: "number", className: "form-control", name: "bored-minutes", value: this.state.minutes, min: "0", max: "59", onChange: this.changeMinutes })
+                            React.createElement("input", { type: "number", className: "form-control " + this.randomColor.getColor(), name: "bored-minutes", value: this.state.minutes, min: "0", max: "59", onChange: this.changeMinutes })
                         )
                     )
                 )

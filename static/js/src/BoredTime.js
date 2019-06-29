@@ -9,6 +9,7 @@ class BoredTime extends React.Component {
     };
     this.changeHours = this.changeHours.bind(this);
     this.changeMinutes = this.changeMinutes.bind(this);
+    this.randomColor = new RandomColor();
   }
   
   changeHours(e) {
@@ -33,7 +34,7 @@ class BoredTime extends React.Component {
                         <label htmlFor="bored-hours">Hours: </label>
                     </div>
                     <div className="col col-input">
-                        <input type="number" className="form-control" name="bored-hours" value={this.state.hours} min="0" max="6" onChange={this.changeHours} />
+                        <input type="number" className={"form-control " + this.randomColor.getColor()} name="bored-hours" value={this.state.hours} min="0" max="6" onChange={this.changeHours} />
                     </div>
                 </div>
                 <div className="row">
@@ -41,7 +42,7 @@ class BoredTime extends React.Component {
                         <label htmlFor="bored-minutes">Minutes: </label>
                     </div>
                     <div className="col col-input">
-                        <input type="number" className="form-control" name="bored-minutes" value={this.state.minutes} min="0" max="59" onChange={this.changeMinutes} />
+                        <input type="number" className={"form-control " + this.randomColor.getColor()} name="bored-minutes" value={this.state.minutes} min="0" max="59" onChange={this.changeMinutes} />
                     </div>
                 </div>
             </div>

@@ -1,7 +1,18 @@
+:root {
+    --unboring-red: red;
+    --unboring-orange: orange;
+    --unboring-yellow: yellow;
+    --unboring-green: green;
+    --unboring-blue: blue;
+    --unboring-indigo: purple;
+    --unboring-violet: pink;
+}
+
 body {
     background-color:#f1f1f1;
     background-image: url("img/water_tower.jpg");
     background-repeat: no-repeat;
+    background-attachment: fixed;
     font-family:monospace;
 }
 
@@ -65,9 +76,9 @@ input[type=number].form-control {
     border-radius: 4px;
 }
 
-input[type=number].form-control:focus {
+/* input[type=number].form-control:focus {
     color:blue;
-}
+} */
 
 div.unboring-button {
     width:10em;
@@ -111,8 +122,9 @@ div.unboring-button.disabled:hover {
 }
 
 .page-content-box {
-    opacity:0.9;
+    opacity:0.8;
     background-color:lightgray;
+    padding:1em;
 }
 
 .page {
@@ -125,29 +137,135 @@ div.unboring-button.disabled:hover {
 }
 
 div.red {
-    background-color:tomato;
+    background-color: var(--unboring-red);
+}
+
+input.red:focus {
+    color: var(--unboring-red);
 }
 
 div.orange {
-    background-color:coral;
+    background-color: var(--unboring-orange);
+}
+
+input.orange:focus {
+    color: var(--unboring-orange);
 }
 
 div.yellow {
-    background-color:yellow;
+    background-color: var(--unboring-yellow);
+}
+
+input.yellow:focus {
+    color: var(--unboring-yellow);
 }
 
 div.green {
-    background-color:lawngreen;
+    background-color: var(--unboring-green);
+}
+
+input.green:focus {
+    color: var(--unboring-green);
 }
 
 div.blue {
-    background-color:lightblue;
+    background-color: var(--unboring-blue);
+}
+
+input.blue:focus {
+    color: var(--unboring-blue);
 }
 
 div.indigo {
-    background-color:darkorchid;
+    background-color: var(--unboring-indigo);
+}
+
+input.indigo:focus {
+    color: var(--unboring-indigo);
 }
 
 div.violet {
-    background-color:violet;
+    background-color: var(--unboring-violet);
+}
+
+input.violet:focus {
+    color: var(--unboring-violet);
+}
+
+.checkbox-container {
+    display:block;
+    position:relative;
+    padding-left: 35px;
+    margin-bottom: 12 px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    opacity: 100%;
+    background-color: white;
+}
+
+.checkbox-container:hover input ~ .checkmark.red {
+    background-color: var(--unboring-red);
+}
+.checkbox-container:hover input ~ .checkmark.orange {
+    background-color: var(--unboring-orange);
+}
+.checkbox-container:hover input ~ .checkmark.yellow {
+    background-color: var(--unboring-yellow);
+}
+.checkbox-container:hover input ~ .checkmark.green {
+    background-color: var(--unboring-green);
+}
+.checkbox-container:hover input ~ .checkmark.blue {
+    background-color: var(--unboring-blue);
+}
+.checkbox-container:hover input ~ .checkmark.indigo {
+    background-color: var(--unboring-indigo);
+}
+.checkbox-container:hover input ~ .checkmark.violet {
+    background-color: var(--unboring-violet);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: white;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }

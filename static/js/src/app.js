@@ -67,7 +67,7 @@ class BoredForm extends React.Component {
             submitted: false,
             results: []
         };
-        
+
         this.reassignData = this.reassignData.bind(this);
         this.changeTime = this.changeTime.bind(this);
         this.changeActivity = this.changeActivity.bind(this);

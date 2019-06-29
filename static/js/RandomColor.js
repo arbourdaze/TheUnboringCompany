@@ -21,7 +21,3 @@ var RandomColor = function () {
 
     return RandomColor;
 }();
-
-;
-
-var randomColor = new RandomColor();

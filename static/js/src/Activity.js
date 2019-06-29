@@ -4,6 +4,7 @@ class Activity extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.props.data;
+    this.randomColor = new RandomColor();
     this.addChoice = this.addChoice.bind(this);
     this.removeChoice = this.removeChoice.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -27,11 +28,11 @@ class Activity extends React.Component {
       });
   }
   
-  handleChange(event) {
-      if (event.target.checked) {
-          this.addChoice(event.target.value);
+  handleChange(value, checked) {
+      if (checked) {
+          this.addChoice(value);
       } else {
-          this.removeChoice(event.target.value);
+          this.removeChoice(value);
       }
   }
   
@@ -40,12 +41,15 @@ class Activity extends React.Component {
       let that = this;
       let i = 0;
       this.state.options.forEach(function(opt) {
-        let line = <input key={that.state.name + "-checkbox" + i} type="checkbox" name={that.state.name} value={opt} checked={that.state.choices.has(opt)} onChange={that.handleChange} />;
-        checklist.push(line);
-        i++;
-        checklist.push(<label key={that.state.name + "-label" + i}>{opt}</label>)
-        checklist.push(<br key={that.state.name + "-newline" + i}/>);
-        i++;
+          checklist.push(
+            <CheckInput
+                name={that.state.name}
+                number={i}
+                opt={opt}
+                checked={that.state.choices.has(opt)}
+                updateForm={that.handleChange}
+            />
+          );
       });
       return checklist;
   }
@@ -67,7 +71,7 @@ class Activity extends React.Component {
             <br/>
             {(this.state.like == "Yes" || this.state.like == "Maybe") && 
                 <div className="page-content-box">
-                    <h2 classname="question">What kind of {this.state.name.toLowerCase()} do you like?</h2>
+                    <h2 className="question">What kind of {this.state.name.toLowerCase()} do you like?</h2>
                     {this.createChecklist()}
                 </div>
             }

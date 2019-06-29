@@ -17,6 +17,7 @@ var Activity = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Activity.__proto__ || Object.getPrototypeOf(Activity)).call(this, props));
 
         _this.state = _this.props.data;
+        _this.randomColor = new RandomColor();
         _this.addChoice = _this.addChoice.bind(_this);
         _this.removeChoice = _this.removeChoice.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
@@ -45,11 +46,11 @@ var Activity = function (_React$Component) {
         }
     }, {
         key: "handleChange",
-        value: function handleChange(event) {
-            if (event.target.checked) {
-                this.addChoice(event.target.value);
+        value: function handleChange(value, checked) {
+            if (checked) {
+                this.addChoice(value);
             } else {
-                this.removeChoice(event.target.value);
+                this.removeChoice(value);
             }
         }
     }, {
@@ -59,16 +60,13 @@ var Activity = function (_React$Component) {
             var that = this;
             var i = 0;
             this.state.options.forEach(function (opt) {
-                var line = React.createElement("input", { key: that.state.name + "-checkbox" + i, type: "checkbox", name: that.state.name, value: opt, checked: that.state.choices.has(opt), onChange: that.handleChange });
-                checklist.push(line);
-                i++;
-                checklist.push(React.createElement(
-                    "label",
-                    { key: that.state.name + "-label" + i },
-                    opt
-                ));
-                checklist.push(React.createElement("br", { key: that.state.name + "-newline" + i }));
-                i++;
+                checklist.push(React.createElement(CheckInput, {
+                    name: that.state.name,
+                    number: i,
+                    opt: opt,
+                    checked: that.state.choices.has(opt),
+                    updateForm: that.handleChange
+                }));
             });
             return checklist;
         }
@@ -102,7 +100,7 @@ var Activity = function (_React$Component) {
                     { className: "page-content-box" },
                     React.createElement(
                         "h2",
-                        { classname: "question" },
+                        { className: "question" },
                         "What kind of ",
                         this.state.name.toLowerCase(),
                         " do you like?"
