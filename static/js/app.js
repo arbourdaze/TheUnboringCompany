@@ -28,6 +28,13 @@ var BoredForm = function (_React$Component) {
                     hours: 0,
                     minutes: 0
                 },
+                personality: {
+                    openness: null,
+                    conscientiousness: null,
+                    extroversion: null,
+                    agreeableness: null,
+                    neuroticism: null
+                },
                 activities: {
                     movies: {
                         name: "Movies",
@@ -50,6 +57,7 @@ var BoredForm = function (_React$Component) {
 
         _this.reassignData = _this.reassignData.bind(_this);
         _this.changeTime = _this.changeTime.bind(_this);
+        _this.changePersonality = _this.changePersonality.bind(_this);
         _this.changeActivity = _this.changeActivity.bind(_this);
 
         _this.nextPage = _this.nextPage.bind(_this);
@@ -60,11 +68,12 @@ var BoredForm = function (_React$Component) {
         _this.timeIsValid = _this.timeIsValid.bind(_this);
 
         _this.getTimeDOM = _this.getTimeDOM.bind(_this);
+        _this.getPersonalityDOM = _this.getPersonalityDOM.bind(_this);
         _this.getActivityDOM = _this.getActivityDOM.bind(_this);
         _this.getMovies = _this.getMovies.bind(_this);
         _this.getCooking = _this.getCooking.bind(_this);
 
-        _this.pages = [_this.getTimeDOM, _this.getMovies, _this.getCooking];
+        _this.pages = [_this.getTimeDOM, _this.getPersonalityDOM, _this.getMovies, _this.getCooking];
 
         _this.transformActivityData = _this.transformActivityData.bind(_this);
 
@@ -79,9 +88,13 @@ var BoredForm = function (_React$Component) {
             return React.createElement(BoredTime, { time: this.state.data.time, updateForm: this.changeTime });
         }
     }, {
+        key: 'getPersonalityDOM',
+        value: function getPersonalityDOM() {
+            return React.createElement(Personality, { data: this.state.data.personality, updateForm: this.changePersonality });
+        }
+    }, {
         key: 'getActivityDOM',
         value: function getActivityDOM(activity) {
-            //$('body').css('background-color','gray');
             return React.createElement(Activity, { key: activity.name + '-activity', data: activity, updateForm: this.changeActivity });
         }
     }, {
@@ -98,6 +111,12 @@ var BoredForm = function (_React$Component) {
         key: 'changeTime',
         value: function changeTime(value) {
             var newData = Object.assign({}, this.state.data, { time: value });
+            this.reassignData(newData);
+        }
+    }, {
+        key: 'changePersonality',
+        value: function changePersonality(value) {
+            var newData = Object.assign({}, this.state.data, { personality: value });
             this.reassignData(newData);
         }
     }, {

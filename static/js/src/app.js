@@ -16,6 +16,13 @@ class BoredForm extends React.Component {
                     hours: 0,
                     minutes: 0
                 },
+                personality: {
+                    openness: null,
+                    conscientiousness: null,
+                    extroversion: null,
+                    agreeableness: null,
+                    neuroticism: null
+                },
                 activities: {
                     movies: {
                         name: "Movies",
@@ -70,6 +77,7 @@ class BoredForm extends React.Component {
 
         this.reassignData = this.reassignData.bind(this);
         this.changeTime = this.changeTime.bind(this);
+        this.changePersonality = this.changePersonality.bind(this);
         this.changeActivity = this.changeActivity.bind(this);
         
         this.nextPage = this.nextPage.bind(this);
@@ -80,11 +88,12 @@ class BoredForm extends React.Component {
         this.timeIsValid = this.timeIsValid.bind(this);
 
         this.getTimeDOM = this.getTimeDOM.bind(this);
+        this.getPersonalityDOM = this.getPersonalityDOM.bind(this);
         this.getActivityDOM = this.getActivityDOM.bind(this);
         this.getMovies = this.getMovies.bind(this);
         this.getCooking = this.getCooking.bind(this);
         
-        this.pages = [this.getTimeDOM, this.getMovies, this.getCooking];
+        this.pages = [this.getTimeDOM, this.getPersonalityDOM, this.getMovies, this.getCooking];
         
         this.transformActivityData = this.transformActivityData.bind(this);
         
@@ -96,8 +105,11 @@ class BoredForm extends React.Component {
         return <BoredTime time={this.state.data.time} updateForm={this.changeTime} />;
     }
     
+    getPersonalityDOM() {
+        return <Personality data={this.state.data.personality} updateForm={this.changePersonality} />
+    }
+    
     getActivityDOM(activity) {
-        //$('body').css('background-color','gray');
         return <Activity key={activity.name + '-activity'} data={activity} updateForm={this.changeActivity} />;
     }
     
@@ -111,6 +123,11 @@ class BoredForm extends React.Component {
     
     changeTime(value) {
         let newData = Object.assign({}, this.state.data, {time: value});
+        this.reassignData(newData);
+    }
+    
+    changePersonality(value) {
+        let newData = Object.assign({}, this.state.data, {personality: value});
         this.reassignData(newData);
     }
 

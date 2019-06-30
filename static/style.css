@@ -281,3 +281,7 @@ input.violet:hover {
     border-radius: 50%;
     background: black;
 }
+
+.personality-trait {
+    margin-bottom:1em;
+}

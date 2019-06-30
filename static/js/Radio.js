@@ -29,7 +29,7 @@ var Radio = function (_React$Component) {
         React.createElement(
           "label",
           { className: "radio-container" },
-          this.props.val,
+          this.props.label,
           React.createElement("input", { type: "checkbox", name: this.props.name, value: this.props.val, checked: this.props.ticked }),
           React.createElement("span", { className: "radio-indicator " + this.randomColor.getColor() })
         )

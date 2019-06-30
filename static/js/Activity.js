@@ -23,6 +23,7 @@ var Activity = function (_React$Component) {
         _this.handleChange = _this.handleChange.bind(_this);
         _this.createChecklist = _this.createChecklist.bind(_this);
         _this.changeLike = _this.changeLike.bind(_this);
+        _this.labels = ["Yes", "Maybe", "No"];
         return _this;
     }
 
@@ -72,7 +73,7 @@ var Activity = function (_React$Component) {
         }
     }, {
         key: "changeLike",
-        value: function changeLike(value) {
+        value: function changeLike(key, value) {
             this.setState({ like: value }, function () {
                 if (this.state.like == "No") {
                     this.setState({ choices: new Set() });
@@ -93,7 +94,7 @@ var Activity = function (_React$Component) {
                     this.state.name.toLowerCase(),
                     "?"
                 ),
-                React.createElement(Likert, { score: this.state.like, updateForm: this.changeLike, options: ["Yes", "Maybe", "No"], category: this.state.name }),
+                React.createElement(Likert, { score: this.state.like, updateForm: this.changeLike, labels: this.labels, options: this.labels, category: this.state.name }),
                 React.createElement("br", null),
                 (this.state.like == "Yes" || this.state.like == "Maybe") && React.createElement(
                     "div",

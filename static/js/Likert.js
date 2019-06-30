@@ -27,7 +27,7 @@ var Likert = function (_React$Component) {
         key: "handleChange",
         value: function handleChange(event) {
             this.setState({ choice: event.target.value }, function () {
-                this.props.updateForm(this.state.choice);
+                this.props.updateForm(this.props.category, this.state.choice);
             });
         }
     }, {
@@ -38,6 +38,7 @@ var Likert = function (_React$Component) {
                 row.push(React.createElement(Radio, {
                     key: this.props.category + "-likert-radio" + i,
                     name: "like-" + this.props.category,
+                    label: this.props.labels[i],
                     val: this.props.options[i],
                     ticked: this.props.score == this.props.options[i]
                 }));

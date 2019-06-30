@@ -11,7 +11,7 @@ class Likert extends React.Component {
   
   handleChange(event) {
       this.setState({ choice: event.target.value }, function () {
-          this.props.updateForm(this.state.choice);
+          this.props.updateForm(this.props.category, this.state.choice);
       });
   }
 
@@ -22,6 +22,7 @@ class Likert extends React.Component {
             <Radio
                 key={this.props.category + "-likert-radio" + i}
                 name={"like-" + this.props.category}
+                label={this.props.labels[i]}
                 val={this.props.options[i]}
                 ticked={this.props.score == this.props.options[i]}
             />
