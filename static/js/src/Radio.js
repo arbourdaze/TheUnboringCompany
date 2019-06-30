@@ -3,12 +3,16 @@
 class Radio extends React.Component {
   constructor(props) {
     super(props);
+    this.randomColor = new RandomColor();
   }
 
   render() {
     return (
-        <div className="col col-likert-radio radio">
-            <input name={this.props.name} type="radio" value={this.props.val} checked={this.props.ticked} />
+        <div className="col col-likert-radio">
+            <label className="radio-container">{this.props.val}
+                <input type="checkbox" name={this.props.name} value={this.props.val} checked={this.props.ticked} />
+                <span className={"radio-indicator " + this.randomColor.getColor()}></span>
+            </label>
         </div>
     );
   }

@@ -30,28 +30,11 @@ class Likert extends React.Component {
       return row;
   }
   
-  createRowHeader() {
-      let header = [];
-      for (let i = 0; i < this.props.options.length; i++) {
-        header.push(
-            <div className="col col-likert-header" key={this.props.category + "-likert-header" + i}>
-                {this.props.options[i]}
-            </div>
-        );
-      }
-      return header;
-  }
-  
   render() {
     return (
-        <div onChange={this.handleChange}>
-            <div className="page-content-box">
-                <div className="row">
-                    {this.createRow()}
-                </div>
-                <div className="row">
-                    {this.createRowHeader()}
-                </div>
+        <div class="page-content-box likert" onChange={this.handleChange}>
+            <div className="row">
+                {this.createRow()}
             </div>
         </div>
     );

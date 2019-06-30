@@ -45,37 +45,15 @@ var Likert = function (_React$Component) {
             return row;
         }
     }, {
-        key: "createRowHeader",
-        value: function createRowHeader() {
-            var header = [];
-            for (var i = 0; i < this.props.options.length; i++) {
-                header.push(React.createElement(
-                    "div",
-                    { className: "col col-likert-header", key: this.props.category + "-likert-header" + i },
-                    this.props.options[i]
-                ));
-            }
-            return header;
-        }
-    }, {
         key: "render",
         value: function render() {
             return React.createElement(
                 "div",
-                { onChange: this.handleChange },
+                { "class": "page-content-box likert", onChange: this.handleChange },
                 React.createElement(
                     "div",
-                    { className: "page-content-box" },
-                    React.createElement(
-                        "div",
-                        { className: "row" },
-                        this.createRow()
-                    ),
-                    React.createElement(
-                        "div",
-                        { className: "row" },
-                        this.createRowHeader()
-                    )
+                    { className: "row" },
+                    this.createRow()
                 )
             );
         }

@@ -41,32 +41,18 @@ label {
     display:table-cell;
 }
 
-.row:first-child {
-    float:left;
-}
-
 .row::after {
     content: <br/>;
 }
 
-.question {
-
-}
-
 .answer {
     display:block;
-    margin-top:auto;
-    margin-bottom:auto;
-    margin-left:auto;
-    margin-right:auto;
+    margin: auto;
 }
 
 .col-label {
     width:10%;
     text-align:right;
-}
-
-.col-input {
 }
 
 input[type=number].form-control {
@@ -75,10 +61,6 @@ input[type=number].form-control {
     color:black;
     border-radius: 4px;
 }
-
-/* input[type=number].form-control:focus {
-    color:blue;
-} */
 
 div.unboring-button {
     width:10em;
@@ -110,12 +92,6 @@ div.unboring-button.disabled:hover {
     border:solid lightgray;
 }
 
-.col-likert-header {
-    width:50px;
-    text-align:center;
-    font-family:monospace;
-}
-
 .col-likert-radio {
     width:50px;
     text-align:center;
@@ -125,6 +101,7 @@ div.unboring-button.disabled:hover {
     opacity:0.8;
     background-color:lightgray;
     padding:1em;
+    border-radius:4px;
 }
 
 .page {
@@ -140,7 +117,7 @@ div.red {
     background-color: var(--unboring-red);
 }
 
-input.red:focus {
+input.red:hover {
     color: var(--unboring-red);
 }
 
@@ -148,7 +125,7 @@ div.orange {
     background-color: var(--unboring-orange);
 }
 
-input.orange:focus {
+input.orange:hover {
     color: var(--unboring-orange);
 }
 
@@ -156,7 +133,7 @@ div.yellow {
     background-color: var(--unboring-yellow);
 }
 
-input.yellow:focus {
+input.yellow:hover {
     color: var(--unboring-yellow);
 }
 
@@ -172,7 +149,7 @@ div.blue {
     background-color: var(--unboring-blue);
 }
 
-input.blue:focus {
+input.blue:hover {
     color: var(--unboring-blue);
 }
 
@@ -180,7 +157,7 @@ div.indigo {
     background-color: var(--unboring-indigo);
 }
 
-input.indigo:focus {
+input.indigo:hover {
     color: var(--unboring-indigo);
 }
 
@@ -188,7 +165,7 @@ div.violet {
     background-color: var(--unboring-violet);
 }
 
-input.violet:focus {
+input.violet:hover {
     color: var(--unboring-violet);
 }
 
@@ -196,7 +173,7 @@ input.violet:focus {
     display:block;
     position:relative;
     padding-left: 35px;
-    margin-bottom: 12 px;
+    margin-bottom: 12px;
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -204,7 +181,18 @@ input.violet:focus {
     user-select: none;
 }
 
-.checkbox-container input {
+.radio-container {
+    display:block;
+    position:relative;
+    margin-bottom: 12px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.checkbox-container input, .radio-container input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -222,39 +210,54 @@ input.violet:focus {
     background-color: white;
 }
 
-.checkbox-container:hover input ~ .checkmark.red {
+.radio-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: white;
+    opacity: 100%;
+    border-radius: 50%;
+}
+
+.checkbox-container:hover input ~ .checkmark.red, .radio-container:hover input ~ .radio-indicator.red {
     background-color: var(--unboring-red);
 }
-.checkbox-container:hover input ~ .checkmark.orange {
+.checkbox-container:hover input ~ .checkmark.orange, .radio-container:hover input ~ .radio-indicator.orange {
     background-color: var(--unboring-orange);
 }
-.checkbox-container:hover input ~ .checkmark.yellow {
+.checkbox-container:hover input ~ .checkmark.yellow, .radio-container:hover input ~ .radio-indicator.yellow {
     background-color: var(--unboring-yellow);
 }
-.checkbox-container:hover input ~ .checkmark.green {
+.checkbox-container:hover input ~ .checkmark.green, .radio-container:hover input ~ .radio-indicator.green {
     background-color: var(--unboring-green);
 }
-.checkbox-container:hover input ~ .checkmark.blue {
+.checkbox-container:hover input ~ .checkmark.blue, .radio-container:hover input ~ .radio-indicator.blue {
     background-color: var(--unboring-blue);
 }
-.checkbox-container:hover input ~ .checkmark.indigo {
+.checkbox-container:hover input ~ .checkmark.indigo, .radio-container:hover input ~ .radio-indicator.indigo {
     background-color: var(--unboring-indigo);
 }
-.checkbox-container:hover input ~ .checkmark.violet {
+.checkbox-container:hover input ~ .checkmark.violet, .radio-container:hover input ~ .radio-indicator.violet {
     background-color: var(--unboring-violet);
 }
 
-.checkbox-container input:checked ~ .checkmark {
+.checkbox-container input:checked ~ .checkmark, .radio-container input:checked ~ .radio-indicator {
     background-color: white;
 }
 
-.checkmark:after {
+.checkmark:after, .radio-indicator:after {
     content: "";
     position: absolute;
     display: none;
 }
 
 .checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.radio-container input:checked ~ .radio-indicator:after {
     display: block;
 }
 
@@ -268,4 +271,13 @@ input.violet:focus {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.radio-container .radio-indicator:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: black;
 }

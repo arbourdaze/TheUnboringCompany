@@ -14,7 +14,10 @@ var Radio = function (_React$Component) {
   function Radio(props) {
     _classCallCheck(this, Radio);
 
-    return _possibleConstructorReturn(this, (Radio.__proto__ || Object.getPrototypeOf(Radio)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Radio.__proto__ || Object.getPrototypeOf(Radio)).call(this, props));
+
+    _this.randomColor = new RandomColor();
+    return _this;
   }
 
   _createClass(Radio, [{
@@ -22,8 +25,14 @@ var Radio = function (_React$Component) {
     value: function render() {
       return React.createElement(
         "div",
-        { className: "col col-likert-radio radio" },
-        React.createElement("input", { name: this.props.name, type: "radio", value: this.props.val, checked: this.props.ticked })
+        { className: "col col-likert-radio" },
+        React.createElement(
+          "label",
+          { className: "radio-container" },
+          this.props.val,
+          React.createElement("input", { type: "checkbox", name: this.props.name, value: this.props.val, checked: this.props.ticked }),
+          React.createElement("span", { className: "radio-indicator " + this.randomColor.getColor() })
+        )
       );
     }
   }]);
