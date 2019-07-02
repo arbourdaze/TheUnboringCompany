@@ -45,6 +45,15 @@ class Account:
 
     def naiveBayes(self):
         
+        """
+        1. Get Relevant Attributes
+        2. Discretize or "Gaussianize" attributes
+        3. Use processed results to calculate probalities
+        4. Store/Update Probabilities in User File
+        """
+
+    #Using the new data, updates the probabilities
+    def updateProbs(self, sels, rejs):
 
         
 
