@@ -72,6 +72,7 @@ class BoredForm extends React.Component {
             },
             pageIndex: 0,
             submitted: false,
+            fedback: false,
             results: [],
             feedback: {
                 liked: new Set(),
@@ -84,6 +85,7 @@ class BoredForm extends React.Component {
         this.changePersonality = this.changePersonality.bind(this);
         this.changeActivity = this.changeActivity.bind(this);
         this.changeFeedback = this.changeFeedback.bind(this);
+        this.submitFeedback = this.submitFeedback.bind(this);
         
         this.nextPage = this.nextPage.bind(this);
         this.previousPage = this.previousPage.bind(this);
@@ -91,6 +93,7 @@ class BoredForm extends React.Component {
         this.canGoPrevious = this.canGoPrevious.bind(this);
         
         this.timeIsValid = this.timeIsValid.bind(this);
+        this.validateFeedback = this.validateFeedback.bind(this);
 
         this.getTimeDOM = this.getTimeDOM.bind(this);
         this.getPersonalityDOM = this.getPersonalityDOM.bind(this);
@@ -214,6 +217,7 @@ class BoredForm extends React.Component {
             
             Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
             Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
+            data.Personality = this.state.data.personality;
             let json = JSON.stringify(data);
             console.log(json);
             let that = this;
@@ -260,24 +264,63 @@ class BoredForm extends React.Component {
         this.setState({pageIndex: 0});
     }
     
+    validateFeedback() {
+        let total = this.state.feedback.liked.size + this.state.feedback.disliked.size;
+        return total == this.state.results.length;
+    }
+    
+    submitFeedback() {
+        let json = this.state.data.feedback;
+        function successCallback(res) {
+            
+        }
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/feedback',
+            data: JSON.stringify(json),
+            dataType: 'json',
+            success: function (res) {
+                successCallback(res, that);
+            },
+            error: function () {
+                if (debug) {
+                    console.log('error');
+                }
+            }
+        });
+    }
+    
     render() {
-        if (this.state.submitted) {
+        if (this.state.fedback) {
             return (
-                <Results goBack={this.goBack} results={this.state.results} updateForm={this.changeFeedback} />
+                <div className="page">
+                    <Selections selections={this.state.feedback.liked} />
+                </div>
+            );
+        } else if (this.state.submitted) {
+            return (
+                <div>
+                    <div className="page">
+                        <Results goBack={this.goBack} results={this.state.results} updateForm={this.changeFeedback} />
+                    </div>
+                    <UnboringButton callback={this.submitFeedback} enabler={this.validateFeedback} classes="submit" buttonText="Submit" />
+                </div>
+            );
+        } else {
+            return (
+                <div className="form">
+                    <div className="page">
+                        {this.pages[this.state.pageIndex]()}
+                    </div>
+                    <div className="button-pad">
+                        <UnboringButton callback={this.previousPage} enabler={this.canGoPrevious} classes="previous" buttonText="Previous" />
+                        <UnboringButton callback={this.nextPage} enabler={this.canGoNext} classes="next" buttonText="Next" />
+                        <UnboringButton callback={this.send} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
+                    </div>
+                </div>
             );
         }
-        return (
-            <div className="form">
-                <div className="page">
-                    {this.pages[this.state.pageIndex]()}
-                </div>
-                <div className="button-pad">
-                    <UnboringButton callback={this.previousPage} enabler={this.canGoPrevious} classes="previous" buttonText="Previous" />
-                    <UnboringButton callback={this.nextPage} enabler={this.canGoNext} classes="next" buttonText="Next" />
-                    <UnboringButton callback={this.send} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
-                </div>
-            </div>
-        );
     }
 }
 

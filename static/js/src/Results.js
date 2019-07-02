@@ -29,11 +29,6 @@ class Results extends React.Component {
             }
             case "0": {
                 newLiked.delete(id);
-                newDisliked.delete(id);
-                break;
-            }
-            case "-1": {
-                newLiked.delete(id);
                 newDisliked.add(id);
                 break;
             }
@@ -60,7 +55,6 @@ class Results extends React.Component {
         return (
             <div>
                 {this.createRows()}
-                <button type="button" onClick={this.handleBackButton}>No, try again</button>
             </div>
         );
     }

@@ -68,7 +68,9 @@ class Activity extends React.Component {
     return (
         <div>
             <h2 className="question">Do you like {this.state.name.toLowerCase()}?</h2>
-            <Likert score={this.state.like} updateForm={this.changeLike} labels={this.labels} options={this.labels} category={this.state.name} />
+            <div className="page-content-box">
+                <Likert score={this.state.like} updateForm={this.changeLike} labels={this.labels} options={this.labels} category={this.state.name} />
+            </div>
             <br/>
             {(this.state.like == "Yes" || this.state.like == "Maybe") && 
                 <div className="page-content-box">

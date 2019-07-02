@@ -52,6 +52,7 @@ var BoredForm = function (_React$Component) {
             },
             pageIndex: 0,
             submitted: false,
+            fedback: false,
             results: [],
             feedback: {
                 liked: new Set(),
@@ -64,6 +65,7 @@ var BoredForm = function (_React$Component) {
         _this.changePersonality = _this.changePersonality.bind(_this);
         _this.changeActivity = _this.changeActivity.bind(_this);
         _this.changeFeedback = _this.changeFeedback.bind(_this);
+        _this.submitFeedback = _this.submitFeedback.bind(_this);
 
         _this.nextPage = _this.nextPage.bind(_this);
         _this.previousPage = _this.previousPage.bind(_this);
@@ -71,6 +73,7 @@ var BoredForm = function (_React$Component) {
         _this.canGoPrevious = _this.canGoPrevious.bind(_this);
 
         _this.timeIsValid = _this.timeIsValid.bind(_this);
+        _this.validateFeedback = _this.validateFeedback.bind(_this);
 
         _this.getTimeDOM = _this.getTimeDOM.bind(_this);
         _this.getPersonalityDOM = _this.getPersonalityDOM.bind(_this);
@@ -210,9 +213,10 @@ var BoredForm = function (_React$Component) {
 
                 Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
                 Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
+                data.Personality = this.state.data.personality;
                 var json = JSON.stringify(data);
                 console.log(json);
-                var that = this;
+                var _that = this;
 
                 $.ajax({
                     type: 'POST',
@@ -221,7 +225,7 @@ var BoredForm = function (_React$Component) {
                     data: json,
                     dataType: 'json',
                     success: function success(res) {
-                        successCallback(res, that);
+                        successCallback(res, _that);
                     },
                     error: function error() {
                         if (debug) {
@@ -258,27 +262,70 @@ var BoredForm = function (_React$Component) {
             this.setState({ pageIndex: 0 });
         }
     }, {
+        key: 'validateFeedback',
+        value: function validateFeedback() {
+            var total = this.state.feedback.liked.size + this.state.feedback.disliked.size;
+            return total == this.state.results.length;
+        }
+    }, {
+        key: 'submitFeedback',
+        value: function submitFeedback() {
+            var json = this.state.data.feedback;
+            function successCallback(res) {}
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/feedback',
+                data: JSON.stringify(json),
+                dataType: 'json',
+                success: function success(res) {
+                    successCallback(res, that);
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            if (this.state.submitted) {
-                return React.createElement(Results, { goBack: this.goBack, results: this.state.results, updateForm: this.changeFeedback });
-            }
-            return React.createElement(
-                'div',
-                { className: 'form' },
-                React.createElement(
+            if (this.state.fedback) {
+                return React.createElement(
                     'div',
                     { className: 'page' },
-                    this.pages[this.state.pageIndex]()
-                ),
-                React.createElement(
+                    React.createElement(Selections, { selections: this.state.feedback.liked })
+                );
+            } else if (this.state.submitted) {
+                return React.createElement(
                     'div',
-                    { className: 'button-pad' },
-                    React.createElement(UnboringButton, { callback: this.previousPage, enabler: this.canGoPrevious, classes: 'previous', buttonText: 'Previous' }),
-                    React.createElement(UnboringButton, { callback: this.nextPage, enabler: this.canGoNext, classes: 'next', buttonText: 'Next' }),
-                    React.createElement(UnboringButton, { callback: this.send, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' })
-                )
-            );
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'page' },
+                        React.createElement(Results, { goBack: this.goBack, results: this.state.results, updateForm: this.changeFeedback })
+                    ),
+                    React.createElement(UnboringButton, { callback: this.submitFeedback, enabler: this.validateFeedback, classes: 'submit', buttonText: 'Submit' })
+                );
+            } else {
+                return React.createElement(
+                    'div',
+                    { className: 'form' },
+                    React.createElement(
+                        'div',
+                        { className: 'page' },
+                        this.pages[this.state.pageIndex]()
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'button-pad' },
+                        React.createElement(UnboringButton, { callback: this.previousPage, enabler: this.canGoPrevious, classes: 'previous', buttonText: 'Previous' }),
+                        React.createElement(UnboringButton, { callback: this.nextPage, enabler: this.canGoNext, classes: 'next', buttonText: 'Next' }),
+                        React.createElement(UnboringButton, { callback: this.send, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' })
+                    )
+                );
+            }
         }
     }]);
 

@@ -94,7 +94,11 @@ var Activity = function (_React$Component) {
                     this.state.name.toLowerCase(),
                     "?"
                 ),
-                React.createElement(Likert, { score: this.state.like, updateForm: this.changeLike, labels: this.labels, options: this.labels, category: this.state.name }),
+                React.createElement(
+                    "div",
+                    { className: "page-content-box" },
+                    React.createElement(Likert, { score: this.state.like, updateForm: this.changeLike, labels: this.labels, options: this.labels, category: this.state.name })
+                ),
                 React.createElement("br", null),
                 (this.state.like == "Yes" || this.state.like == "Maybe") && React.createElement(
                     "div",

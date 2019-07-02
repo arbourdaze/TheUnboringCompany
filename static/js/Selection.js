@@ -8,32 +8,20 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Result = function (_React$Component) {
-    _inherits(Result, _React$Component);
+var Selection = function (_React$Component) {
+    _inherits(Selection, _React$Component);
 
-    function Result(props) {
-        _classCallCheck(this, Result);
+    function Selection(props) {
+        _classCallCheck(this, Selection);
 
-        var _this = _possibleConstructorReturn(this, (Result.__proto__ || Object.getPrototypeOf(Result)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Selection.__proto__ || Object.getPrototypeOf(Selection)).call(this, props));
 
-        _this.state = {
-            score: null
-        };
-        _this.labels = ["Sounds fun!", "Sounds boring."];
-        _this.options = [1, 0];
         var randomColor = new RandomColor();
         _this.color = randomColor.getColor();
-        _this.handleChange = _this.handleChange.bind(_this);
         return _this;
     }
 
-    _createClass(Result, [{
-        key: "handleChange",
-        value: function handleChange(category, choice) {
-            this.state.score = choice;
-            this.props.updateForm(this.props.id, this.state.score);
-        }
-    }, {
+    _createClass(Selection, [{
         key: "render",
         value: function render() {
             return React.createElement(
@@ -52,15 +40,10 @@ var Result = function (_React$Component) {
                         { className: "col" },
                         this.props.description
                     )
-                ),
-                React.createElement(
-                    "div",
-                    { className: "row" },
-                    React.createElement(Likert, { score: this.state.score, updateForm: this.handleChange, labels: this.labels, options: this.options, category: 'result' + this.props.id })
                 )
             );
         }
     }]);
 
-    return Result;
+    return Selection;
 }(React.Component);

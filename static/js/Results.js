@@ -47,12 +47,6 @@ var Results = function (_React$Component) {
                 case "0":
                     {
                         newLiked.delete(id);
-                        newDisliked.delete(id);
-                        break;
-                    }
-                case "-1":
-                    {
-                        newLiked.delete(id);
                         newDisliked.add(id);
                         break;
                     }
@@ -82,12 +76,7 @@ var Results = function (_React$Component) {
             return React.createElement(
                 "div",
                 null,
-                this.createRows(),
-                React.createElement(
-                    "button",
-                    { type: "button", onClick: this.handleBackButton },
-                    "No, try again"
-                )
+                this.createRows()
             );
         }
     }]);

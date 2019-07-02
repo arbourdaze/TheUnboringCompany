@@ -1,11 +1,11 @@
 :root {
-    --unboring-red: red;
-    --unboring-orange: orange;
-    --unboring-yellow: yellow;
-    --unboring-green: green;
-    --unboring-blue: blue;
-    --unboring-indigo: purple;
-    --unboring-violet: pink;
+    --unboring-red: lightcoral;
+    --unboring-orange: lightsalmon;
+    --unboring-yellow: palegoldenrod;
+    --unboring-green: lightgreen;
+    --unboring-blue: lightblue;
+    --unboring-indigo: plum;
+    --unboring-violet: lightpink;
 }
 
 body {
@@ -29,6 +29,7 @@ label {
 
 .page {
     margin:1em;
+    padding-bottom:7em;
 }
 
 .row {
@@ -98,7 +99,7 @@ div.unboring-button.disabled:hover {
 }
 
 .page-content-box {
-    opacity:0.8;
+    opacity:0.85;
     background-color:lightgray;
     padding:1em;
     border-radius:4px;
@@ -108,65 +109,37 @@ div.unboring-button.disabled:hover {
     margin:auto;
 }
 
-.result-row {
+.result {
     margin-top:1em;
     margin-bottom:1em;
 }
 
-div.red {
+div.red, input.red:hover {
     background-color: var(--unboring-red);
 }
 
-input.red:hover {
-    color: var(--unboring-red);
-}
-
-div.orange {
+div.orange, input.orange:hover {
     background-color: var(--unboring-orange);
 }
 
-input.orange:hover {
-    color: var(--unboring-orange);
-}
-
-div.yellow {
+div.yellow, input.yellow:hover {
     background-color: var(--unboring-yellow);
 }
 
-input.yellow:hover {
-    color: var(--unboring-yellow);
-}
-
-div.green {
+div.green, input.green:hover {
     background-color: var(--unboring-green);
 }
 
-input.green:focus {
-    color: var(--unboring-green);
-}
-
-div.blue {
+div.blue, input.blue:hover {
     background-color: var(--unboring-blue);
 }
 
-input.blue:hover {
-    color: var(--unboring-blue);
-}
-
-div.indigo {
+div.indigo, input.indigo:hover {
     background-color: var(--unboring-indigo);
 }
 
-input.indigo:hover {
-    color: var(--unboring-indigo);
-}
-
-div.violet {
+div.violet, input.violet:hover {
     background-color: var(--unboring-violet);
-}
-
-input.violet:hover {
-    color: var(--unboring-violet);
 }
 
 .checkbox-container {

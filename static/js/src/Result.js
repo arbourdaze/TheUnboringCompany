@@ -7,8 +7,8 @@ class Result extends React.Component {
         this.state = {
             score: null
         };
-        this.labels = ["Sounds fun!", "Maybe later.", "Sounds boring."];
-        this.options = [1,0,-1];
+        this.labels = ["Sounds fun!", "Sounds boring."];
+        this.options = [1,0];
         let randomColor = new RandomColor();
         this.color = randomColor.getColor();
         this.handleChange = this.handleChange.bind(this);

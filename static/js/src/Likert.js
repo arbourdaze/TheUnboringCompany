@@ -33,7 +33,7 @@ class Likert extends React.Component {
   
   render() {
     return (
-        <div class="page-content-box likert" onChange={this.handleChange}>
+        <div class="likert" onChange={this.handleChange}>
             <div className="row">
                 {this.createRow()}
             </div>
