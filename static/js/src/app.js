@@ -72,13 +72,18 @@ class BoredForm extends React.Component {
             },
             pageIndex: 0,
             submitted: false,
-            results: []
+            results: [],
+            feedback: {
+                liked: new Set(),
+                disliked: new Set()
+            }
         };
 
         this.reassignData = this.reassignData.bind(this);
         this.changeTime = this.changeTime.bind(this);
         this.changePersonality = this.changePersonality.bind(this);
         this.changeActivity = this.changeActivity.bind(this);
+        this.changeFeedback = this.changeFeedback.bind(this);
         
         this.nextPage = this.nextPage.bind(this);
         this.previousPage = this.previousPage.bind(this);
@@ -136,6 +141,15 @@ class BoredForm extends React.Component {
         newActivities[activity.name.toLowerCase()] = activity;
         let newData = Object.assign({}, this.state.data, {activities: newActivities});
         this.reassignData(newData);
+    }
+    
+    changeFeedback(value) {
+        console.log(value);
+        this.setState({feedback: value}, function() {
+            if (debug) {
+                console.log(this.state);
+            }
+        });
     }
     
     reassignData(newData) {
@@ -249,7 +263,7 @@ class BoredForm extends React.Component {
     render() {
         if (this.state.submitted) {
             return (
-                <Results goBack={this.goBack} results={this.state.results} />
+                <Results goBack={this.goBack} results={this.state.results} updateForm={this.changeFeedback} />
             );
         }
         return (

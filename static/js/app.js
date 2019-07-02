@@ -52,13 +52,18 @@ var BoredForm = function (_React$Component) {
             },
             pageIndex: 0,
             submitted: false,
-            results: []
+            results: [],
+            feedback: {
+                liked: new Set(),
+                disliked: new Set()
+            }
         };
 
         _this.reassignData = _this.reassignData.bind(_this);
         _this.changeTime = _this.changeTime.bind(_this);
         _this.changePersonality = _this.changePersonality.bind(_this);
         _this.changeActivity = _this.changeActivity.bind(_this);
+        _this.changeFeedback = _this.changeFeedback.bind(_this);
 
         _this.nextPage = _this.nextPage.bind(_this);
         _this.previousPage = _this.previousPage.bind(_this);
@@ -126,6 +131,16 @@ var BoredForm = function (_React$Component) {
             newActivities[activity.name.toLowerCase()] = activity;
             var newData = Object.assign({}, this.state.data, { activities: newActivities });
             this.reassignData(newData);
+        }
+    }, {
+        key: 'changeFeedback',
+        value: function changeFeedback(value) {
+            console.log(value);
+            this.setState({ feedback: value }, function () {
+                if (debug) {
+                    console.log(this.state);
+                }
+            });
         }
     }, {
         key: 'reassignData',
@@ -246,7 +261,7 @@ var BoredForm = function (_React$Component) {
         key: 'render',
         value: function render() {
             if (this.state.submitted) {
-                return React.createElement(Results, { goBack: this.goBack, results: this.state.results });
+                return React.createElement(Results, { goBack: this.goBack, results: this.state.results, updateForm: this.changeFeedback });
             }
             return React.createElement(
                 'div',
