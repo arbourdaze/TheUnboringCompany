@@ -4,23 +4,32 @@ import json
 import config as cf
 import secrets
 import sys
+import nltk
+import gensis
+from sklearn.naive_bayes import GaussianNB
 
-class Account:
+MIN_DATA_REQUIRED = 5
+FILE = ""
 
-    username = ""
-    password = ""
+class Bayes:
+
     selections = []
     rejections = []
+    model = GaussianNB()
+    file = ""
 
-    def __init__ (self, username, password):
-        self.username = username
-        self.password = password
+    def __init__ (self, filename):
+        #TODO: Write save and load data functions
+        self.file = filename
+        self.loadData()
+        if self.countData():
+            self.updateProbs()
 
-    def updateUsername(self, newName):
-        self.username = newName
+    def saveData(self):
+        #Write Data to file filename
 
-    def updatePassword(self, newPass):
-        self.password = newPass
+    def loadData(self):
+        #Read data from file filename into selections and rejections accordingly
 
     def addSelections(self, items):
         if type(items) is list:
@@ -35,38 +44,41 @@ class Account:
             self.rejections.append(items)
 
     def countData(self):
-        if len(self.selections) < MIN_DATA_REQUIRED and len(self.rejections) < MIN_DATA_REQUIRED:
+        if len(self.selections) < MIN_DATA_REQUIRED or len(self.rejections) < MIN_DATA_REQUIRED:
             return False
         else:
             return True
 
-    def naiveBayes(self):
+    def vectorizeItems(self):
+
+
+    #results is an array-like structure of discovery results
+    def naiveBayes(self, results):
         
-        """
-        1. Get Relevant Attributes
-        2. Discretize or "Gaussianize" attributes
-        3. Use processed results to calculate probalities
-        4. Store/Update Probabilities in User File
-        """
+        vec = self.vectorizeItems(results)
+
+        return self.predict(vec)
+
 
     #Using the new data, updates the probabilities
-    def updateProbs(self, sels, rejs):
+    def updateProbs(self):
 
-        
+        selectVec, rejectVec = self.vectorizeItems()
 
-def createAccount(username, password):
-    account = Account(username, password)
-    """
-    TODO: Write info to file
-    Username
-    Password
-    Selections
-    Rejections
-    Naive Bayes Metadata
-    """
+        self.model.fit([selectVec, rejectVec], [1 for _ in range(len(selectVec)), 0 for _ in range(len(rejectVec))])
 
+
+def getFeedback(selections, rejections):
+    bayes = Bayes(FILE)
+    bayes.addSelections(selections)
+    bayes.addRejections(rejections)
+    bayes.saveData()
 
 def middleware(responses, mood):
+
+    #Initialize bayes object and load in file
+    bayes = Bayes(FILE)
+
 
     discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
@@ -91,6 +103,10 @@ def middleware(responses, mood):
 
         time_filter(res, timeLimit, correctList)
 
+    #Run naive bayes
+    if bayes.countData():
+        #Perform Naive Bayes
+        correctList = bayes.naiveBayes(correctList)
 
     #Convert json objects into something not terrible for reading
     return get_response(correctList)
