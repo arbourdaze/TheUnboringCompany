@@ -104,9 +104,11 @@ class BoredForm extends React.Component {
         this.pages = [this.getTimeDOM, this.getPersonalityDOM, this.getMovies, this.getCooking];
         
         this.transformActivityData = this.transformActivityData.bind(this);
+        this.transformFeedback = this.transformFeedback.bind(this);
         
         this.goBack = this.goBack.bind(this);
         this.send = this.send.bind(this);
+        this.gatherData = this.gatherData.bind(this);
     }
     
     getTimeDOM() {
@@ -200,27 +202,35 @@ class BoredForm extends React.Component {
         (time.minutes >= 0 && time.minutes <= 59);
     }
     
+    gatherData() {
+        let data = {
+            Time: {
+                hours: this.state.data.time.hours,
+                minutes: this.state.data.time.minutes
+            },
+            Topics: ["Movies", "Cooking"],
+        };
+        
+        Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
+        Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
+        data.Personality = this.state.data.personality;
+        return data;
+    }
+    
     send() {
         if (this.timeIsValid()) {
-            let data = {
-                Time: {
-                    hours: this.state.data.time.hours,
-                    minutes: this.state.data.time.minutes
-                },
-                Topics: ["Movies", "Cooking"],
-            };
-            
+            let data = this.gatherData();
+            let json = JSON.stringify(data);
+            let that = this;
+
             function successCallback(res, that) {
                 that.setState({submitted: true});
                 that.setState({results: res});
             }
-            
-            Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
-            Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
-            data.Personality = this.state.data.personality;
-            let json = JSON.stringify(data);
-            console.log(json);
-            let that = this;
+
+            if (debug) {
+                console.log(json);
+            }
 
             $.ajax({
                 type: 'POST',
@@ -258,6 +268,21 @@ class BoredForm extends React.Component {
         return data;
     }
     
+    transformFeedback() {
+        let data = {};
+        let liked = [];
+        let disliked = [];
+        this.state.feedback.liked.forEach(function(opt) {
+            liked.push(opt);
+        }
+        this.state.feedback.disliked.forEach(function(opt) {
+            disliked.push(opt);
+        }
+        data.Liked = liked;
+        data.Disliked = disliked;
+        return data;
+    }
+    
     goBack() {
         this.setState({results: []});
         this.setState({submitted: false});
@@ -270,10 +295,14 @@ class BoredForm extends React.Component {
     }
     
     submitFeedback() {
-        let json = this.state.data.feedback;
+        let data {}
+        data.Feedback = this.transformFeedback();
+        let json = JSON.stringify(data);
+        
         function successCallback(res) {
             
         }
+        
         $.ajax({
             type: 'POST',
             contentType: 'application/json',

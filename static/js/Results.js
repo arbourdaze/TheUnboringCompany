@@ -76,6 +76,11 @@ var Results = function (_React$Component) {
             return React.createElement(
                 "div",
                 null,
+                React.createElement(
+                    "h2",
+                    { className: "question" },
+                    "How do you feel about the following?"
+                ),
                 this.createRows()
             );
         }

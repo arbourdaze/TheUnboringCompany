@@ -87,6 +87,7 @@ var BoredForm = function (_React$Component) {
 
         _this.goBack = _this.goBack.bind(_this);
         _this.send = _this.send.bind(_this);
+        _this.gatherData = _this.gatherData.bind(_this);
         return _this;
     }
 
@@ -195,6 +196,26 @@ var BoredForm = function (_React$Component) {
             return (time.hours > 0 || time.minutes > 0) && time.hours >= 0 && time.hours <= 12 && time.minutes >= 0 && time.minutes <= 59;
         }
     }, {
+        key: 'gatherData',
+        value: function gatherData() {
+            var data = {
+                Time: {
+                    hours: this.state.data.time.hours,
+                    minutes: this.state.data.time.minutes
+                },
+                Topics: ["Movies", "Cooking"]
+            };
+
+            Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
+            Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
+            data.Personality = this.state.data.personality;
+            var json = JSON.stringify(data);
+            if (debug) {
+                console.log(json);
+            }
+            return json;
+        }
+    }, {
         key: 'send',
         value: function send() {
             if (this.timeIsValid()) {
@@ -203,19 +224,7 @@ var BoredForm = function (_React$Component) {
                     that.setState({ results: res });
                 };
 
-                var data = {
-                    Time: {
-                        hours: this.state.data.time.hours,
-                        minutes: this.state.data.time.minutes
-                    },
-                    Topics: ["Movies", "Cooking"]
-                };
-
-                Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
-                Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
-                data.Personality = this.state.data.personality;
-                var json = JSON.stringify(data);
-                console.log(json);
+                var json = this.gatherData();
                 var _that = this;
 
                 $.ajax({

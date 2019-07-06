@@ -54,6 +54,7 @@ class Results extends React.Component {
     render() {
         return (
             <div>
+                <h2 className="question">How do you feel about the following?</h2>
                 {this.createRows()}
             </div>
         );
