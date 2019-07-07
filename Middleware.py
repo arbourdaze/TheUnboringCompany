@@ -7,41 +7,83 @@ import sys
 import nltk
 import gensis
 from sklearn.naive_bayes import GaussianNB
+import vectorize
 
 MIN_DATA_REQUIRED = 5
-FILE = ""
+SEL_FILE = ""
+REJ_FILE = ""
+WORD_BANK_FILE = ""
+
+"""
+Activity JSON object
+{
+    ID: ""
+    Type: ""
+    Title: ""
+    BayesDescription: ""
+    Name: ""
+    Description: ""
+    Category: {0 --none, 1 --rejected, 2 -- selected}
+}
+"""
 
 class Bayes:
 
     selections = []
     rejections = []
     model = GaussianNB()
-    file = ""
+    selectionFile = ""
+    rejectionFile = ""
+    wordBankFile = ""
+    wordBank = []
 
-    def __init__ (self, filename):
+    def __init__ (self):
         #TODO: Write save and load data functions
-        self.file = filename
+        selectionFile = SEL_FILE
+        rejectionFile = REJ_FILE
+        wordBankFile = WORD_BANK_FILE
         self.loadData()
         if self.countData():
-            self.updateProbs()
+            self.fitData()
 
-    def saveData(self):
+    def saveData(self, feedback):
         #Write Data to file filename
+        #selectFile = open(SEL_FILE,"a")
+        #rejectFile = open(REJ_FILE,"a")
+        responseData = json.loads(feedback)
+        with open(SEL_FILE) as f
+            selectionData = json.load(f)
+
+        with open(REJ_FILE) as g
+            rejectionData = json.load(g)
+
+        for key in data.items():
+            if key["Category"] == 1:
+                rejectionData.update(key)
+            elif key["Category"] == 2:
+                selectionData.update(key)
+            else:
+                #donothing
+
+        with open(SEL_FILE, 'w') as a
+            json.dump(selectionData, a)
+
+        with open(REJ_FILE, 'w') as b
+            json.dump(rejectionData, b)
 
     def loadData(self):
         #Read data from file filename into selections and rejections accordingly
+        with open(SEL_FILE) as a
+            selectionData = json.load(a)
 
-    def addSelections(self, items):
-        if type(items) is list:
-            self.selections.extend(items)
-        else:
-            self.selections.append(items)
+        for key in selectionData.items():
+            selections.append(key)
 
-    def addRejections(self, items):
-        if type(items) is list:
-            self.rejections.extend(items)
-        else:
-            self.rejections.append(items)
+        with open(REJ_FILE) as b
+            rejectionData = json.load(b)
+
+        for key in rejectionData.items():
+            rejections.append(key)
 
     def countData(self):
         if len(self.selections) < MIN_DATA_REQUIRED or len(self.rejections) < MIN_DATA_REQUIRED:
@@ -49,36 +91,38 @@ class Bayes:
         else:
             return True
 
-    def vectorizeItems(self):
+    def parseItems(self, data):
+        vecs, words = vectorize.parse(data)
+        for word in words:
+            if word not in self.wordBank:
+                self.wordBank.append(word)
+        return vecs
 
+    def vectorizeItems(self, data):
+        return vectorize.vectorize(data)
 
     #results is an array-like structure of discovery results
-    def naiveBayes(self, results):
-
-        vec = self.vectorizeItems(results)
+    def getPredictions(self, results):
+        vec = parseItems(results)
+        vec = vectorizeItem(vec)
 
         return self.predict(vec)
 
-
     #Using the new data, updates the probabilities
-    def updateProbs(self):
+    def fitData(self):
+        vectorizedData = vectorizeItems(self.selections.extend(self.rejections))
 
-        selectVec, rejectVec = self.vectorizeItems()
+        self.model.fit(vectorizedData.keys(), vectorizedData.values())
 
-        self.model.fit([selectVec, rejectVec], [1 for _ in range(len(selectVec)), 0 for _ in range(len(rejectVec))])
-
-
-def getFeedback(selections, rejections):
-    bayes = Bayes(FILE)
-    bayes.addSelections(selections)
-    bayes.addRejections(rejections)
-    bayes.saveData()
+def getFeedback(feedback):
+    bayes = Bayes()
+    bayes.saveData(feedback)
 
 def middleware(responses, mood):
 
-    #Initialize bayes object and load in file
-    bayes = Bayes(FILE)
-
+    #Initialize bayes object and load in files
+    bayes = Bayes()
+    bayes.loadData();
 
     discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
@@ -106,6 +150,7 @@ def middleware(responses, mood):
     #Run naive bayes
     if bayes.countData():
         #Perform Naive Bayes
+        bayes.
         correctList = bayes.naiveBayes(correctList)
 
     #Convert json objects into something not terrible for reading
@@ -147,6 +192,11 @@ def get_minutes(data):
 #[{"Name":Name, "Description":Description}, {"Name":Name, "Description":Description}, ...]
 def get_response(responses):
     activities = []
+    type = ""
+    title = ""
+    bayesDescription = ""
+    name = ""
+    description = ""
 
     for result in responses:
         if "Movie" in result["extracted_metadata"]["filename"]:
@@ -154,18 +204,22 @@ def get_response(responses):
             year = result["Year"]
             runtime = result["Runtime"]
             genre = result["Genre"]
-            summary = result["Summary"]
+            bayesDescription = result["Description"]
+
+            type = "Movie"
 
             name = "Movie: " + title
-            description = year + "; " + runtime + " minutes; " + genre + ";\n" + summary
+            description = year + "; " + runtime + " minutes; " + genre + ";\n" + bayesDescription
 
         elif "recipe" in result["extracted_metadata"]["filename"]:
-            recipe = result["name"]
+            title = result["Title"]
             preptime = str(int(result["preptime"]) + int(result["cooktime"]) + int(result["waittime"]))
             servings = str(result["servings"])
             calories = str(result["calories"])
             ingredients = ', '.join(result["ingredients"])
-            instructions = result["instructions"]
+            bayesDescription = result["instructions"]
+
+            type = "Recipe"
 
             name = "Recipe: " + recipe
             description = ("Preptime: " + preptime + "; Servings: "
@@ -174,28 +228,34 @@ def get_response(responses):
 
         elif "joke" in result["extracted_metadata"]["filename"]:
             title = result["title"]
-            body = result["body"]
+            bayesDescription = result["Description"]
+
+            type = "Joke"
 
             name = "Joke: " + title
-            description = body
+            description = bayesDescription
 
         elif "Game" in result["extracted_metadata"]["filename"]:
             title = result["Title"]
             genre = result["Genre"]
-            summary = result["Summary"]
+            bayesDescription = result["Description"]
+
+            type = "Game"
 
             name = "Game: " + title
-            description = "Genre: " + genre + ";\nSummary: " + summary
+            description = "Genre: " + genre + ";\nSummary: " + bayesDescription
 
         elif "riddle" in result["extracted_metadata"]["filename"]:
-            answer = result["Answer"]
-            riddle = result["riddle"]
+            bayesDescription = result["Description"]
+            title = result["Title"]
 
-            name = "Riddle: " + riddle
-            description = "Answer: " + answer
+            type = "Riddle"
 
+            name = "Riddle: " + title
+            description = "Answer: " + description
 
-        activity = {"Name":name, "Description":description}
+        category = 0
+        activity = {Type":type, "Title":title, "BayesDescription":bayesDescription,"Name":name, "Description":description, "Category":category}
         activity = json.dumps(activity)
         activity = json.loads(activity)
         activities.append(activity)
