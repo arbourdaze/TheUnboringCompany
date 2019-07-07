@@ -4,59 +4,44 @@ class Likert extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        choice: null
-    }
+        val: this.props.val
+    };
+    this.options = this.props.options;
+    this.labels = this.props.labels;
     this.handleChange = this.handleChange.bind(this);
+    this.createRow = this.createRow.bind(this);
   }
   
-  handleChange(event) {
-      this.setState({ choice: event.target.value }, function () {
-          this.props.updateForm(this.state.choice);
-      });
+  handleChange(value, checked) {
+      if (checked) {
+          this.state.val = value;
+      }
+      this.props.updateForm(this.props.name, this.state.val);
   }
 
   createRow() {
       let row = [];
-      for (let i = 0; i < this.props.options.length; i++) {
+      for (let i = 0; i < this.options.length; i++) {
         row.push(
             <Radio
-                key={this.props.category + "-likert-radio" + i}
-                name={"like-" + this.props.category}
-                val={this.props.options[i]}
-                ticked={this.props.score == this.props.options[i]}
+                key={"like-" + this.props.name + i}
+                name={"like-" + this.props.name}
+                label={this.labels[i]}
+                val={this.options[i]}
+                checked={this.state.val === this.options[i]}
+                updateForm={this.handleChange}
             />
-        );  
+        );
       }
       return row;
   }
   
-  createRowHeader() {
-      let header = [];
-      for (let i = 0; i < this.props.options.length; i++) {
-        header.push(
-            <th key={this.props.category + "-likert-header" + i}>
-                {this.props.options[i]}
-            </th>
-        );
-      }
-      return header;
-  }
-  
   render() {
     return (
-        <div onChange={this.handleChange}>
-            <table>
-                <tbody>
-                    <tr>
-                    {this.createRow()}
-                    </tr>
-                </tbody>
-                <tbody>
-                    <tr>
-                    {this.createRowHeader()}
-                    </tr>
-                </tbody>
-            </table>
+        <div className="likert">
+            <div className="row">
+                {this.createRow()}
+            </div>
         </div>
     );
   }

@@ -14,24 +14,49 @@ var Result = function (_React$Component) {
     function Result(props) {
         _classCallCheck(this, Result);
 
-        return _possibleConstructorReturn(this, (Result.__proto__ || Object.getPrototypeOf(Result)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Result.__proto__ || Object.getPrototypeOf(Result)).call(this, props));
+
+        _this.state = {
+            score: null
+        };
+        _this.labels = ["Sounds fun!", "Sounds boring."];
+        _this.options = [1, 0];
+        var randomColor = new RandomColor();
+        _this.color = randomColor.getColor();
+        _this.handleChange = _this.handleChange.bind(_this);
+        return _this;
     }
 
     _createClass(Result, [{
-        key: 'render',
+        key: "handleChange",
+        value: function handleChange(category, choice) {
+            this.state.score = choice;
+            this.props.updateForm(this.props.id, this.state.score);
+        }
+    }, {
+        key: "render",
         value: function render() {
             return React.createElement(
-                'tr',
-                null,
+                "div",
+                { className: "page-content-box result " + this.color },
                 React.createElement(
-                    'td',
-                    null,
-                    this.props.name
+                    "div",
+                    { className: "row" },
+                    React.createElement(
+                        "div",
+                        { className: "col" },
+                        this.props.name
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: "col" },
+                        this.props.description
+                    )
                 ),
                 React.createElement(
-                    'td',
-                    null,
-                    this.props.description
+                    "div",
+                    { className: "row" },
+                    React.createElement(Likert, { score: this.state.score, updateForm: this.handleChange, labels: this.labels, options: this.options, category: 'result' + this.props.id })
                 )
             );
         }

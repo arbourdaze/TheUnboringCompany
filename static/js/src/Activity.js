@@ -4,11 +4,13 @@ class Activity extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.props.data;
+    this.randomColor = new RandomColor();
     this.addChoice = this.addChoice.bind(this);
     this.removeChoice = this.removeChoice.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.createChecklist = this.createChecklist.bind(this);
     this.changeLike = this.changeLike.bind(this);
+    this.labels = ["Yes", "Maybe", "No"];
   }
 
   addChoice(choice) {
@@ -27,47 +29,54 @@ class Activity extends React.Component {
       });
   }
   
-  handleChange(event) {
-      if (event.target.checked) {
-          this.addChoice(event.target.value);
+  handleChange(value, checked) {
+      if (checked) {
+          this.addChoice(value);
       } else {
-          this.removeChoice(event.target.value);
+          this.removeChoice(value);
       }
   }
   
   createChecklist() {
       let checklist = [];
       let that = this;
-      let i = 0;
       this.state.options.forEach(function(opt) {
-        let line = <input key={that.state.name + "-checkbox" + i} type="checkbox" name={that.state.name} value={opt} checked={that.state.choices.has(opt)} onChange={that.handleChange} />;
-        checklist.push(line);
-        i++;
-        checklist.push(<label key={that.state.name + "-label" + i}>{opt}</label>)
-        checklist.push(<br key={that.state.name + "-newline" + i}/>);
-        i++;
+          checklist.push(
+            <CheckInput
+                name={that.state.name}
+                opt={opt}
+                checked={that.state.choices.has(opt)}
+                updateForm={that.handleChange}
+            />
+          );
       });
       return checklist;
   }
   
-  changeLike(value) {
+  changeLike(key, value) {
       this.setState({ like: value }, function () {
           if (this.state.like == "No") {
-            this.setState({ choices: new Set() });
+            this.setState({ choices: new Set() }, function() {
+                this.props.updateForm(this.state);
+            });
+          } else {
+            this.props.updateForm(this.state);
           }
-          this.props.updateForm(this.state);
       });
   }
 
   render() {
     return (
         <div>
-            <h1>Do you like {this.state.name.toLowerCase()}?</h1>
-            <Likert score={this.state.like} updateForm={this.changeLike} options={["Yes","Maybe","No"]} category={this.state.name} />
+            <h2 className="question">Do you like {this.state.name.toLowerCase()}?</h2>
+            <div className="page-content-box">
+                <Likert val={this.state.like} updateForm={this.changeLike} labels={this.labels} options={this.labels} name={this.state.name} />
+            </div>
             <br/>
             {(this.state.like == "Yes" || this.state.like == "Maybe") && 
-                <div>
-                    <h1>What kind of {this.state.name.toLowerCase()} do you like?</h1>
+            (this.state.options.length > 0) && 
+                <div className="page-content-box">
+                    <h2 className="question">What kind of {this.state.name.toLowerCase()} do you like?</h2>
                     {this.createChecklist()}
                 </div>
             }

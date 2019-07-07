@@ -16,10 +16,17 @@ class BoredForm extends React.Component {
                     hours: 0,
                     minutes: 0
                 },
+                personality: {
+                    openness: null,
+                    conscientiousness: null,
+                    extroversion: null,
+                    agreeableness: null,
+                    neuroticism: null
+                },
                 activities: {
                     movies: {
                         name: "Movies",
-                        like: "No",
+                        like: null,
                         options: [
                             "Action",
                             "Crime",
@@ -36,7 +43,7 @@ class BoredForm extends React.Component {
                     },
                     cooking: {
                         name: "Cooking",
-                        like: "No",
+                        like: null,
                         options: [
                             "American",
                             "Barbecue",
@@ -60,17 +67,49 @@ class BoredForm extends React.Component {
                             "Cocktail"
                             ],
                         choices: new Set()
+                    },
+                    jokes: {
+                        name: "Jokes",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    videos: {
+                        name: "Videos",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    riddles: {
+                        name: "Riddles",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    games: {
+                        name: "Games",
+                        like: null,
+                        options: [],
+                        choices: new Set()
                     }
                 }
             },
             pageIndex: 0,
             submitted: false,
-            results: []
+            fedback: false,
+            results: [],
+            feedback: {
+                liked: new Set(),
+                disliked: new Set()
+            }
         };
-        
+
         this.reassignData = this.reassignData.bind(this);
         this.changeTime = this.changeTime.bind(this);
+        this.changePersonality = this.changePersonality.bind(this);
         this.changeActivity = this.changeActivity.bind(this);
+        this.changeFeedback = this.changeFeedback.bind(this);
+        this.submitFeedback = this.submitFeedback.bind(this);
         
         this.nextPage = this.nextPage.bind(this);
         this.previousPage = this.previousPage.bind(this);
@@ -78,28 +117,40 @@ class BoredForm extends React.Component {
         this.canGoPrevious = this.canGoPrevious.bind(this);
         
         this.timeIsValid = this.timeIsValid.bind(this);
+        this.validateFeedback = this.validateFeedback.bind(this);
 
         this.getTimeDOM = this.getTimeDOM.bind(this);
+        this.getPersonalityDOM = this.getPersonalityDOM.bind(this);
         this.getActivityDOM = this.getActivityDOM.bind(this);
         this.getMovies = this.getMovies.bind(this);
         this.getCooking = this.getCooking.bind(this);
-        
-        this.pages = [this.getTimeDOM, this.getMovies, this.getCooking];
+        this.getJokes = this.getJokes.bind(this);
+        this.getVideos = this.getVideos.bind(this);
+        this.getRiddles = this.getRiddles.bind(this);
+        this.getGames = this.getGames.bind(this);
+        this.setupPages = this.setupPages.bind(this);
         
         this.transformActivityData = this.transformActivityData.bind(this);
+        this.transformFeedback = this.transformFeedback.bind(this);
         
         this.goBack = this.goBack.bind(this);
         this.send = this.send.bind(this);
+        this.gatherData = this.gatherData.bind(this);
+        
+        this.setupPages();
     }
     
-    getTimeDOM() {
-        //$('body').css('background-color','gray');
-        return <BoredTime time={this.state.data.time} updateForm={this.changeTime} />;
-    }
-    
-    getActivityDOM(activity) {
-        //$('body').css('background-color','gray');
-        return <Activity key={activity.name + '-activity'} data={activity} updateForm={this.changeActivity} />;
+    setupPages() {
+        this.pages = [
+            this.getTimeDOM,
+            this.getPersonalityDOM,
+            this.getMovies,
+            this.getCooking,
+            this.getJokes,
+            this.getVideos,
+            this.getRiddles,
+            this.getGames
+        ];
     }
     
     getMovies() {
@@ -110,8 +161,41 @@ class BoredForm extends React.Component {
         return this.getActivityDOM(this.state.data.activities.cooking);
     }
     
+    getJokes() {
+        return this.getActivityDOM(this.state.data.activities.jokes);
+    }
+    
+    getVideos() {
+        return this.getActivityDOM(this.state.data.activites.videos);
+    }
+    
+    getRiddles() {
+        return this.getActivityDOM(this.state.data.activities.riddles);
+    }
+    
+    getGames() {
+        return this.getActivityDOM(this.state.data.activities.games);
+    }
+    
+    getTimeDOM() {
+        return <BoredTime time={this.state.data.time} updateForm={this.changeTime} />;
+    }
+    
+    getPersonalityDOM() {
+        return <Personality data={this.state.data.personality} updateForm={this.changePersonality} />
+    }
+    
+    getActivityDOM(activity) {
+        return <Activity key={activity.name + '-activity'} data={activity} updateForm={this.changeActivity} />;
+    }
+    
     changeTime(value) {
         let newData = Object.assign({}, this.state.data, {time: value});
+        this.reassignData(newData);
+    }
+    
+    changePersonality(value) {
+        let newData = Object.assign({}, this.state.data, {personality: value});
         this.reassignData(newData);
     }
 
@@ -120,6 +204,15 @@ class BoredForm extends React.Component {
         newActivities[activity.name.toLowerCase()] = activity;
         let newData = Object.assign({}, this.state.data, {activities: newActivities});
         this.reassignData(newData);
+    }
+    
+    changeFeedback(value) {
+        console.log(value);
+        this.setState({feedback: value}, function() {
+            if (debug) {
+                console.log(this.state);
+            }
+        });
     }
     
     reassignData(newData) {
@@ -167,26 +260,35 @@ class BoredForm extends React.Component {
         (time.minutes >= 0 && time.minutes <= 59);
     }
     
+    gatherData() {
+        let data = {
+            Time: {
+                hours: this.state.data.time.hours,
+                minutes: this.state.data.time.minutes
+            },
+            Topics: ["Movies", "Cooking", "Jokes", "Videos", "Riddles", "Games"],
+        };
+        for (let key in this.state.data.activities) {
+            Object.assign(data, this.transformActivityData(this.state.data.activities[key]));
+        }
+        data.Personality = this.state.data.personality;
+        return data;
+    }
+    
     send() {
         if (this.timeIsValid()) {
-            let data = {
-                Time: {
-                    hours: this.state.data.time.hours,
-                    minutes: this.state.data.time.minutes
-                },
-                Topics: ["Movies", "Cooking"],
-            };
-            
+            let data = this.gatherData();
+            let json = JSON.stringify(data);
+            let that = this;
+
             function successCallback(res, that) {
                 that.setState({submitted: true});
                 that.setState({results: res});
             }
-            
-            Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
-            Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
-            let json = JSON.stringify(data);
-            console.log(json);
-            let that = this;
+
+            if (debug) {
+                console.log(json);
+            }
 
             $.ajax({
                 type: 'POST',
@@ -224,28 +326,88 @@ class BoredForm extends React.Component {
         return data;
     }
     
+    transformFeedback() {
+        let data = {};
+        let liked = [];
+        let disliked = [];
+        this.state.feedback.liked.forEach(function(opt) {
+            liked.push(opt);
+        });
+        this.state.feedback.disliked.forEach(function(opt) {
+            disliked.push(opt);
+        });
+        data.Liked = liked;
+        data.Disliked = disliked;
+        return data;
+    }
+    
     goBack() {
         this.setState({results: []});
         this.setState({submitted: false});
         this.setState({pageIndex: 0});
     }
     
+    validateFeedback() {
+        let total = this.state.feedback.liked.size + this.state.feedback.disliked.size;
+        return total == this.state.results.length;
+    }
+    
+    submitFeedback() {
+        let data = {};
+        data.Feedback = this.transformFeedback();
+        let json = JSON.stringify(data);
+        
+        function successCallback(res) {
+            
+        }
+        
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/feedback',
+            data: JSON.stringify(json),
+            dataType: 'json',
+            success: function (res) {
+                successCallback(res, that);
+            },
+            error: function () {
+                if (debug) {
+                    console.log('error');
+                }
+            }
+        });
+    }
+    
     render() {
-        if (this.state.submitted) {
+        if (this.state.fedback) {
             return (
-                <Results goBack={this.goBack} results={this.state.results} />
+                <div className="page">
+                    <Selections selections={this.state.feedback.liked} />
+                </div>
+            );
+        } else if (this.state.submitted) {
+            return (
+                <div>
+                    <div className="page">
+                        <Results goBack={this.goBack} results={this.state.results} updateForm={this.changeFeedback} />
+                    </div>
+                    <UnboringButton callback={this.submitFeedback} enabler={this.validateFeedback} classes="submit" buttonText="Submit" />
+                </div>
+            );
+        } else {
+            return (
+                <div className="form">
+                    <div className="page">
+                        {this.pages[this.state.pageIndex]()}
+                    </div>
+                    <div className="button-pad">
+                        <UnboringButton callback={this.previousPage} enabler={this.canGoPrevious} classes="previous" buttonText="Previous" />
+                        <UnboringButton callback={this.nextPage} enabler={this.canGoNext} classes="next" buttonText="Next" />
+                        <UnboringButton callback={this.send} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
+                    </div>
+                </div>
             );
         }
-        return (
-            <div className="form">
-                <div className="page">
-                    {this.pages[this.state.pageIndex]()}
-                </div>
-                <UnboringButton callback={this.previousPage} enabler={this.canGoPrevious} classes="previous" buttonText="Previous" />
-                <UnboringButton callback={this.nextPage} enabler={this.canGoNext} classes="next" buttonText="Next" />
-                <UnboringButton callback={this.send} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
-            </div>
-        );
     }
 }
 
