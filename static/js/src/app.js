@@ -266,7 +266,7 @@ class BoredForm extends React.Component {
                 hours: this.state.data.time.hours,
                 minutes: this.state.data.time.minutes
             },
-            Topics: ["Movies", "Cooking"],
+            Topics: ["Movies", "Cooking", "Jokes", "Videos", "Riddles", "Games"],
         };
         for (let key in this.state.data.activities) {
             Object.assign(data, this.transformActivityData(this.state.data.activities[key]));
