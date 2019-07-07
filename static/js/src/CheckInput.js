@@ -17,7 +17,7 @@ class CheckInput extends React.Component {
   
   render() {
       return (
-        <div key={this.props.name + "-check-input" + this.props.number} className="row">
+        <div className="row">
             <label className="checkbox-container">{this.props.opt}
                 <input type="checkbox" name={this.props.name} value={this.props.opt} checked={this.state.checked} onChange={this.handleChange} />
                 <span className={'checkmark ' + this.randomColor.getColor()}></span>

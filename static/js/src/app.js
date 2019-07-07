@@ -26,7 +26,7 @@ class BoredForm extends React.Component {
                 activities: {
                     movies: {
                         name: "Movies",
-                        like: "No",
+                        like: null,
                         options: [
                             "Action",
                             "Crime",
@@ -43,7 +43,7 @@ class BoredForm extends React.Component {
                     },
                     cooking: {
                         name: "Cooking",
-                        like: "No",
+                        like: null,
                         options: [
                             "American",
                             "Barbecue",
@@ -66,6 +66,30 @@ class BoredForm extends React.Component {
                             "Gluten-Free",
                             "Cocktail"
                             ],
+                        choices: new Set()
+                    },
+                    jokes: {
+                        name: "Jokes",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    videos: {
+                        name: "Videos",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    riddles: {
+                        name: "Riddles",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    games: {
+                        name: "Games",
+                        like: null,
+                        options: [],
                         choices: new Set()
                     }
                 }
@@ -100,8 +124,11 @@ class BoredForm extends React.Component {
         this.getActivityDOM = this.getActivityDOM.bind(this);
         this.getMovies = this.getMovies.bind(this);
         this.getCooking = this.getCooking.bind(this);
-        
-        this.pages = [this.getTimeDOM, this.getPersonalityDOM, this.getMovies, this.getCooking];
+        this.getJokes = this.getJokes.bind(this);
+        this.getVideos = this.getVideos.bind(this);
+        this.getRiddles = this.getRiddles.bind(this);
+        this.getGames = this.getGames.bind(this);
+        this.setupPages = this.setupPages.bind(this);
         
         this.transformActivityData = this.transformActivityData.bind(this);
         this.transformFeedback = this.transformFeedback.bind(this);
@@ -109,6 +136,45 @@ class BoredForm extends React.Component {
         this.goBack = this.goBack.bind(this);
         this.send = this.send.bind(this);
         this.gatherData = this.gatherData.bind(this);
+        
+        this.setupPages();
+    }
+    
+    setupPages() {
+        this.pages = [
+            this.getTimeDOM,
+            this.getPersonalityDOM,
+            this.getMovies,
+            this.getCooking,
+            this.getJokes,
+            this.getVideos,
+            this.getRiddles,
+            this.getGames
+        ];
+    }
+    
+    getMovies() {
+        return this.getActivityDOM(this.state.data.activities.movies);
+    }
+    
+    getCooking() {
+        return this.getActivityDOM(this.state.data.activities.cooking);
+    }
+    
+    getJokes() {
+        return this.getActivityDOM(this.state.data.activities.jokes);
+    }
+    
+    getVideos() {
+        return this.getActivityDOM(this.state.data.activites.videos);
+    }
+    
+    getRiddles() {
+        return this.getActivityDOM(this.state.data.activities.riddles);
+    }
+    
+    getGames() {
+        return this.getActivityDOM(this.state.data.activities.games);
     }
     
     getTimeDOM() {
@@ -121,14 +187,6 @@ class BoredForm extends React.Component {
     
     getActivityDOM(activity) {
         return <Activity key={activity.name + '-activity'} data={activity} updateForm={this.changeActivity} />;
-    }
-    
-    getMovies() {
-        return this.getActivityDOM(this.state.data.activities.movies);
-    }
-    
-    getCooking() {
-        return this.getActivityDOM(this.state.data.activities.cooking);
     }
     
     changeTime(value) {
@@ -210,9 +268,9 @@ class BoredForm extends React.Component {
             },
             Topics: ["Movies", "Cooking"],
         };
-        
-        Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
-        Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
+        for (let key in this.state.data.activities) {
+            Object.assign(data, this.transformActivityData(this.state.data.activities[key]));
+        }
         data.Personality = this.state.data.personality;
         return data;
     }
@@ -274,10 +332,10 @@ class BoredForm extends React.Component {
         let disliked = [];
         this.state.feedback.liked.forEach(function(opt) {
             liked.push(opt);
-        }
+        });
         this.state.feedback.disliked.forEach(function(opt) {
             disliked.push(opt);
-        }
+        });
         data.Liked = liked;
         data.Disliked = disliked;
         return data;
@@ -295,7 +353,7 @@ class BoredForm extends React.Component {
     }
     
     submitFeedback() {
-        let data {}
+        let data = {};
         data.Feedback = this.transformFeedback();
         let json = JSON.stringify(data);
         

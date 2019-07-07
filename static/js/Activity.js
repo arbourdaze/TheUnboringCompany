@@ -59,11 +59,9 @@ var Activity = function (_React$Component) {
         value: function createChecklist() {
             var checklist = [];
             var that = this;
-            var i = 0;
             this.state.options.forEach(function (opt) {
                 checklist.push(React.createElement(CheckInput, {
                     name: that.state.name,
-                    number: i,
                     opt: opt,
                     checked: that.state.choices.has(opt),
                     updateForm: that.handleChange
@@ -76,9 +74,12 @@ var Activity = function (_React$Component) {
         value: function changeLike(key, value) {
             this.setState({ like: value }, function () {
                 if (this.state.like == "No") {
-                    this.setState({ choices: new Set() });
+                    this.setState({ choices: new Set() }, function () {
+                        this.props.updateForm(this.state);
+                    });
+                } else {
+                    this.props.updateForm(this.state);
                 }
-                this.props.updateForm(this.state);
             });
         }
     }, {
@@ -97,10 +98,10 @@ var Activity = function (_React$Component) {
                 React.createElement(
                     "div",
                     { className: "page-content-box" },
-                    React.createElement(Likert, { score: this.state.like, updateForm: this.changeLike, labels: this.labels, options: this.labels, category: this.state.name })
+                    React.createElement(Likert, { val: this.state.like, updateForm: this.changeLike, labels: this.labels, options: this.labels, name: this.state.name })
                 ),
                 React.createElement("br", null),
-                (this.state.like == "Yes" || this.state.like == "Maybe") && React.createElement(
+                (this.state.like == "Yes" || this.state.like == "Maybe") && this.state.options.length > 0 && React.createElement(
                     "div",
                     { className: "page-content-box" },
                     React.createElement(

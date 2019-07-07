@@ -40,12 +40,10 @@ class Activity extends React.Component {
   createChecklist() {
       let checklist = [];
       let that = this;
-      let i = 0;
       this.state.options.forEach(function(opt) {
           checklist.push(
             <CheckInput
                 name={that.state.name}
-                number={i}
                 opt={opt}
                 checked={that.state.choices.has(opt)}
                 updateForm={that.handleChange}
@@ -58,9 +56,12 @@ class Activity extends React.Component {
   changeLike(key, value) {
       this.setState({ like: value }, function () {
           if (this.state.like == "No") {
-            this.setState({ choices: new Set() });
+            this.setState({ choices: new Set() }, function() {
+                this.props.updateForm(this.state);
+            });
+          } else {
+            this.props.updateForm(this.state);
           }
-          this.props.updateForm(this.state);
       });
   }
 
@@ -69,10 +70,11 @@ class Activity extends React.Component {
         <div>
             <h2 className="question">Do you like {this.state.name.toLowerCase()}?</h2>
             <div className="page-content-box">
-                <Likert score={this.state.like} updateForm={this.changeLike} labels={this.labels} options={this.labels} category={this.state.name} />
+                <Likert val={this.state.like} updateForm={this.changeLike} labels={this.labels} options={this.labels} name={this.state.name} />
             </div>
             <br/>
             {(this.state.like == "Yes" || this.state.like == "Maybe") && 
+            (this.state.options.length > 0) && 
                 <div className="page-content-box">
                     <h2 className="question">What kind of {this.state.name.toLowerCase()} do you like?</h2>
                     {this.createChecklist()}

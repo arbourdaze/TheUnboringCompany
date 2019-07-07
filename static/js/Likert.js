@@ -17,30 +17,35 @@ var Likert = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Likert.__proto__ || Object.getPrototypeOf(Likert)).call(this, props));
 
         _this.state = {
-            choice: null
+            val: _this.props.val
         };
+        _this.options = _this.props.options;
+        _this.labels = _this.props.labels;
         _this.handleChange = _this.handleChange.bind(_this);
+        _this.createRow = _this.createRow.bind(_this);
         return _this;
     }
 
     _createClass(Likert, [{
         key: "handleChange",
-        value: function handleChange(event) {
-            this.setState({ choice: event.target.value }, function () {
-                this.props.updateForm(this.props.category, this.state.choice);
-            });
+        value: function handleChange(value, checked) {
+            if (checked) {
+                this.state.val = value;
+            }
+            this.props.updateForm(this.props.name, this.state.val);
         }
     }, {
         key: "createRow",
         value: function createRow() {
             var row = [];
-            for (var i = 0; i < this.props.options.length; i++) {
+            for (var i = 0; i < this.options.length; i++) {
                 row.push(React.createElement(Radio, {
-                    key: this.props.category + "-likert-radio" + i,
-                    name: "like-" + this.props.category,
-                    label: this.props.labels[i],
-                    val: this.props.options[i],
-                    ticked: this.props.score == this.props.options[i]
+                    key: "like-" + this.props.name + i,
+                    name: "like-" + this.props.name,
+                    label: this.labels[i],
+                    val: this.options[i],
+                    checked: this.state.val === this.options[i],
+                    updateForm: this.handleChange
                 }));
             }
             return row;
@@ -50,7 +55,7 @@ var Likert = function (_React$Component) {
         value: function render() {
             return React.createElement(
                 "div",
-                { "class": "likert", onChange: this.handleChange },
+                { className: "likert" },
                 React.createElement(
                     "div",
                     { className: "row" },

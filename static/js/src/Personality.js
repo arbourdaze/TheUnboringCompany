@@ -17,7 +17,7 @@ class Personality extends React.Component {
           bigFive.push(
             <div key={'personality-trait-' + key} className="page-content-box personality-trait">
                 <h3>{key}:</h3>
-                <Likert score={that.state[key]} updateForm={that.handleChange} labels={that.labels} options={that.options} category={key} />
+                <Likert val={that.state[key]} updateForm={that.handleChange} labels={that.labels} options={that.options} name={key} />
             </div>
           );
           bigFive.push(<br key={'personality-trait-newline-' + key}/>);

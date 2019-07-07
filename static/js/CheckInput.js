@@ -35,7 +35,7 @@ var CheckInput = function (_React$Component) {
         value: function render() {
             return React.createElement(
                 "div",
-                { key: this.props.name + "-check-input" + this.props.number, className: "row" },
+                { className: "row" },
                 React.createElement(
                     "label",
                     { className: "checkbox-container" },

@@ -41,7 +41,7 @@ var Personality = function (_React$Component) {
                         key,
                         ":"
                     ),
-                    React.createElement(Likert, { score: that.state[key], updateForm: that.handleChange, labels: that.labels, options: that.options, category: key })
+                    React.createElement(Likert, { val: that.state[key], updateForm: that.handleChange, labels: that.labels, options: that.options, name: key })
                 ));
                 bigFive.push(React.createElement("br", { key: 'personality-trait-newline-' + key }));
             });

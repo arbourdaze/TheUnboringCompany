@@ -38,14 +38,38 @@ var BoredForm = function (_React$Component) {
                 activities: {
                     movies: {
                         name: "Movies",
-                        like: "No",
+                        like: null,
                         options: ["Action", "Crime", "Fantasy", "Western", "Historical", "Romance", "Animation", "Horror", "Sci-Fi", "Documentary"],
                         choices: new Set()
                     },
                     cooking: {
                         name: "Cooking",
-                        like: "No",
+                        like: null,
                         options: ["American", "Barbecue", "Deli", "Mexican", "Chinese", "Pizza", "Italian", "Breakfast", "Sushi", "Seafood", "Indian", "Korean", "Japanese", "Dessert", "Vietnamese", "Thai", "Vegan", "Vegetarian", "Gluten-Free", "Cocktail"],
+                        choices: new Set()
+                    },
+                    jokes: {
+                        name: "Jokes",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    videos: {
+                        name: "Videos",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    riddles: {
+                        name: "Riddles",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    games: {
+                        name: "Games",
+                        like: null,
+                        options: [],
                         choices: new Set()
                     }
                 }
@@ -80,18 +104,59 @@ var BoredForm = function (_React$Component) {
         _this.getActivityDOM = _this.getActivityDOM.bind(_this);
         _this.getMovies = _this.getMovies.bind(_this);
         _this.getCooking = _this.getCooking.bind(_this);
-
-        _this.pages = [_this.getTimeDOM, _this.getPersonalityDOM, _this.getMovies, _this.getCooking];
+        _this.getJokes = _this.getJokes.bind(_this);
+        _this.getVideos = _this.getVideos.bind(_this);
+        _this.getRiddles = _this.getRiddles.bind(_this);
+        _this.getGames = _this.getGames.bind(_this);
+        _this.setupPages = _this.setupPages.bind(_this);
 
         _this.transformActivityData = _this.transformActivityData.bind(_this);
+        _this.transformFeedback = _this.transformFeedback.bind(_this);
 
         _this.goBack = _this.goBack.bind(_this);
         _this.send = _this.send.bind(_this);
         _this.gatherData = _this.gatherData.bind(_this);
+
+        _this.setupPages();
         return _this;
     }
 
     _createClass(BoredForm, [{
+        key: 'setupPages',
+        value: function setupPages() {
+            this.pages = [this.getTimeDOM, this.getPersonalityDOM, this.getMovies, this.getCooking, this.getJokes, this.getVideos, this.getRiddles, this.getGames];
+        }
+    }, {
+        key: 'getMovies',
+        value: function getMovies() {
+            return this.getActivityDOM(this.state.data.activities.movies);
+        }
+    }, {
+        key: 'getCooking',
+        value: function getCooking() {
+            return this.getActivityDOM(this.state.data.activities.cooking);
+        }
+    }, {
+        key: 'getJokes',
+        value: function getJokes() {
+            return this.getActivityDOM(this.state.data.activities.jokes);
+        }
+    }, {
+        key: 'getVideos',
+        value: function getVideos() {
+            return this.getActivityDOM(this.state.data.activites.videos);
+        }
+    }, {
+        key: 'getRiddles',
+        value: function getRiddles() {
+            return this.getActivityDOM(this.state.data.activities.riddles);
+        }
+    }, {
+        key: 'getGames',
+        value: function getGames() {
+            return this.getActivityDOM(this.state.data.activities.games);
+        }
+    }, {
         key: 'getTimeDOM',
         value: function getTimeDOM() {
             return React.createElement(BoredTime, { time: this.state.data.time, updateForm: this.changeTime });
@@ -105,16 +170,6 @@ var BoredForm = function (_React$Component) {
         key: 'getActivityDOM',
         value: function getActivityDOM(activity) {
             return React.createElement(Activity, { key: activity.name + '-activity', data: activity, updateForm: this.changeActivity });
-        }
-    }, {
-        key: 'getMovies',
-        value: function getMovies() {
-            return this.getActivityDOM(this.state.data.activities.movies);
-        }
-    }, {
-        key: 'getCooking',
-        value: function getCooking() {
-            return this.getActivityDOM(this.state.data.activities.cooking);
         }
     }, {
         key: 'changeTime',
@@ -205,15 +260,11 @@ var BoredForm = function (_React$Component) {
                 },
                 Topics: ["Movies", "Cooking"]
             };
-
-            Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
-            Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
-            data.Personality = this.state.data.personality;
-            var json = JSON.stringify(data);
-            if (debug) {
-                console.log(json);
+            for (var key in this.state.data.activities) {
+                Object.assign(data, this.transformActivityData(this.state.data.activities[key]));
             }
-            return json;
+            data.Personality = this.state.data.personality;
+            return data;
         }
     }, {
         key: 'send',
@@ -224,8 +275,13 @@ var BoredForm = function (_React$Component) {
                     that.setState({ results: res });
                 };
 
-                var json = this.gatherData();
+                var data = this.gatherData();
+                var json = JSON.stringify(data);
                 var _that = this;
+
+                if (debug) {
+                    console.log(json);
+                }
 
                 $.ajax({
                     type: 'POST',
@@ -264,6 +320,22 @@ var BoredForm = function (_React$Component) {
             return data;
         }
     }, {
+        key: 'transformFeedback',
+        value: function transformFeedback() {
+            var data = {};
+            var liked = [];
+            var disliked = [];
+            this.state.feedback.liked.forEach(function (opt) {
+                liked.push(opt);
+            });
+            this.state.feedback.disliked.forEach(function (opt) {
+                disliked.push(opt);
+            });
+            data.Liked = liked;
+            data.Disliked = disliked;
+            return data;
+        }
+    }, {
         key: 'goBack',
         value: function goBack() {
             this.setState({ results: [] });
@@ -279,8 +351,12 @@ var BoredForm = function (_React$Component) {
     }, {
         key: 'submitFeedback',
         value: function submitFeedback() {
-            var json = this.state.data.feedback;
+            var data = {};
+            data.Feedback = this.transformFeedback();
+            var json = JSON.stringify(data);
+
             function successCallback(res) {}
+
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',

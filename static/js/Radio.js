@@ -9,33 +9,43 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Radio = function (_React$Component) {
-  _inherits(Radio, _React$Component);
+    _inherits(Radio, _React$Component);
 
-  function Radio(props) {
-    _classCallCheck(this, Radio);
+    function Radio(props) {
+        _classCallCheck(this, Radio);
 
-    var _this = _possibleConstructorReturn(this, (Radio.__proto__ || Object.getPrototypeOf(Radio)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Radio.__proto__ || Object.getPrototypeOf(Radio)).call(this, props));
 
-    _this.randomColor = new RandomColor();
-    return _this;
-  }
-
-  _createClass(Radio, [{
-    key: "render",
-    value: function render() {
-      return React.createElement(
-        "div",
-        { className: "col col-likert-radio" },
-        React.createElement(
-          "label",
-          { className: "radio-container" },
-          this.props.label,
-          React.createElement("input", { type: "checkbox", name: this.props.name, value: this.props.val, checked: this.props.ticked }),
-          React.createElement("span", { className: "radio-indicator " + this.randomColor.getColor() })
-        )
-      );
+        _this.state = {
+            checked: _this.props.checked
+        };
+        _this.randomColor = new RandomColor();
+        _this.handleChange = _this.handleChange.bind(_this);
+        return _this;
     }
-  }]);
 
-  return Radio;
+    _createClass(Radio, [{
+        key: "handleChange",
+        value: function handleChange(event) {
+            this.state.checked = event.target.checked;
+            this.props.updateForm(this.props.val, this.state.checked);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                { className: "col col-likert-radio" },
+                React.createElement(
+                    "label",
+                    { className: "radio-container" },
+                    this.props.label,
+                    React.createElement("input", { type: "radio", name: this.props.name, value: this.props.val, checked: this.state.checked, onChange: this.handleChange }),
+                    React.createElement("span", { className: "radio-indicator " + this.randomColor.getColor() })
+                )
+            );
+        }
+    }]);
+
+    return Radio;
 }(React.Component);
