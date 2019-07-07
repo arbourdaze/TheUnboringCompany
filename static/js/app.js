@@ -28,29 +28,68 @@ var BoredForm = function (_React$Component) {
                     hours: 0,
                     minutes: 0
                 },
+                personality: {
+                    openness: null,
+                    conscientiousness: null,
+                    extroversion: null,
+                    agreeableness: null,
+                    neuroticism: null
+                },
                 activities: {
                     movies: {
                         name: "Movies",
-                        like: "No",
+                        like: null,
                         options: ["Action", "Crime", "Fantasy", "Western", "Historical", "Romance", "Animation", "Horror", "Sci-Fi", "Documentary"],
                         choices: new Set()
                     },
                     cooking: {
                         name: "Cooking",
-                        like: "No",
+                        like: null,
                         options: ["American", "Barbecue", "Deli", "Mexican", "Chinese", "Pizza", "Italian", "Breakfast", "Sushi", "Seafood", "Indian", "Korean", "Japanese", "Dessert", "Vietnamese", "Thai", "Vegan", "Vegetarian", "Gluten-Free", "Cocktail"],
+                        choices: new Set()
+                    },
+                    jokes: {
+                        name: "Jokes",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    videos: {
+                        name: "Videos",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    riddles: {
+                        name: "Riddles",
+                        like: null,
+                        options: [],
+                        choices: new Set()
+                    },
+                    games: {
+                        name: "Games",
+                        like: null,
+                        options: [],
                         choices: new Set()
                     }
                 }
             },
             pageIndex: 0,
             submitted: false,
-            results: []
+            fedback: false,
+            results: [],
+            feedback: {
+                liked: new Set(),
+                disliked: new Set()
+            }
         };
 
         _this.reassignData = _this.reassignData.bind(_this);
         _this.changeTime = _this.changeTime.bind(_this);
+        _this.changePersonality = _this.changePersonality.bind(_this);
         _this.changeActivity = _this.changeActivity.bind(_this);
+        _this.changeFeedback = _this.changeFeedback.bind(_this);
+        _this.submitFeedback = _this.submitFeedback.bind(_this);
 
         _this.nextPage = _this.nextPage.bind(_this);
         _this.previousPage = _this.previousPage.bind(_this);
@@ -58,32 +97,34 @@ var BoredForm = function (_React$Component) {
         _this.canGoPrevious = _this.canGoPrevious.bind(_this);
 
         _this.timeIsValid = _this.timeIsValid.bind(_this);
+        _this.validateFeedback = _this.validateFeedback.bind(_this);
 
         _this.getTimeDOM = _this.getTimeDOM.bind(_this);
+        _this.getPersonalityDOM = _this.getPersonalityDOM.bind(_this);
         _this.getActivityDOM = _this.getActivityDOM.bind(_this);
         _this.getMovies = _this.getMovies.bind(_this);
         _this.getCooking = _this.getCooking.bind(_this);
-
-        _this.pages = [_this.getTimeDOM, _this.getMovies, _this.getCooking];
+        _this.getJokes = _this.getJokes.bind(_this);
+        _this.getVideos = _this.getVideos.bind(_this);
+        _this.getRiddles = _this.getRiddles.bind(_this);
+        _this.getGames = _this.getGames.bind(_this);
+        _this.setupPages = _this.setupPages.bind(_this);
 
         _this.transformActivityData = _this.transformActivityData.bind(_this);
+        _this.transformFeedback = _this.transformFeedback.bind(_this);
 
         _this.goBack = _this.goBack.bind(_this);
         _this.send = _this.send.bind(_this);
+        _this.gatherData = _this.gatherData.bind(_this);
+
+        _this.setupPages();
         return _this;
     }
 
     _createClass(BoredForm, [{
-        key: 'getTimeDOM',
-        value: function getTimeDOM() {
-            //$('body').css('background-color','gray');
-            return React.createElement(BoredTime, { time: this.state.data.time, updateForm: this.changeTime });
-        }
-    }, {
-        key: 'getActivityDOM',
-        value: function getActivityDOM(activity) {
-            //$('body').css('background-color','gray');
-            return React.createElement(Activity, { key: activity.name + '-activity', data: activity, updateForm: this.changeActivity });
+        key: 'setupPages',
+        value: function setupPages() {
+            this.pages = [this.getTimeDOM, this.getPersonalityDOM, this.getMovies, this.getCooking, this.getJokes, this.getVideos, this.getRiddles, this.getGames];
         }
     }, {
         key: 'getMovies',
@@ -96,9 +137,50 @@ var BoredForm = function (_React$Component) {
             return this.getActivityDOM(this.state.data.activities.cooking);
         }
     }, {
+        key: 'getJokes',
+        value: function getJokes() {
+            return this.getActivityDOM(this.state.data.activities.jokes);
+        }
+    }, {
+        key: 'getVideos',
+        value: function getVideos() {
+            return this.getActivityDOM(this.state.data.activites.videos);
+        }
+    }, {
+        key: 'getRiddles',
+        value: function getRiddles() {
+            return this.getActivityDOM(this.state.data.activities.riddles);
+        }
+    }, {
+        key: 'getGames',
+        value: function getGames() {
+            return this.getActivityDOM(this.state.data.activities.games);
+        }
+    }, {
+        key: 'getTimeDOM',
+        value: function getTimeDOM() {
+            return React.createElement(BoredTime, { time: this.state.data.time, updateForm: this.changeTime });
+        }
+    }, {
+        key: 'getPersonalityDOM',
+        value: function getPersonalityDOM() {
+            return React.createElement(Personality, { data: this.state.data.personality, updateForm: this.changePersonality });
+        }
+    }, {
+        key: 'getActivityDOM',
+        value: function getActivityDOM(activity) {
+            return React.createElement(Activity, { key: activity.name + '-activity', data: activity, updateForm: this.changeActivity });
+        }
+    }, {
         key: 'changeTime',
         value: function changeTime(value) {
             var newData = Object.assign({}, this.state.data, { time: value });
+            this.reassignData(newData);
+        }
+    }, {
+        key: 'changePersonality',
+        value: function changePersonality(value) {
+            var newData = Object.assign({}, this.state.data, { personality: value });
             this.reassignData(newData);
         }
     }, {
@@ -108,6 +190,16 @@ var BoredForm = function (_React$Component) {
             newActivities[activity.name.toLowerCase()] = activity;
             var newData = Object.assign({}, this.state.data, { activities: newActivities });
             this.reassignData(newData);
+        }
+    }, {
+        key: 'changeFeedback',
+        value: function changeFeedback(value) {
+            console.log(value);
+            this.setState({ feedback: value }, function () {
+                if (debug) {
+                    console.log(this.state);
+                }
+            });
         }
     }, {
         key: 'reassignData',
@@ -159,6 +251,22 @@ var BoredForm = function (_React$Component) {
             return (time.hours > 0 || time.minutes > 0) && time.hours >= 0 && time.hours <= 12 && time.minutes >= 0 && time.minutes <= 59;
         }
     }, {
+        key: 'gatherData',
+        value: function gatherData() {
+            var data = {
+                Time: {
+                    hours: this.state.data.time.hours,
+                    minutes: this.state.data.time.minutes
+                },
+                Topics: ["Movies", "Cooking", "Jokes", "Videos", "Riddles", "Games"]
+            };
+            for (var key in this.state.data.activities) {
+                Object.assign(data, this.transformActivityData(this.state.data.activities[key]));
+            }
+            data.Personality = this.state.data.personality;
+            return data;
+        }
+    }, {
         key: 'send',
         value: function send() {
             if (this.timeIsValid()) {
@@ -167,19 +275,13 @@ var BoredForm = function (_React$Component) {
                     that.setState({ results: res });
                 };
 
-                var data = {
-                    Time: {
-                        hours: this.state.data.time.hours,
-                        minutes: this.state.data.time.minutes
-                    },
-                    Topics: ["Movies", "Cooking"]
-                };
-
-                Object.assign(data, this.transformActivityData(this.state.data.activities.movies));
-                Object.assign(data, this.transformActivityData(this.state.data.activities.cooking));
+                var data = this.gatherData();
                 var json = JSON.stringify(data);
-                console.log(json);
-                var that = this;
+                var _that = this;
+
+                if (debug) {
+                    console.log(json);
+                }
 
                 $.ajax({
                     type: 'POST',
@@ -188,7 +290,7 @@ var BoredForm = function (_React$Component) {
                     data: json,
                     dataType: 'json',
                     success: function success(res) {
-                        successCallback(res, that);
+                        successCallback(res, _that);
                     },
                     error: function error() {
                         if (debug) {
@@ -218,6 +320,22 @@ var BoredForm = function (_React$Component) {
             return data;
         }
     }, {
+        key: 'transformFeedback',
+        value: function transformFeedback() {
+            var data = {};
+            var liked = [];
+            var disliked = [];
+            this.state.feedback.liked.forEach(function (opt) {
+                liked.push(opt);
+            });
+            this.state.feedback.disliked.forEach(function (opt) {
+                disliked.push(opt);
+            });
+            data.Liked = liked;
+            data.Disliked = disliked;
+            return data;
+        }
+    }, {
         key: 'goBack',
         value: function goBack() {
             this.setState({ results: [] });
@@ -225,23 +343,74 @@ var BoredForm = function (_React$Component) {
             this.setState({ pageIndex: 0 });
         }
     }, {
+        key: 'validateFeedback',
+        value: function validateFeedback() {
+            var total = this.state.feedback.liked.size + this.state.feedback.disliked.size;
+            return total == this.state.results.length;
+        }
+    }, {
+        key: 'submitFeedback',
+        value: function submitFeedback() {
+            var data = {};
+            data.Feedback = this.transformFeedback();
+            var json = JSON.stringify(data);
+
+            function successCallback(res) {}
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/feedback',
+                data: JSON.stringify(json),
+                dataType: 'json',
+                success: function success(res) {
+                    successCallback(res, that);
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            if (this.state.submitted) {
-                return React.createElement(Results, { goBack: this.goBack, results: this.state.results });
-            }
-            return React.createElement(
-                'div',
-                { className: 'form' },
-                React.createElement(
+            if (this.state.fedback) {
+                return React.createElement(
                     'div',
                     { className: 'page' },
-                    this.pages[this.state.pageIndex]()
-                ),
-                React.createElement(UnboringButton, { callback: this.previousPage, enabler: this.canGoPrevious, classes: 'previous', buttonText: 'Previous' }),
-                React.createElement(UnboringButton, { callback: this.nextPage, enabler: this.canGoNext, classes: 'next', buttonText: 'Next' }),
-                React.createElement(UnboringButton, { callback: this.send, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' })
-            );
+                    React.createElement(Selections, { selections: this.state.feedback.liked })
+                );
+            } else if (this.state.submitted) {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'div',
+                        { className: 'page' },
+                        React.createElement(Results, { goBack: this.goBack, results: this.state.results, updateForm: this.changeFeedback })
+                    ),
+                    React.createElement(UnboringButton, { callback: this.submitFeedback, enabler: this.validateFeedback, classes: 'submit', buttonText: 'Submit' })
+                );
+            } else {
+                return React.createElement(
+                    'div',
+                    { className: 'form' },
+                    React.createElement(
+                        'div',
+                        { className: 'page' },
+                        this.pages[this.state.pageIndex]()
+                    ),
+                    React.createElement(
+                        'div',
+                        { className: 'button-pad' },
+                        React.createElement(UnboringButton, { callback: this.previousPage, enabler: this.canGoPrevious, classes: 'previous', buttonText: 'Previous' }),
+                        React.createElement(UnboringButton, { callback: this.nextPage, enabler: this.canGoNext, classes: 'next', buttonText: 'Next' }),
+                        React.createElement(UnboringButton, { callback: this.send, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' })
+                    )
+                );
+            }
         }
     }]);
 

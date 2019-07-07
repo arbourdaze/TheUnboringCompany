@@ -13,7 +13,13 @@ def search():
     content = request.get_json()
     responses = mw.middleware(json.dumps(content), None)
     return responses
-    #return '{"Data" : [ { "Name": "Hello", "Description": "World" } ]}'
+    
+@app.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    # this will change once we get the feedback middleware.
+    content = request.get_json()
+    responses = mw.middleware(json.dumps(content), None)
+    return responses
     
 if __name__ == '__main__':
     app.run(debug = True)

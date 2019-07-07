@@ -8,44 +8,39 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Radio = function (_React$Component) {
-    _inherits(Radio, _React$Component);
+var Page = function (_React$Component) {
+  _inherits(Page, _React$Component);
 
-    function Radio(props) {
-        _classCallCheck(this, Radio);
+  function Page(props) {
+    _classCallCheck(this, Page);
 
-        var _this = _possibleConstructorReturn(this, (Radio.__proto__ || Object.getPrototypeOf(Radio)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Page.__proto__ || Object.getPrototypeOf(Page)).call(this, props));
 
-        _this.state = {
-            checked: _this.props.checked
-        };
-        _this.randomColor = new RandomColor();
-        _this.handleChange = _this.handleChange.bind(_this);
-        return _this;
+    _this.name = _this.props.name;
+    _this.child = _this.props.child;
+    return _this;
+  }
+
+  _createClass(Page, [{
+    key: 'getAnswers',
+    value: function getAnswers() {
+      return this.child.getAnswers();
     }
+  }, {
+    key: 'getName',
+    value: function getName() {
+      return this.name;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'div',
+        null,
+        this.child
+      );
+    }
+  }]);
 
-    _createClass(Radio, [{
-        key: "handleChange",
-        value: function handleChange(event) {
-            this.state.checked = event.target.checked;
-            this.props.updateForm(this.props.val, this.state.checked);
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return React.createElement(
-                "div",
-                { className: "col col-likert-radio" },
-                React.createElement(
-                    "label",
-                    { className: "radio-container" },
-                    this.props.label,
-                    React.createElement("input", { type: "radio", name: this.props.name, value: this.props.val, checked: this.state.checked, onChange: this.handleChange }),
-                    React.createElement("span", { className: "radio-indicator " + this.randomColor.getColor() })
-                )
-            );
-        }
-    }]);
-
-    return Radio;
+  return Page;
 }(React.Component);

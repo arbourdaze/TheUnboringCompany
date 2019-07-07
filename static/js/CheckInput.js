@@ -8,62 +8,44 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Likert = function (_React$Component) {
-    _inherits(Likert, _React$Component);
+var CheckInput = function (_React$Component) {
+    _inherits(CheckInput, _React$Component);
 
-    function Likert(props) {
-        _classCallCheck(this, Likert);
+    function CheckInput(props) {
+        _classCallCheck(this, CheckInput);
 
-        var _this = _possibleConstructorReturn(this, (Likert.__proto__ || Object.getPrototypeOf(Likert)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (CheckInput.__proto__ || Object.getPrototypeOf(CheckInput)).call(this, props));
 
         _this.state = {
-            val: _this.props.val
+            checked: _this.props.checked
         };
-        _this.options = _this.props.options;
-        _this.labels = _this.props.labels;
+        _this.randomColor = new RandomColor();
         _this.handleChange = _this.handleChange.bind(_this);
-        _this.createRow = _this.createRow.bind(_this);
         return _this;
     }
 
-    _createClass(Likert, [{
+    _createClass(CheckInput, [{
         key: "handleChange",
-        value: function handleChange(value, checked) {
-            if (checked) {
-                this.state.val = value;
-            }
-            this.props.updateForm(this.props.name, this.state.val);
-        }
-    }, {
-        key: "createRow",
-        value: function createRow() {
-            var row = [];
-            for (var i = 0; i < this.options.length; i++) {
-                row.push(React.createElement(Radio, {
-                    key: "like-" + this.props.name + i,
-                    name: "like-" + this.props.name,
-                    label: this.labels[i],
-                    val: this.options[i],
-                    checked: this.state.val === this.options[i],
-                    updateForm: this.handleChange
-                }));
-            }
-            return row;
+        value: function handleChange(event) {
+            this.state.checked = event.target.checked;
+            this.props.updateForm(this.props.opt, this.state.checked);
         }
     }, {
         key: "render",
         value: function render() {
             return React.createElement(
                 "div",
-                { className: "likert" },
+                { className: "row" },
                 React.createElement(
-                    "div",
-                    { className: "row" },
-                    this.createRow()
+                    "label",
+                    { className: "checkbox-container" },
+                    this.props.opt,
+                    React.createElement("input", { type: "checkbox", name: this.props.name, value: this.props.opt, checked: this.state.checked, onChange: this.handleChange }),
+                    React.createElement("span", { className: 'checkmark ' + this.randomColor.getColor() })
                 )
             );
         }
     }]);
 
-    return Likert;
+    return CheckInput;
 }(React.Component);

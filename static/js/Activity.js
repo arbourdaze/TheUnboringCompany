@@ -17,11 +17,13 @@ var Activity = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Activity.__proto__ || Object.getPrototypeOf(Activity)).call(this, props));
 
         _this.state = _this.props.data;
+        _this.randomColor = new RandomColor();
         _this.addChoice = _this.addChoice.bind(_this);
         _this.removeChoice = _this.removeChoice.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
         _this.createChecklist = _this.createChecklist.bind(_this);
         _this.changeLike = _this.changeLike.bind(_this);
+        _this.labels = ["Yes", "Maybe", "No"];
         return _this;
     }
 
@@ -45,11 +47,11 @@ var Activity = function (_React$Component) {
         }
     }, {
         key: "handleChange",
-        value: function handleChange(event) {
-            if (event.target.checked) {
-                this.addChoice(event.target.value);
+        value: function handleChange(value, checked) {
+            if (checked) {
+                this.addChoice(value);
             } else {
-                this.removeChoice(event.target.value);
+                this.removeChoice(value);
             }
         }
     }, {
@@ -57,29 +59,27 @@ var Activity = function (_React$Component) {
         value: function createChecklist() {
             var checklist = [];
             var that = this;
-            var i = 0;
             this.state.options.forEach(function (opt) {
-                var line = React.createElement("input", { key: that.state.name + "-checkbox" + i, type: "checkbox", name: that.state.name, value: opt, checked: that.state.choices.has(opt), onChange: that.handleChange });
-                checklist.push(line);
-                i++;
-                checklist.push(React.createElement(
-                    "label",
-                    { key: that.state.name + "-label" + i },
-                    opt
-                ));
-                checklist.push(React.createElement("br", { key: that.state.name + "-newline" + i }));
-                i++;
+                checklist.push(React.createElement(CheckInput, {
+                    name: that.state.name,
+                    opt: opt,
+                    checked: that.state.choices.has(opt),
+                    updateForm: that.handleChange
+                }));
             });
             return checklist;
         }
     }, {
         key: "changeLike",
-        value: function changeLike(value) {
+        value: function changeLike(key, value) {
             this.setState({ like: value }, function () {
                 if (this.state.like == "No") {
-                    this.setState({ choices: new Set() });
+                    this.setState({ choices: new Set() }, function () {
+                        this.props.updateForm(this.state);
+                    });
+                } else {
+                    this.props.updateForm(this.state);
                 }
-                this.props.updateForm(this.state);
             });
         }
     }, {
@@ -89,20 +89,24 @@ var Activity = function (_React$Component) {
                 "div",
                 null,
                 React.createElement(
-                    "h1",
-                    null,
+                    "h2",
+                    { className: "question" },
                     "Do you like ",
                     this.state.name.toLowerCase(),
                     "?"
                 ),
-                React.createElement(Likert, { score: this.state.like, updateForm: this.changeLike, options: ["Yes", "Maybe", "No"], category: this.state.name }),
-                React.createElement("br", null),
-                (this.state.like == "Yes" || this.state.like == "Maybe") && React.createElement(
+                React.createElement(
                     "div",
-                    null,
+                    { className: "page-content-box" },
+                    React.createElement(Likert, { val: this.state.like, updateForm: this.changeLike, labels: this.labels, options: this.labels, name: this.state.name })
+                ),
+                React.createElement("br", null),
+                (this.state.like == "Yes" || this.state.like == "Maybe") && this.state.options.length > 0 && React.createElement(
+                    "div",
+                    { className: "page-content-box" },
                     React.createElement(
-                        "h1",
-                        null,
+                        "h2",
+                        { className: "question" },
                         "What kind of ",
                         this.state.name.toLowerCase(),
                         " do you like?"
