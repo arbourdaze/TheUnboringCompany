@@ -221,7 +221,7 @@ def get_response(responses):
 
             type = "Recipe"
 
-            name = "Recipe: " + recipe
+            name = "Recipe: " + title
             description = ("Preptime: " + preptime + "; Servings: "
                  + servings + "; Calories: " + calories + ";\nIngredients: "
                  + ingredients + ";\nInstructions: " + bayesDescription)
