@@ -199,7 +199,7 @@ def get_response(responses):
     description = ""
 
     for result in responses:
-        if "Movie" in result["extracted_metadata"]["filename"]:
+        if "movie" in result["Type"]:
             title = result["Title"]
             year = result["Year"]
             runtime = result["Runtime"]
@@ -211,23 +211,23 @@ def get_response(responses):
             name = "Movie: " + title
             description = year + "; " + runtime + " minutes; " + genre + ";\n" + bayesDescription
 
-        elif "recipe" in result["extracted_metadata"]["filename"]:
+        elif "Recipe" in result["Type"]:
             title = result["Title"]
             preptime = str(int(result["preptime"]) + int(result["cooktime"]) + int(result["waittime"]))
             servings = str(result["servings"])
             calories = str(result["calories"])
             ingredients = ', '.join(result["ingredients"])
-            bayesDescription = result["instructions"]
+            bayesDescription = result["Description"]
 
             type = "Recipe"
 
             name = "Recipe: " + recipe
             description = ("Preptime: " + preptime + "; Servings: "
                  + servings + "; Calories: " + calories + ";\nIngredients: "
-                 + ingredients + ";\nInstructions: " + instructions)
+                 + ingredients + ";\nInstructions: " + bayesDescription)
 
-        elif "joke" in result["extracted_metadata"]["filename"]:
-            title = result["title"]
+        elif "Joke" in result["Type"]:
+            title = result["Title"]
             bayesDescription = result["Description"]
 
             type = "Joke"
@@ -235,7 +235,7 @@ def get_response(responses):
             name = "Joke: " + title
             description = bayesDescription
 
-        elif "Game" in result["extracted_metadata"]["filename"]:
+        elif "game" in result["Type"]:
             title = result["Title"]
             genre = result["Genre"]
             bayesDescription = result["Description"]
@@ -245,7 +245,7 @@ def get_response(responses):
             name = "Game: " + title
             description = "Genre: " + genre + ";\nSummary: " + bayesDescription
 
-        elif "riddle" in result["extracted_metadata"]["filename"]:
+        elif "Riddle" in result["Type"]:
             bayesDescription = result["Description"]
             title = result["Title"]
 
@@ -254,6 +254,17 @@ def get_response(responses):
             name = "Riddle: " + title
             description = "Answer: " + description
 
+        elif "Video" in result["Type"]:
+            bayesDescription = result["Description"]
+            title = result["Title"]
+            link = result["Link"]
+            thumbnail = result["Thumbnail"]
+            
+            type = "Video"
+            
+            name = "Video: " + title
+            description = "Summary: " + bayesDescription + ";\nLink: " + link
+            
         category = 0
         activity = {Type":type, "Title":title, "BayesDescription":bayesDescription,"Name":name, "Description":description, "Category":category}
         activity = json.dumps(activity)
