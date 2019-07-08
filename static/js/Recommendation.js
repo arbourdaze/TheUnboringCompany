@@ -8,39 +8,48 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Selections = function (_React$Component) {
-    _inherits(Selections, _React$Component);
+var Recommendation = function (_React$Component) {
+    _inherits(Recommendation, _React$Component);
 
-    function Selections(props) {
-        _classCallCheck(this, Selections);
+    function Recommendation(props) {
+        _classCallCheck(this, Recommendation);
 
-        var _this = _possibleConstructorReturn(this, (Selections.__proto__ || Object.getPrototypeOf(Selections)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Recommendation.__proto__ || Object.getPrototypeOf(Recommendation)).call(this, props));
 
-        _this.createRows = _this.createRows.bind(_this);
+        var randomColor = new RandomColor();
+        _this.color = randomColor.getColor();
+        _this.result = _this.props.result;
         return _this;
     }
 
-    _createClass(Selections, [{
-        key: 'createRows',
-        value: function createRows() {
-            var selections = this.props.selections;
-            var rows = [];
-            var i = 0;
-            for (var _i = 0; _i < selections.length; _i++) {
-                rows.push(React.createElement(Selection, { key: 'selection-' + _i, name: selections[_i].Name, description: selections[_i].Description }));
-            }
-            return rows;
-        }
-    }, {
-        key: 'render',
+    _createClass(Recommendation, [{
+        key: "render",
         value: function render() {
             return React.createElement(
-                'div',
-                null,
-                this.createRows()
+                "div",
+                { className: "page-content-box result " + this.color, "data-type": this.result.Type },
+                React.createElement(
+                    "div",
+                    { className: "row" },
+                    React.createElement(
+                        "div",
+                        { className: "col" },
+                        this.result.Name
+                    ),
+                    React.createElement(
+                        "div",
+                        { className: "col" },
+                        this.result.Description
+                    )
+                ),
+                React.createElement(
+                    "div",
+                    { className: "row" },
+                    this.props.actionItem
+                )
             );
         }
     }]);
 
-    return Selections;
+    return Recommendation;
 }(React.Component);

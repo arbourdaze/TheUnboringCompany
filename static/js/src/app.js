@@ -96,12 +96,7 @@ class BoredForm extends React.Component {
             },
             pageIndex: 0,
             submitted: false,
-            fedback: false,
-            results: [],
-            feedback: {
-                liked: new Set(),
-                disliked: new Set()
-            }
+            results: []
         };
 
         this.reassignData = this.reassignData.bind(this);
@@ -109,12 +104,12 @@ class BoredForm extends React.Component {
         this.changePersonality = this.changePersonality.bind(this);
         this.changeActivity = this.changeActivity.bind(this);
         this.changeFeedback = this.changeFeedback.bind(this);
-        this.submitFeedback = this.submitFeedback.bind(this);
         
         this.nextPage = this.nextPage.bind(this);
         this.previousPage = this.previousPage.bind(this);
         this.canGoNext = this.canGoNext.bind(this);
         this.canGoPrevious = this.canGoPrevious.bind(this);
+        this.canSurpriseMe = this.canSurpriseMe.bind(this);
         
         this.timeIsValid = this.timeIsValid.bind(this);
         this.validateFeedback = this.validateFeedback.bind(this);
@@ -131,11 +126,13 @@ class BoredForm extends React.Component {
         this.setupPages = this.setupPages.bind(this);
         
         this.transformActivityData = this.transformActivityData.bind(this);
-        this.transformFeedback = this.transformFeedback.bind(this);
         
         this.goBack = this.goBack.bind(this);
-        this.send = this.send.bind(this);
+        this.send = this.send.bind(this);       
         this.gatherData = this.gatherData.bind(this);
+        this.sendAnswers = this.sendAnswers.bind(this);
+        this.sendFeedback = this.sendFeedback.bind(this);
+        this.surpriseMe = this.surpriseMe.bind(this);
         
         this.setupPages();
     }
@@ -166,7 +163,7 @@ class BoredForm extends React.Component {
     }
     
     getVideos() {
-        return this.getActivityDOM(this.state.data.activites.videos);
+        return this.getActivityDOM(this.state.data.activities.videos);
     }
     
     getRiddles() {
@@ -206,11 +203,23 @@ class BoredForm extends React.Component {
         this.reassignData(newData);
     }
     
-    changeFeedback(value) {
-        console.log(value);
-        this.setState({feedback: value}, function() {
+    changeFeedback(data) {
+        let liked = data.liked;
+        let disliked = data.disliked;
+        let results = this.state.results;
+        liked.forEach(function(id) {
+            let result = results[id];
+            result.Category = 2;
+            results[id] = result;
+        });
+        disliked.forEach(function(id) {
+            let result = results[id];
+            result.Category = 1;
+            results[id] = result;
+        });
+        this.setState({results: results}, function() {
             if (debug) {
-                console.log(this.state);
+                console.log(this.state.results);
             }
         });
     }
@@ -275,37 +284,46 @@ class BoredForm extends React.Component {
         return data;
     }
     
-    send() {
+    sendFeedback() {
+        let data = this.state.results;
+        this.send(data, 'get-feedback');
+    }
+    
+    sendAnswers() {
         if (this.timeIsValid()) {
             let data = this.gatherData();
-            let json = JSON.stringify(data);
-            let that = this;
-
-            function successCallback(res, that) {
-                that.setState({submitted: true});
-                that.setState({results: res});
-            }
-
-            if (debug) {
-                console.log(json);
-            }
-
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                url: '/search',
-                data: json,
-                dataType: 'json',
-                success: function (res) {
-                    successCallback(res, that);
-                },
-                error: function () {
-                    if (debug) {
-                        console.log('error');
-                    }
-                }
-            });
+            this.send(data, 'search');
         }
+    }
+    
+    send(data, route) {
+        let json = JSON.stringify(data);
+        let that = this;
+
+        function successCallback(res, that) {
+            that.setState({results: res});
+            that.setState({submitted: true});
+        }
+
+        if (debug) {
+            console.log(json);
+        }
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/' + route,
+            data: json,
+            dataType: 'json',
+            success: function (res) {
+                successCallback(res, that);
+            },
+            error: function () {
+                if (debug) {
+                    console.log('error');
+                }
+            }
+        });
     }
     
     transformActivityData(activity) {
@@ -325,22 +343,7 @@ class BoredForm extends React.Component {
         data['Disliked' + activity.name] = disliked;
         return data;
     }
-    
-    transformFeedback() {
-        let data = {};
-        let liked = [];
-        let disliked = [];
-        this.state.feedback.liked.forEach(function(opt) {
-            liked.push(opt);
-        });
-        this.state.feedback.disliked.forEach(function(opt) {
-            disliked.push(opt);
-        });
-        data.Liked = liked;
-        data.Disliked = disliked;
-        return data;
-    }
-    
+
     goBack() {
         this.setState({results: []});
         this.setState({submitted: false});
@@ -348,50 +351,32 @@ class BoredForm extends React.Component {
     }
     
     validateFeedback() {
-        let total = this.state.feedback.liked.size + this.state.feedback.disliked.size;
-        return total == this.state.results.length;
+        let results = this.state.results;
+        let isValid = true;
+        for (let i = 0; i < results.length; i++) {
+            if (results[i].Category != 2 && results[i].Category != 1) {
+                isValid = false;
+                break;
+            }
+        }
+        return isValid;
     }
     
-    submitFeedback() {
-        let data = {};
-        data.Feedback = this.transformFeedback();
-        let json = JSON.stringify(data);
-        
-        function successCallback(res) {
-            
-        }
-        
-        $.ajax({
-            type: 'POST',
-            contentType: 'application/json',
-            url: '/feedback',
-            data: JSON.stringify(json),
-            dataType: 'json',
-            success: function (res) {
-                successCallback(res, that);
-            },
-            error: function () {
-                if (debug) {
-                    console.log('error');
-                }
-            }
-        });
+    surpriseMe() {
+    }
+    
+    canSurpriseMe() {
+        return true;
     }
     
     render() {
-        if (this.state.fedback) {
-            return (
-                <div className="page">
-                    <Selections selections={this.state.feedback.liked} />
-                </div>
-            );
-        } else if (this.state.submitted) {
+        if (this.state.submitted) {
             return (
                 <div>
                     <div className="page">
                         <Results goBack={this.goBack} results={this.state.results} updateForm={this.changeFeedback} />
                     </div>
-                    <UnboringButton callback={this.submitFeedback} enabler={this.validateFeedback} classes="submit" buttonText="Submit" />
+                    <UnboringButton callback={this.sendFeedback} enabler={this.validateFeedback} classes="submit" buttonText="Submit" />
                 </div>
             );
         } else {
@@ -403,7 +388,8 @@ class BoredForm extends React.Component {
                     <div className="button-pad">
                         <UnboringButton callback={this.previousPage} enabler={this.canGoPrevious} classes="previous" buttonText="Previous" />
                         <UnboringButton callback={this.nextPage} enabler={this.canGoNext} classes="next" buttonText="Next" />
-                        <UnboringButton callback={this.send} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
+                        <UnboringButton callback={this.sendAnswers} enabler={this.timeIsValid} classes="submit" buttonText="Submit" />
+                        <UnboringButton callback={this.surpriseMe} enabler={this.canSurpriseMe} classes="surprise" buttonText="Surprise Me!" />
                     </div>
                 </div>
             );

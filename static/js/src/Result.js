@@ -5,32 +5,31 @@ class Result extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            score: null
+            score: this.props.result.Category
         };
         this.labels = ["Sounds fun!", "Sounds boring."];
-        this.options = [1,0];
-        let randomColor = new RandomColor();
-        this.color = randomColor.getColor();
+        this.options = [2,1];
+        this.result = this.props.result;
         this.handleChange = this.handleChange.bind(this);
+        this.actionItem = <Likert
+            val={this.state.score}
+            updateForm={this.handleChange}
+            labels={this.labels}
+            options={this.options}
+            name={'result' + this.props.id}
+            />;
     }
     
-    handleChange(category, choice)
+    handleChange(name, value)
     {
-        this.state.score = choice;
-        this.props.updateForm(this.props.id, this.state.score);
+        this.setState({ score: value }, function () {
+            this.props.updateForm(this.props.id, this.state.score);
+        });
     }
     
     render() {
         return (
-            <div className={"page-content-box result " + this.color}>
-                <div className="row">
-                    <div className="col">{this.props.name}</div>
-                    <div className="col">{this.props.description}</div>
-                </div>
-                <div className="row">
-                    <Likert score={this.state.score} updateForm={this.handleChange} labels={this.labels} options={this.options} category={'result' + this.props.id} />
-                </div>
-            </div>
+            <Recommendation result={this.result} actionItem={this.actionItem} />
         );
     }
 }
