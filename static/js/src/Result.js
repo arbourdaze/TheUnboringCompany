@@ -11,13 +11,6 @@ class Result extends React.Component {
         this.options = [2,1];
         this.result = this.props.result;
         this.handleChange = this.handleChange.bind(this);
-        this.actionItem = <Likert
-            val={this.state.score}
-            updateForm={this.handleChange}
-            labels={this.labels}
-            options={this.options}
-            name={'result' + this.props.id}
-            />;
     }
     
     handleChange(name, value)
@@ -28,8 +21,15 @@ class Result extends React.Component {
     }
     
     render() {
+        let actionItem = <Likert
+            val={this.state.score}
+            updateForm={this.handleChange}
+            labels={this.labels}
+            options={this.options}
+            name={'result' + this.props.id}
+        />;
         return (
-            <Recommendation result={this.result} actionItem={this.actionItem} />
+            <Recommendation result={this.result} actionItem={actionItem} />
         );
     }
 }

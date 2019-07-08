@@ -23,13 +23,6 @@ var Result = function (_React$Component) {
         _this.options = [2, 1];
         _this.result = _this.props.result;
         _this.handleChange = _this.handleChange.bind(_this);
-        _this.actionItem = React.createElement(Likert, {
-            val: _this.state.score,
-            updateForm: _this.handleChange,
-            labels: _this.labels,
-            options: _this.options,
-            name: 'result' + _this.props.id
-        });
         return _this;
     }
 
@@ -43,7 +36,14 @@ var Result = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            return React.createElement(Recommendation, { result: this.result, actionItem: this.actionItem });
+            var actionItem = React.createElement(Likert, {
+                val: this.state.score,
+                updateForm: this.handleChange,
+                labels: this.labels,
+                options: this.options,
+                name: 'result' + this.props.id
+            });
+            return React.createElement(Recommendation, { result: this.result, actionItem: actionItem });
         }
     }]);
 
