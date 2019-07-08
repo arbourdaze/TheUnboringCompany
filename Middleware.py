@@ -63,6 +63,7 @@ class Bayes:
             elif key["Category"] == 2:
                 selectionData.update(key)
             else:
+                pass
                 #donothing
 
         with open(SEL_FILE, 'w') as a
@@ -259,12 +260,12 @@ def get_response(responses):
             title = result["Title"]
             link = result["Link"]
             thumbnail = result["Thumbnail"]
-            
+
             type = "Video"
-            
+
             name = "Video: " + title
             description = "Summary: " + bayesDescription + ";\nLink: " + link
-            
+
         category = 0
         activity = {Type":type, "Title":title, "BayesDescription":bayesDescription,"Name":name, "Description":description, "Category":category}
         activity = json.dumps(activity)
