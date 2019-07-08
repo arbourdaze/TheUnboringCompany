@@ -363,6 +363,7 @@ class BoredForm extends React.Component {
     }
     
     surpriseMe() {
+        this.send({}, 'surprise-me');
     }
     
     canSurpriseMe() {

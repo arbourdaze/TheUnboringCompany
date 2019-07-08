@@ -361,7 +361,9 @@ var BoredForm = function (_React$Component) {
         }
     }, {
         key: 'surpriseMe',
-        value: function surpriseMe() {}
+        value: function surpriseMe() {
+            this.send({}, 'surprise-me');
+        }
     }, {
         key: 'canSurpriseMe',
         value: function canSurpriseMe() {

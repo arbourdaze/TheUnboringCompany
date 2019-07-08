@@ -19,6 +19,12 @@ def getFeedback():
     content = request.get_json()
     responses = mw.getFeedback(json.dumps(content), None)
     return responses
+
+@app.route('/surprise-me', methods=['GET', 'POST'])
+def surpriseMe():
+    content = request.get_json()
+    responses = mw.surpriseMe();
+    return responses
     
 if __name__ == '__main__':
     app.run(debug = True)
