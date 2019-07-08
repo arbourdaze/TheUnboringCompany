@@ -41,7 +41,9 @@ var UnboringButton = function (_React$Component) {
         value: function render() {
             return React.createElement(
                 'div',
-                { className: 'unboring-button ' + this.props.classes + (!this.enabler() && ' disabled'), onClick: this.enabler() && this.callback },
+                {
+                    className: 'unboring-button' + (this.props.classes.length > 0 && ' ' + this.props.classes) + (!this.enabler() && ' disabled'),
+                    onClick: this.enabler() ? this.callback : undefined },
                 this.props.buttonText
             );
         }

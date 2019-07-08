@@ -17,48 +17,33 @@ var Result = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Result.__proto__ || Object.getPrototypeOf(Result)).call(this, props));
 
         _this.state = {
-            score: null
+            score: _this.props.result.Category
         };
         _this.labels = ["Sounds fun!", "Sounds boring."];
-        _this.options = [1, 0];
-        var randomColor = new RandomColor();
-        _this.color = randomColor.getColor();
+        _this.options = [2, 1];
+        _this.result = _this.props.result;
         _this.handleChange = _this.handleChange.bind(_this);
         return _this;
     }
 
     _createClass(Result, [{
         key: "handleChange",
-        value: function handleChange(category, choice) {
-            this.state.score = choice;
-            this.props.updateForm(this.props.id, this.state.score);
+        value: function handleChange(name, value) {
+            this.setState({ score: value }, function () {
+                this.props.updateForm(this.props.id, this.state.score);
+            });
         }
     }, {
         key: "render",
         value: function render() {
-            return React.createElement(
-                "div",
-                { className: "page-content-box result " + this.color },
-                React.createElement(
-                    "div",
-                    { className: "row" },
-                    React.createElement(
-                        "div",
-                        { className: "col" },
-                        this.props.name
-                    ),
-                    React.createElement(
-                        "div",
-                        { className: "col" },
-                        this.props.description
-                    )
-                ),
-                React.createElement(
-                    "div",
-                    { className: "row" },
-                    React.createElement(Likert, { score: this.state.score, updateForm: this.handleChange, labels: this.labels, options: this.options, category: 'result' + this.props.id })
-                )
-            );
+            var actionItem = React.createElement(Likert, {
+                val: this.state.score,
+                updateForm: this.handleChange,
+                labels: this.labels,
+                options: this.options,
+                name: 'result' + this.props.id
+            });
+            return React.createElement(Recommendation, { result: this.result, actionItem: actionItem });
         }
     }]);
 

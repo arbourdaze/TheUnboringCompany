@@ -76,12 +76,7 @@ var BoredForm = function (_React$Component) {
             },
             pageIndex: 0,
             submitted: false,
-            fedback: false,
-            results: [],
-            feedback: {
-                liked: new Set(),
-                disliked: new Set()
-            }
+            results: []
         };
 
         _this.reassignData = _this.reassignData.bind(_this);
@@ -89,12 +84,12 @@ var BoredForm = function (_React$Component) {
         _this.changePersonality = _this.changePersonality.bind(_this);
         _this.changeActivity = _this.changeActivity.bind(_this);
         _this.changeFeedback = _this.changeFeedback.bind(_this);
-        _this.submitFeedback = _this.submitFeedback.bind(_this);
 
         _this.nextPage = _this.nextPage.bind(_this);
         _this.previousPage = _this.previousPage.bind(_this);
         _this.canGoNext = _this.canGoNext.bind(_this);
         _this.canGoPrevious = _this.canGoPrevious.bind(_this);
+        _this.canSurpriseMe = _this.canSurpriseMe.bind(_this);
 
         _this.timeIsValid = _this.timeIsValid.bind(_this);
         _this.validateFeedback = _this.validateFeedback.bind(_this);
@@ -111,11 +106,13 @@ var BoredForm = function (_React$Component) {
         _this.setupPages = _this.setupPages.bind(_this);
 
         _this.transformActivityData = _this.transformActivityData.bind(_this);
-        _this.transformFeedback = _this.transformFeedback.bind(_this);
 
         _this.goBack = _this.goBack.bind(_this);
         _this.send = _this.send.bind(_this);
         _this.gatherData = _this.gatherData.bind(_this);
+        _this.sendAnswers = _this.sendAnswers.bind(_this);
+        _this.sendFeedback = _this.sendFeedback.bind(_this);
+        _this.surpriseMe = _this.surpriseMe.bind(_this);
 
         _this.setupPages();
         return _this;
@@ -144,7 +141,7 @@ var BoredForm = function (_React$Component) {
     }, {
         key: 'getVideos',
         value: function getVideos() {
-            return this.getActivityDOM(this.state.data.activites.videos);
+            return this.getActivityDOM(this.state.data.activities.videos);
         }
     }, {
         key: 'getRiddles',
@@ -193,11 +190,23 @@ var BoredForm = function (_React$Component) {
         }
     }, {
         key: 'changeFeedback',
-        value: function changeFeedback(value) {
-            console.log(value);
-            this.setState({ feedback: value }, function () {
+        value: function changeFeedback(data) {
+            var liked = data.liked;
+            var disliked = data.disliked;
+            var results = this.state.results;
+            liked.forEach(function (id) {
+                var result = results[id];
+                result.Category = 2;
+                results[id] = result;
+            });
+            disliked.forEach(function (id) {
+                var result = results[id];
+                result.Category = 1;
+                results[id] = result;
+            });
+            this.setState({ results: results }, function () {
                 if (debug) {
-                    console.log(this.state);
+                    console.log(this.state.results);
                 }
             });
         }
@@ -267,38 +276,49 @@ var BoredForm = function (_React$Component) {
             return data;
         }
     }, {
-        key: 'send',
-        value: function send() {
+        key: 'sendFeedback',
+        value: function sendFeedback() {
+            var data = this.state.results;
+            this.send(data, 'get-feedback');
+        }
+    }, {
+        key: 'sendAnswers',
+        value: function sendAnswers() {
             if (this.timeIsValid()) {
-                var successCallback = function successCallback(res, that) {
-                    that.setState({ submitted: true });
-                    that.setState({ results: res });
-                };
-
                 var data = this.gatherData();
-                var json = JSON.stringify(data);
-                var _that = this;
-
-                if (debug) {
-                    console.log(json);
-                }
-
-                $.ajax({
-                    type: 'POST',
-                    contentType: 'application/json',
-                    url: '/search',
-                    data: json,
-                    dataType: 'json',
-                    success: function success(res) {
-                        successCallback(res, _that);
-                    },
-                    error: function error() {
-                        if (debug) {
-                            console.log('error');
-                        }
-                    }
-                });
+                this.send(data, 'search');
             }
+        }
+    }, {
+        key: 'send',
+        value: function send(data, route) {
+            var json = JSON.stringify(data);
+            var that = this;
+
+            function successCallback(res, that) {
+                that.setState({ results: res });
+                that.setState({ submitted: true });
+            }
+
+            if (debug) {
+                console.log(json);
+            }
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/' + route,
+                data: json,
+                dataType: 'json',
+                success: function success(res) {
+                    successCallback(res, that);
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
         }
     }, {
         key: 'transformActivityData',
@@ -320,22 +340,6 @@ var BoredForm = function (_React$Component) {
             return data;
         }
     }, {
-        key: 'transformFeedback',
-        value: function transformFeedback() {
-            var data = {};
-            var liked = [];
-            var disliked = [];
-            this.state.feedback.liked.forEach(function (opt) {
-                liked.push(opt);
-            });
-            this.state.feedback.disliked.forEach(function (opt) {
-                disliked.push(opt);
-            });
-            data.Liked = liked;
-            data.Disliked = disliked;
-            return data;
-        }
-    }, {
         key: 'goBack',
         value: function goBack() {
             this.setState({ results: [] });
@@ -345,44 +349,28 @@ var BoredForm = function (_React$Component) {
     }, {
         key: 'validateFeedback',
         value: function validateFeedback() {
-            var total = this.state.feedback.liked.size + this.state.feedback.disliked.size;
-            return total == this.state.results.length;
+            var results = this.state.results;
+            var isValid = true;
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].Category != 2 && results[i].Category != 1) {
+                    isValid = false;
+                    break;
+                }
+            }
+            return isValid;
         }
     }, {
-        key: 'submitFeedback',
-        value: function submitFeedback() {
-            var data = {};
-            data.Feedback = this.transformFeedback();
-            var json = JSON.stringify(data);
-
-            function successCallback(res) {}
-
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                url: '/feedback',
-                data: JSON.stringify(json),
-                dataType: 'json',
-                success: function success(res) {
-                    successCallback(res, that);
-                },
-                error: function error() {
-                    if (debug) {
-                        console.log('error');
-                    }
-                }
-            });
+        key: 'surpriseMe',
+        value: function surpriseMe() {}
+    }, {
+        key: 'canSurpriseMe',
+        value: function canSurpriseMe() {
+            return true;
         }
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.fedback) {
-                return React.createElement(
-                    'div',
-                    { className: 'page' },
-                    React.createElement(Selections, { selections: this.state.feedback.liked })
-                );
-            } else if (this.state.submitted) {
+            if (this.state.submitted) {
                 return React.createElement(
                     'div',
                     null,
@@ -391,7 +379,7 @@ var BoredForm = function (_React$Component) {
                         { className: 'page' },
                         React.createElement(Results, { goBack: this.goBack, results: this.state.results, updateForm: this.changeFeedback })
                     ),
-                    React.createElement(UnboringButton, { callback: this.submitFeedback, enabler: this.validateFeedback, classes: 'submit', buttonText: 'Submit' })
+                    React.createElement(UnboringButton, { callback: this.sendFeedback, enabler: this.validateFeedback, classes: 'submit', buttonText: 'Submit' })
                 );
             } else {
                 return React.createElement(
@@ -407,7 +395,8 @@ var BoredForm = function (_React$Component) {
                         { className: 'button-pad' },
                         React.createElement(UnboringButton, { callback: this.previousPage, enabler: this.canGoPrevious, classes: 'previous', buttonText: 'Previous' }),
                         React.createElement(UnboringButton, { callback: this.nextPage, enabler: this.canGoNext, classes: 'next', buttonText: 'Next' }),
-                        React.createElement(UnboringButton, { callback: this.send, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' })
+                        React.createElement(UnboringButton, { callback: this.sendAnswers, enabler: this.timeIsValid, classes: 'submit', buttonText: 'Submit' }),
+                        React.createElement(UnboringButton, { callback: this.surpriseMe, enabler: this.canSurpriseMe, classes: 'surprise', buttonText: 'Surprise Me!' })
                     )
                 );
             }
