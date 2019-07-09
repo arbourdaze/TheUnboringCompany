@@ -87,7 +87,7 @@ class Bayes:
                 self.rejections = temp
         with open(self.wordBankFile) as f:
             temp = json.load(f)
-            self.wordBank = temp["Words"]
+            self.wordBank.extend(temp["Words"])
 
         with open(self.bayesDataFile) as f:
             self.types = json.load(f)
@@ -100,6 +100,7 @@ class Bayes:
             return True
 
     def parseItems(self, data):
+        print(self.wordBank)
         vecs = vectorize.parse(data, self.types, self.wordBank)
         return vecs
 

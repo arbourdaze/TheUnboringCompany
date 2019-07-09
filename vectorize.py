@@ -2,6 +2,7 @@ from nltk import sent_tokenize
 from nltk import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
+import string
 
 """
 Activity JSON object
