@@ -244,8 +244,11 @@ def get_response(responses, parsedList = None):
     name = ""
     description = ""
 
-    if (parsedList is None):
+    nolist = False
+    if parsedList is None:
         parsedList = responses
+        nolist = True
+
     for result,activity in zip(responses,parsedList):
         if "movie" in result["Type"]:
             title = result["Title"]
@@ -315,7 +318,11 @@ def get_response(responses, parsedList = None):
 
         category = 0
 
-        activity = {"Type":activity["Type"], "Title":activity["Title"], "BayesDescription":activity["BayesDescription"],"Name":name, "Description":description, "Category":category}
+        activity = dict()
+        if nolist:
+            activity = {"Type":typ, "Title":title, "BayesDescription":bayesDescription, "Name":name, "Description":description, "Category":category}
+        else:
+            activity = {"Type":activity["Type"], "Title":activity["Title"], "BayesDescription":activity["BayesDescription"],"Name":name, "Description":description, "Category":category}
 
         activity = json.dumps(activity)
         activity = json.loads(activity)
