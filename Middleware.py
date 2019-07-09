@@ -52,6 +52,7 @@ class Bayes:
         #Write Data to file filename
         #selectFile = open(SEL_FILE,"a")
         #rejectFile = open(REJ_FILE,"a")
+
         with open(SEL_FILE, 'w') as a:
             json.dumps(self.selections, a)
 
@@ -197,6 +198,7 @@ def middleware(responses, mood):
 
         return returns
 
+
     #Convert json objects into something not terrible for reading
     return get_response(correctList)
 
@@ -257,7 +259,7 @@ def get_response(responses, parsedList):
 
         elif "Recipe" in result["Type"]:
             title = result["Title"]
-            preptime = str(int(result["preptime"]) + int(result["cooktime"]) + int(result["waittime"]))
+            preptime = str(int(result["preptime"]) + int(result["cooktime"]))
             servings = str(result["servings"])
             calories = str(result["calories"])
             ingredients = ', '.join(result["ingredients"])
@@ -310,7 +312,9 @@ def get_response(responses, parsedList):
             description = "Summary: " + bayesDescription + ";\nLink: " + link
 
         category = 0
+
         activity = {"Type":activity["Type"], "Title":activity["Title"], "BayesDescription":activity["BayesDescription"],"Name":name, "Description":description, "Category":category}
+
         activity = json.dumps(activity)
         activity = json.loads(activity)
         activities.append(activity)
