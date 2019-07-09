@@ -54,17 +54,17 @@ class Bayes:
         #rejectFile = open(REJ_FILE,"a")
 
         with open(SEL_FILE, 'w') as a:
-            json.dumps(self.selections, a)
+            json.dump(self.selections, a)
 
         with open(REJ_FILE, 'w') as b:
-            json.dumps(self.rejections, b)
+            json.dump(self.rejections, b)
 
         with open(self.wordBankFile, 'w') as f:
             temp = {"Words":self.workBank}
-            json.dumps(temp, f)
+            json.dump(temp, f)
 
         with open(self.bayesDataFile,'w') as f:
-            json.dumps(self.types, f)
+            json.dump(self.types, f)
 
     def loadData(self):
         #Read data from file filename into selections and rejections accordingly
