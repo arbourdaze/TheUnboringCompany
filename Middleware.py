@@ -8,6 +8,7 @@ import nltk
 from sklearn.naive_bayes import GaussianNB
 import vectorize
 from compositeBayes import CompositeBayes
+import random
 
 MIN_DATA_REQUIRED = 5
 SEL_FILE = "selects.json"
@@ -349,6 +350,16 @@ def time_filter(res, timeLimit, correctList):
             total = result["preptime"]+result["waittime"]+result["cooktime"]
             if total < timeLimit:
                 correctList.append(result)
+
+
+def surpriseMe():
+    cats = ["Movie", "Joke", "Recipe", "Game", "Riddle", "Video"]
+    topic = cats[random.randint(0,5)]
+    discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
+    response = makeQuery("", discovery, topic)  
+    res = response.result["results"];
+
+    return get_response(res)
 
 
 #with open("InputJSON.json","r") as js:
