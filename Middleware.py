@@ -5,7 +5,6 @@ import config as cf
 import secrets
 import sys
 import nltk
-import gensis
 from sklearn.naive_bayes import GaussianNB
 import vectorize
 
@@ -51,10 +50,10 @@ class Bayes:
         #selectFile = open(SEL_FILE,"a")
         #rejectFile = open(REJ_FILE,"a")
         responseData = json.loads(feedback)
-        with open(SEL_FILE) as f
+        with open(SEL_FILE) as f:
             selectionData = json.load(f)
 
-        with open(REJ_FILE) as g
+        with open(REJ_FILE) as g:
             rejectionData = json.load(g)
 
         for key in data.items():
@@ -66,21 +65,21 @@ class Bayes:
                 pass
                 #donothing
 
-        with open(SEL_FILE, 'w') as a
+        with open(SEL_FILE, 'w') as a:
             json.dump(selectionData, a)
 
-        with open(REJ_FILE, 'w') as b
+        with open(REJ_FILE, 'w') as b:
             json.dump(rejectionData, b)
 
     def loadData(self):
         #Read data from file filename into selections and rejections accordingly
-        with open(SEL_FILE) as a
+        with open(SEL_FILE) as a:
             selectionData = json.load(a)
 
         for key in selectionData.items():
             selections.append(key)
 
-        with open(REJ_FILE) as b
+        with open(REJ_FILE) as b:
             rejectionData = json.load(b)
 
         for key in rejectionData.items():
@@ -151,7 +150,7 @@ def middleware(responses, mood):
     #Run naive bayes
     if bayes.countData():
         #Perform Naive Bayes
-        bayes.
+        
         correctList = bayes.naiveBayes(correctList)
 
     #Convert json objects into something not terrible for reading
@@ -214,7 +213,7 @@ def get_response(responses):
 
         elif "Recipe" in result["Type"]:
             title = result["Title"]
-            preptime = str(int(result["preptime"]) + int(result["cooktime"]) + int(result["waittime"]))
+            preptime = str(int(result["preptime"]) + int(result["cooktime"]))
             servings = str(result["servings"])
             calories = str(result["calories"])
             ingredients = ', '.join(result["ingredients"])
@@ -267,7 +266,7 @@ def get_response(responses):
             description = "Summary: " + bayesDescription + ";\nLink: " + link
 
         category = 0
-        activity = {Type":type, "Title":title, "BayesDescription":bayesDescription,"Name":name, "Description":description, "Category":category}
+        activity = {"Type":type, "Title":title, "BayesDescription":bayesDescription,"Name":name, "Description":description, "Category":category}
         activity = json.dumps(activity)
         activity = json.loads(activity)
         activities.append(activity)
