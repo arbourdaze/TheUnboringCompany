@@ -55,7 +55,7 @@ class Bayes:
 
     def saveData(self):
         #Write Data to file filename
-        #selectFile = open(SEL_FILE,"a")
+        #selectFile = open(SEL_FILE,"a") 
         #rejectFile = open(REJ_FILE,"a")
 
         with open(SEL_FILE, 'w') as a:
