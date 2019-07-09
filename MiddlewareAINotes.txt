@@ -1,0 +1,52 @@
+Middleware Notes:
+
+Collect past choices
+Record personality
+
+Regressions/Predictive Text Problem
+	Past Choices + Current Preferences & Personality --> Activity Set
+	OR/AND
+	Past Choices + Current Preferences & Personality --> Discovery Search
+
+HARDEST PART: Convert Activities/Search words into vector representation
+	Word2Vec?
+
+Use data to both perform searches and order discovery results
+	Options:
+		- Naive Bayes
+		- Support Vector Machine/Support Vector Regression
+		- Decision Tree
+		- Rule Based (Maybe)
+		- RNN For text generation
+
+
+Possible Algorithm 1:
+	- Convert Set of Search words to vectors using Word2Vec
+	- Have AI map past choices, personality, current preferences to word vectors
+	- Convert word vectors back to words
+	- Search in watson
+	- (Possible) Order results using AI also
+	- Return Results
+
+Possible Algorithm 2: (I like this better -Chris)
+	- Search watson as we did before, but return all results
+	- Use AI to map personality, past choices --> activity to select the best 10 activities across all categories
+	- Return to user
+
+How to convert Activity Documents to Vectors (Hooray...):
+<Name/Title, Description, # Times Chosen, Category, ...>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
