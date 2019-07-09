@@ -69,17 +69,17 @@ class Bayes:
     def loadData(self):
         #Read data from file filename into selections and rejections accordingly
         with open(SEL_FILE) as a:
-            self.selections = json.loads(a)
+            self.selections = json.load(a)
 
         with open(REJ_FILE) as b:
-            self.rejections = json.loads(b)
+            self.rejections = json.load(b)
 
         with open(self.wordBankFile) as f:
-            temp = json.loads(f)
+            temp = json.load(f)
             self.wordBank = temp["Words"]
 
         with open(self.bayesDataFile) as f:
-            self.types = json.loads(f)
+            self.types = json.load(f)
 
 
     def countData(self):
@@ -236,7 +236,7 @@ def get_minutes(data):
 
 # get movies infos from watson response
 #[{"Name":Name, "Description":Description}, {"Name":Name, "Description":Description}, ...]
-def get_response(responses, parsedList):
+def get_response(responses, parsedList = None):
     activities = []
     type = ""
     title = ""
@@ -244,6 +244,8 @@ def get_response(responses, parsedList):
     name = ""
     description = ""
 
+    if (parsedList is None):
+        parsedList = responses
     for result,activity in zip(responses,parsedList):
         if "movie" in result["Type"]:
             title = result["Title"]
