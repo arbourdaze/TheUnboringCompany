@@ -73,6 +73,7 @@ div.unboring-button {
     float:left;
     margin:0.5em;
     padding:1em;
+    font-weight:bold;
 }
 
 div.unboring-button.disabled {
