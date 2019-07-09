@@ -17,7 +17,7 @@ def search():
 @app.route('/get-feedback', methods=['GET', 'POST'])
 def getFeedback():
     content = request.get_json()
-    responses = mw.getFeedback(json.dumps(content), None)
+    responses = mw.getFeedback(json.dumps(content))
     return responses
 
 @app.route('/surprise-me', methods=['GET', 'POST'])
