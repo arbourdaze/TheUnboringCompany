@@ -279,7 +279,31 @@ var BoredForm = function (_React$Component) {
         key: 'sendFeedback',
         value: function sendFeedback() {
             var data = this.state.results;
-            this.send(data, 'get-feedback');
+            var json = JSON.stringify(data);
+            var that = this;
+            function successCallback(res) {
+                that.sendAnswers();
+            }
+
+            if (debug) {
+                console.log(json);
+            }
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/get-feedback',
+                data: json,
+                dataType: 'json',
+                success: function success(res) {
+                    successCallback(res);
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
         }
     }, {
         key: 'sendAnswers',

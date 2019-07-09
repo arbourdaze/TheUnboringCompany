@@ -60,7 +60,7 @@ class Bayes:
             json.dump(self.rejections, b)
 
         with open(self.wordBankFile, 'w') as f:
-            temp = {"Words":self.workBank}
+            temp = {"Words":self.wordBank}
             json.dump(temp, f)
 
         with open(self.bayesDataFile,'w') as f:

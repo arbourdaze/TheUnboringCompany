@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import Middleware as mw
 import json
 
@@ -17,8 +17,8 @@ def search():
 @app.route('/get-feedback', methods=['GET', 'POST'])
 def getFeedback():
     content = request.get_json()
-    responses = mw.getFeedback(json.dumps(content))
-    return responses
+    mw.getFeedback(json.dumps(content))
+    return jsonify([]);
 
 @app.route('/surprise-me', methods=['GET', 'POST'])
 def surpriseMe():

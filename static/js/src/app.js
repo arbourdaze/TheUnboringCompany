@@ -286,7 +286,32 @@ class BoredForm extends React.Component {
     
     sendFeedback() {
         let data = this.state.results;
-        this.send(data, 'get-feedback');
+        let json = JSON.stringify(data);
+        let that = this;
+        function successCallback(res) {
+            that.sendAnswers();
+        }
+        
+        if (debug) {
+            console.log(json);
+        }
+
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/get-feedback',
+            data: json,
+            dataType: 'json',
+            success: function (res) {
+                successCallback(res);
+            },
+            error: function () {
+                if (debug) {
+                    console.log('error');
+                }
+            }
+        });
+        
     }
     
     sendAnswers() {
