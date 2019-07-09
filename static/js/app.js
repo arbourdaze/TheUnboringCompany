@@ -320,6 +320,7 @@ var BoredForm = function (_React$Component) {
             var that = this;
 
             function successCallback(res, that) {
+                window.scrollTo(0, 0);
                 that.setState({ submitted: false });
                 that.setState({ results: res });
                 that.setState({ submitted: true });
@@ -390,7 +391,24 @@ var BoredForm = function (_React$Component) {
     }, {
         key: 'surpriseMe',
         value: function surpriseMe() {
-            this.send({}, 'surprise-me');
+            var time = this.state.data.time;
+            time.hours = Math.floor(Math.random() * 3) + 3;
+            time.minutes = Math.floor(Math.random() * 59);
+            this.changeTime(time);
+            var activities = this.state.data.activities;
+            var that = this;
+            Object.keys(activities).forEach(function (key) {
+                var activity = activities[key];
+                activity.like = "Yes";
+                if (activity.options.length > 0) {
+                    var count = Math.floor(Math.random() * activity.options.length);
+                    for (var i = 0; i < count; i++) {
+                        activity.choices.add(activity.options[i]);
+                    }
+                }
+                that.changeActivity(activity);
+            });
+            this.sendAnswers();
         }
     }, {
         key: 'canSurpriseMe',

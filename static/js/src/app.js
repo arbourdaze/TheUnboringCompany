@@ -326,6 +326,7 @@ class BoredForm extends React.Component {
         let that = this;
 
         function successCallback(res, that) {
+            window.scrollTo(0,0);
             that.setState({submitted: false});
             that.setState({results: res});
             that.setState({submitted: true});
@@ -392,7 +393,24 @@ class BoredForm extends React.Component {
     }
     
     surpriseMe() {
-        this.send({}, 'surprise-me');
+        let time = this.state.data.time;
+        time.hours = Math.floor(Math.random() * 3) + 3;
+        time.minutes = Math.floor(Math.random() * 59);
+        this.changeTime(time);
+        let activities = this.state.data.activities;
+        let that = this;
+        Object.keys(activities).forEach(function (key) {
+            let activity = activities[key];
+            activity.like = "Yes";
+            if (activity.options.length > 0) {
+                let count = Math.floor(Math.random() * activity.options.length);
+                for (let i = 0; i < count; i++) {
+                    activity.choices.add(activity.options[i]);
+                }
+            }
+            that.changeActivity(activity);
+        });
+        this.sendAnswers();
     }
     
     canSurpriseMe() {
