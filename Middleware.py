@@ -7,7 +7,7 @@ import sys
 import nltk
 from sklearn.naive_bayes import GaussianNB
 import vectorize
-import compositeBayes
+from compositeBayes import CompositeBayes
 
 MIN_DATA_REQUIRED = 5
 SEL_FILE = "selects.json"
@@ -39,14 +39,14 @@ class Bayes:
     wordBank = []
     types = dict()
 
-    def __init__ (self):
+    def __init__(self):
         #TODO: Write save and load data functions
         self.selectionFile = SEL_FILE
         self.rejectionFile = REJ_FILE
         self.wordBankFile = WORD_BANK_FILE
         self.bayesDataFile = BAYES_DATA_FILE
         self.model = CompositeBayes()
-        bayes.loadData()
+        self.loadData()
 
     def saveData(self):
         #Write Data to file filename
@@ -126,11 +126,11 @@ class Bayes:
 
 def formatData(data):
     formatted = {
-        "Type": data["Type"]
-        "Title": data["Title"]
-        "BayesDescription": data["Description"]
-        "Name": ""
-        "Description": ""
+        "Type": data["Type"],
+        "Title": data["Title"],
+        "BayesDescription": data["Description"],
+        "Name": "",
+        "Description": "",
         "Category": 0
     }
     return formatted
@@ -151,7 +151,7 @@ def middleware(responses, mood):
 
     #Initialize bayes object and load in files
     bayes = Bayes()
-    bayes.loadData();
+    bayes.loadData()
 
     discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
