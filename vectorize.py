@@ -6,7 +6,6 @@ from nltk.stem.porter import PorterStemmer
 """
 Activity JSON object
 {
-	ID: ""
     Type: ""
     Title: ""
     BayesDescription: ""
@@ -99,7 +98,7 @@ def parse(data, types, features):
 			}
 		)
 
-	return processedData, features
+	return processedData
 
 def vectorize(data, words):
 	for item in data:
