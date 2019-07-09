@@ -1,7 +1,7 @@
 import secrets as sec
 
 DATA_PATH = "test.json"
-NUM_RESULTS = 3
+NUM_RESULTS = 10
 version = sec.version
 apikey = sec.apikey
 url = sec.url

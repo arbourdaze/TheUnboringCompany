@@ -9,6 +9,7 @@ from sklearn.naive_bayes import GaussianNB
 import vectorize
 from compositeBayes import CompositeBayes
 import random
+import operator
 
 nltk.download("stopwords")
 nltk.download('punkt')
@@ -170,25 +171,35 @@ def middleware(responses, mood):
 
     #Load json object into python object
     data = json.loads(responses)
-
+    
     timeLimit = get_minutes(data)
 
     results = [] #Object containing the json objects of all results returned
     correctList = []
+
+
     #Parse into keywords and make query
     for topic in data["Topics"]:
         keywords = []
-        if data[topic] is "No":
+        if data[topic] is None:
+            continue
+        
+        elif "No" in data[topic]:
             continue
 
         for catagory in data["Liked" + topic]:
             keywords.append(catagory)
 
+        if "Cooking" in topic:
+            topic = "Recipe"
+            
         response = makeQuery(keywords, discovery, topic)
-        res = response.result["results"];
-
+        res = response.result["results"]
+     
         time_filter(res, timeLimit, correctList)
 
+    correctList = sorted(correctList, key=lambda k: k['result_metadata']['score'], reverse = True)
+   
     #Run naive bayes
     if bayes.countData():
         #Perform Naive Bayes
@@ -251,18 +262,19 @@ def get_minutes(data):
 #[{"Name":Name, "Description":Description}, {"Name":Name, "Description":Description}, ...]
 def get_response(responses, parsedList = None):
     activities = []
-    type = ""
+    typ = ""
     title = ""
     bayesDescription = ""
     name = ""
     description = ""
-
+    
     nolist = False
     if parsedList is None:
         parsedList = responses
         nolist = True
 
     for result,activity in zip(responses,parsedList):
+        score = str(result['result_metadata']['score'])
         if "movie" in result["Type"]:
             title = result["Title"]
             year = result["Year"]
@@ -273,7 +285,7 @@ def get_response(responses, parsedList = None):
             typ = "Movie"
 
             name = "Movie: " + title
-            description = year + "; " + runtime + " minutes; " + genre + ";\n" + bayesDescription
+            description = year + "; " + runtime + " minutes; " + genre + ";\n" + bayesDescription + score
 
         elif "Recipe" in result["Type"]:
             title = result["Title"]
@@ -288,7 +300,7 @@ def get_response(responses, parsedList = None):
             name = "Recipe: " + title
             description = ("Preptime: " + preptime + "; Servings: "
                  + servings + "; Calories: " + calories + ";\nIngredients: "
-                 + ingredients + ";\nInstructions: " + bayesDescription)
+                 + ingredients + ";\nInstructions: " + bayesDescription + score)
 
         elif "Joke" in result["Type"]:
             title = result["Title"]
@@ -297,7 +309,7 @@ def get_response(responses, parsedList = None):
             typ = "Joke"
 
             name = "Joke: " + title
-            description = bayesDescription
+            description = bayesDescription + score
 
         elif "game" in result["Type"]:
             title = result["Title"]
@@ -307,7 +319,7 @@ def get_response(responses, parsedList = None):
             typ = "Game"
 
             name = "Game: " + title
-            description = "Genre: " + genre + ";\nSummary: " + bayesDescription
+            description = "Genre: " + genre + ";\nSummary: " + bayesDescription + score
 
         elif "Riddle" in result["Type"]:
             bayesDescription = result["Description"]
@@ -315,8 +327,8 @@ def get_response(responses, parsedList = None):
 
             typ = "Riddle"
 
-            name = "Riddle: " + title
-            description = "Answer: " + description
+            name = "Riddle: " + bayesDescription
+            description = "Answer: " + title + score
 
         elif "Video" in result["Type"]:
             bayesDescription = result["Description"]
@@ -327,7 +339,7 @@ def get_response(responses, parsedList = None):
             typ = "Video"
 
             name = "Video: " + title
-            description = "Summary: " + bayesDescription + ";\nLink: " + link
+            description = "Summary: " + bayesDescription + ";\nLink: " + link + score 
 
         category = 0
 
@@ -346,13 +358,15 @@ def get_response(responses, parsedList = None):
 
 def time_filter(res, timeLimit, correctList):
     for result in res:
-        if 'Runtime' in result.keys():
+        if result["Type"] is "Movie":
             if int(result["Runtime"]) < timeLimit:
                 correctList.append(result)
-        elif 'calories' in result.keys():
-            total = result["preptime"]+result["waittime"]+result["cooktime"]
+        elif result["Type"] is "Recipe":
+            total = result["preptime"]+result["cooktime"]
             if total < timeLimit:
                 correctList.append(result)
+        else:
+            correctList.append(result)
 
 
 def surpriseMe():
@@ -362,8 +376,9 @@ def surpriseMe():
         discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
         response = makeQuery("", discovery, cat)  
         res = response.result["results"];
-        collect.append(res[random.randint(0,9)])
+        collect.append(res[random.randint(0,cf.NUM_RESULTS-1)])
 
+    random.shuffle(collect)
     return get_response(collect)
 
 
