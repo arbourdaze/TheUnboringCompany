@@ -104,7 +104,7 @@ class Bayes:
         return vecs
 
     def vectorizeItems(self, data):
-        return vectorize.vectorize(data)
+        return vectorize.vectorize(data, self.wordBank)
 
     #results is an array-like structure of discovery results
     def getPredictions(self, results):
@@ -165,7 +165,6 @@ def middleware(responses, mood):
 
     #Initialize bayes object and load in files
     bayes = Bayes()
-    bayes.loadData()
 
     discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
@@ -200,12 +199,12 @@ def middleware(responses, mood):
 
     correctList = sorted(correctList, key=lambda k: k['result_metadata']['score'], reverse = True)
    
+
+    formattedList = [formatData(correctList[i]) for i in range(len(correctList))]
+    parsedList = bayes.parseItems(formattedList)
     #Run naive bayes
     if bayes.countData():
         #Perform Naive Bayes
-        formattedList = [formatData(correctList[i]) for i in range(len(correctList))]
-
-        parsedList = bayes.parseItems(formattedList)
 
         bayes.fitData()
 
@@ -216,15 +215,20 @@ def middleware(responses, mood):
         filteredList = [correctList[i] for i in range(len(correctList)) if guesses[i] == 2]
         parsedList = [parsedList[i] for i in range(len(parsedList)) if guesses[i] == 2]
 
+        filteredList = filteredList[0:10]
+        parsedList = parsedList[0:10]
+
         returns = get_response(filteredList, parsedList)
 
         bayes.saveData()
 
         return returns
 
+    correctList = correctList[0:10]
+    parsedList = parsedList[0:10]
 
     #Convert json objects into something not terrible for reading
-    return get_response(correctList)
+    return get_response(correctList,parsedList)
 
 def makeQuery(keywords, discovery, topic):
     result = None
@@ -260,7 +264,7 @@ def get_minutes(data):
 
 # get movies infos from watson response
 #[{"Name":Name, "Description":Description}, {"Name":Name, "Description":Description}, ...]
-def get_response(responses, parsedList = None):
+def get_response(responses, parsedList):
     activities = []
     typ = ""
     title = ""
@@ -268,10 +272,6 @@ def get_response(responses, parsedList = None):
     name = ""
     description = ""
     
-    nolist = False
-    if parsedList is None:
-        parsedList = responses
-        nolist = True
 
     for result,activity in zip(responses,parsedList):
         score = str(result['result_metadata']['score'])
@@ -343,11 +343,7 @@ def get_response(responses, parsedList = None):
 
         category = 0
 
-        activity = dict()
-        if nolist:
-            activity = {"Type":typ, "Title":title, "BayesDescription":bayesDescription, "Name":name, "Description":description, "Category":category}
-        else:
-            activity = {"Type":activity["Type"], "Title":activity["Title"], "BayesDescription":activity["BayesDescription"],"Name":name, "Description":description, "Category":category}
+        activity = {"Type":activity["Type"], "Title":activity["Title"], "BayesDescription":activity["BayesDescription"],"Name":name, "Description":description, "Category":category}
 
         activity = json.dumps(activity)
         activity = json.loads(activity)
