@@ -24,27 +24,28 @@ var Results = function (_React$Component) {
         _this.handleBackButton = _this.handleBackButton.bind(_this);
         _this.handleChange = _this.handleChange.bind(_this);
         _this.createRows = _this.createRows.bind(_this);
+        _this.results = _this.props.results;
         return _this;
     }
 
     _createClass(Results, [{
-        key: "handleBackButton",
+        key: 'handleBackButton',
         value: function handleBackButton() {
             this.props.goBack();
         }
     }, {
-        key: "handleChange",
+        key: 'handleChange',
         value: function handleChange(id, score) {
             var newLiked = this.state.liked;
             var newDisliked = this.state.disliked;
             switch (score) {
-                case "1":
+                case 2:
                     {
                         newDisliked.delete(id);
                         newLiked.add(id);
                         break;
                     }
-                case "0":
+                case 1:
                     {
                         newLiked.delete(id);
                         newDisliked.add(id);
@@ -56,30 +57,30 @@ var Results = function (_React$Component) {
             this.setState({
                 liked: newLiked,
                 disliked: newDisliked
+            }, function () {
+                this.props.updateForm(this.state);
             });
-            this.props.updateForm(this.state);
         }
     }, {
-        key: "createRows",
+        key: 'createRows',
         value: function createRows() {
-            var results = this.props.results;
             var rows = [];
             var i = 0;
-            for (var _i = 0; _i < results.length; _i++) {
-                rows.push(React.createElement(Result, { key: 'result-' + _i, id: _i, name: results[_i].Name, description: results[_i].Description, updateForm: this.handleChange }));
+            for (var _i = 0; _i < this.results.length; _i++) {
+                rows.push(React.createElement(Result, { key: 'result-' + _i, id: _i, result: this.results[_i], updateForm: this.handleChange }));
             }
             return rows;
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
+                'div',
                 null,
                 React.createElement(
-                    "h2",
-                    { className: "question" },
-                    "How do you feel about the following?"
+                    'h2',
+                    { className: 'question' },
+                    'How do you feel about the following?'
                 ),
                 this.createRows()
             );

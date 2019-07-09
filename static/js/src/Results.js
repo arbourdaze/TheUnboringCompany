@@ -12,6 +12,7 @@ class Results extends React.Component {
         this.handleBackButton = this.handleBackButton.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.createRows = this.createRows.bind(this);
+        this.results = this.props.results;
     }
     
     handleBackButton() {
@@ -22,12 +23,12 @@ class Results extends React.Component {
         let newLiked = this.state.liked;
         let newDisliked = this.state.disliked;
         switch (score) {
-            case "1": {
+            case 2: {
                 newDisliked.delete(id);
                 newLiked.add(id);
                 break;
             }
-            case "0": {
+            case 1: {
                 newLiked.delete(id);
                 newDisliked.add(id);
                 break;
@@ -37,16 +38,16 @@ class Results extends React.Component {
         this.setState({
             liked: newLiked,
             disliked: newDisliked
+        }, function () {
+            this.props.updateForm(this.state);
         });
-        this.props.updateForm(this.state);
     }
     
     createRows() {
-        let results = this.props.results;
         let rows = [];
         let i = 0;
-        for (let i = 0; i < results.length; i++) {
-            rows.push(<Result key={'result-' + i} id={i} name={results[i].Name} description={results[i].Description} updateForm={this.handleChange} />);
+        for (let i = 0; i < this.results.length; i++) {
+            rows.push(<Result key={'result-' + i} id={i} result={this.results[i]} updateForm={this.handleChange} />);
         }
         return rows;
     }

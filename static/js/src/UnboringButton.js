@@ -24,7 +24,9 @@ class UnboringButton extends React.Component {
     
     render() {
         return (
-            <div className={'unboring-button ' + this.props.classes + (!this.enabler() && ' disabled')} onClick={this.enabler() && this.callback}>
+            <div
+                className={'unboring-button' + (this.props.classes.length > 0 && ' ' + this.props.classes) + (!this.enabler() && ' disabled')}
+                onClick={this.enabler() ? this.callback : undefined}>
                 {this.props.buttonText}
             </div>
         );
