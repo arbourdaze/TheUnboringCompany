@@ -154,6 +154,7 @@ def getFeedback(feedback):
 
 
     bayes.saveData()
+    return True
 
 def middleware(responses, mood):
 
