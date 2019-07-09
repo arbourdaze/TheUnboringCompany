@@ -9,7 +9,7 @@
 }
 
 body {
-    background-color:#f1f1f1;
+    background-color:#9D6346;
     background-image: url("img/water_tower.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -262,4 +262,4 @@ div.violet, input.violet:hover {
 .center {
     margin-left:auto;
     margin-right:auto;
-}
+} 
