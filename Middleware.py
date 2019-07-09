@@ -138,6 +138,8 @@ def formatData(data):
 def getFeedback(feedback):
     bayes = Bayes()
 
+    feedback = json.loads(feedback)
+
     for activity in feedback:
         if activity["Category"] == 1:
             bayes.rejections.append(activity)
