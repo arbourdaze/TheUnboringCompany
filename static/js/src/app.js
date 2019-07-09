@@ -326,8 +326,12 @@ class BoredForm extends React.Component {
         let that = this;
 
         function successCallback(res, that) {
+            that.setState({submitted: false});
             that.setState({results: res});
             that.setState({submitted: true});
+            if (debug) {
+                console.log('success');
+            }
         }
 
         if (debug) {
