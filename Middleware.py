@@ -236,7 +236,7 @@ def get_minutes(data):
 
 # get movies infos from watson response
 #[{"Name":Name, "Description":Description}, {"Name":Name, "Description":Description}, ...]
-def get_response(responses, parsedList):
+def get_response(responses, parsedList = None):
     activities = []
     type = ""
     title = ""
@@ -244,6 +244,8 @@ def get_response(responses, parsedList):
     name = ""
     description = ""
 
+    if (parsedList is None):
+        parsedList = responses
     for result,activity in zip(responses,parsedList):
         if "movie" in result["Type"]:
             title = result["Title"]
