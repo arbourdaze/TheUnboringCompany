@@ -391,24 +391,27 @@ var BoredForm = function (_React$Component) {
     }, {
         key: 'surpriseMe',
         value: function surpriseMe() {
-            var time = this.state.data.time;
-            time.hours = Math.floor(Math.random() * 3) + 3;
-            time.minutes = Math.floor(Math.random() * 59);
-            this.changeTime(time);
-            var activities = this.state.data.activities;
-            var that = this;
-            Object.keys(activities).forEach(function (key) {
-                var activity = activities[key];
-                activity.like = "Yes";
-                if (activity.options.length > 0) {
-                    var count = Math.floor(Math.random() * activity.options.length);
-                    for (var i = 0; i < count; i++) {
-                        activity.choices.add(activity.options[i]);
-                    }
-                }
-                that.changeActivity(activity);
-            });
-            this.sendAnswers();
+            /*         let time = this.state.data.time;
+                    time.hours = Math.floor(Math.random() * 3) + 3;
+                    time.minutes = Math.floor(Math.random() * 59);
+                    this.changeTime(time);
+                    let activities = this.state.data.activities;
+                    let that = this;
+                    Object.keys(activities).forEach(function (key) {
+                        let activity = activities[key];
+                        activity.like = "Yes";
+                        if (activity.options.length > 0) {
+                            let count = Math.floor(Math.random() * activity.options.length);
+                            for (let i = 0; i < count; i++) {
+                                activity.choices.add(activity.options[i]);
+                            }
+                        }
+                        that.changeActivity(activity);
+                    });
+                    this.sendAnswers(); */
+
+            var data = {};
+            this.send(data, 'surprise-me');
         }
     }, {
         key: 'canSurpriseMe',

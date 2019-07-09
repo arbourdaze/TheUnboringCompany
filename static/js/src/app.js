@@ -393,7 +393,7 @@ class BoredForm extends React.Component {
     }
     
     surpriseMe() {
-        let time = this.state.data.time;
+/*         let time = this.state.data.time;
         time.hours = Math.floor(Math.random() * 3) + 3;
         time.minutes = Math.floor(Math.random() * 59);
         this.changeTime(time);
@@ -410,7 +410,11 @@ class BoredForm extends React.Component {
             }
             that.changeActivity(activity);
         });
-        this.sendAnswers();
+        this.sendAnswers(); */
+        
+        let data = {};
+        this.send(data, 'surprise-me');
+        
     }
     
     canSurpriseMe() {
