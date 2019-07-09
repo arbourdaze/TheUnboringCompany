@@ -94,7 +94,7 @@ def parse(data, types, features):
 				"Title": titWC,
 				"BayesDescription": descWC,
 				"Name": item["Name"],
-				"Description": item["Discription"],
+				"Description": item["Description"],
 				"Category": item["Category"]
 			}
 		)

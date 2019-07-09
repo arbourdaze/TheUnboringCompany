@@ -100,7 +100,6 @@ class Bayes:
             return True
 
     def parseItems(self, data):
-        print(self.wordBank)
         vecs = vectorize.parse(data, self.types, self.wordBank)
         return vecs
 
