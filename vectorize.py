@@ -57,7 +57,7 @@ def parse(data, types, features):
 			for word in words:
 				if word not in features:
 					features.append(word)
-				if word in wordCount.keys():
+				if word in titWC.keys():
 					titWC[word] += 1
 				else:
 					titWC[word] = 1
@@ -82,7 +82,7 @@ def parse(data, types, features):
 			for word in words:
 				if word not in features:
 					features.append(word)
-				if word in wordCount.keys():
+				if word in descWC.keys():
 					descWC[word] += 1
 				else:
 					descWC[word] = 1
