@@ -69,11 +69,17 @@ class Bayes:
     def loadData(self):
         #Read data from file filename into selections and rejections accordingly
         with open(SEL_FILE) as a:
-            self.selections = json.load(a)
-
+            temp = json.load(a)
+            if len(temp) == 0:
+                self.selections = []
+            else:
+                self.selections = temp
         with open(REJ_FILE) as b:
-            self.rejections = json.load(b)
-
+            temp = json.load(b)
+            if len(temp) == 0:
+                self.rejections = []
+            else:
+                self.rejections = temp
         with open(self.wordBankFile) as f:
             temp = json.load(f)
             self.wordBank = temp["Words"]
