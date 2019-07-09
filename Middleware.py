@@ -10,6 +10,9 @@ import vectorize
 from compositeBayes import CompositeBayes
 import random
 
+nltk.download("stopwords")
+nltk.download('punkt')
+
 MIN_DATA_REQUIRED = 5
 SEL_FILE = "selects.json"
 REJ_FILE = "rejects.json"
@@ -96,7 +99,7 @@ class Bayes:
             return True
 
     def parseItems(self, data):
-        vecs = vectorize.parse(data, self.types, self.wordBank)
+        vecs = vectorize.parse(data, self.types)
         return vecs
 
     def vectorizeItems(self, data):
@@ -354,12 +357,14 @@ def time_filter(res, timeLimit, correctList):
 
 def surpriseMe():
     cats = ["Movie", "Joke", "Recipe", "Game", "Riddle", "Video"]
-    topic = cats[random.randint(0,5)]
-    discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
-    response = makeQuery("", discovery, topic)  
-    res = response.result["results"];
+    collect = []
+    for cat in cats:
+        discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
+        response = makeQuery("", discovery, cat)  
+        res = response.result["results"];
+        collect.append(res[random.randint(0,9)])
 
-    return get_response(res)
+    return get_response(collect)
 
 
 #with open("InputJSON.json","r") as js:
