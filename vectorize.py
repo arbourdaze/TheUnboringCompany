@@ -16,11 +16,10 @@ Activity JSON object
 }
 """
 
-def parse(data, types):
+def parse(data, types, features):
 	porter = PorterStemmer()
 	stop_words = stopwords.words('english')
 
-	features = []
 	processedData = []
 	vectorizedData = dict()
 
