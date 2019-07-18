@@ -1,0 +1,9 @@
+{
+	"Title": "Padded Cell",
+	"Description": "",
+    "Phobias":["Confinement"],
+    "Children":["The Asylum"],
+    "Parent":"The Asylum",
+    "Image":""
+
+}

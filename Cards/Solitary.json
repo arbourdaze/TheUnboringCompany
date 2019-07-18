@@ -1,0 +1,9 @@
+{
+	"Title": "Solitary Cell",
+	"Description": "",
+    "Phobias":["Darkness"],
+    "Children":["The Prison"],
+    "Parent":"The Prison",
+    "Image":""
+
+}

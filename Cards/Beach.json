@@ -1,0 +1,9 @@
+{
+	"Title": "The Prison",
+	"Description": "",
+    "Phobias":["Blood","Guard Tower","Darkness"],
+    "Children":["Firing Squad Wall","Guard Tower","Solitary Cell"],
+    "Parent":"Dock",
+    "Image":""
+
+}

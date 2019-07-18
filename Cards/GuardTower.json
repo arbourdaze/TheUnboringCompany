@@ -1,0 +1,9 @@
+{
+	"Title": "Guard Tower",
+	"Description": "",
+    "Phobias":["Authority"],
+    "Children":["The Prison"],
+    "Parent":"The Prison",
+    "Image":""
+
+}
