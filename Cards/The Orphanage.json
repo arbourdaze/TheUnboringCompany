@@ -1,0 +1,8 @@
+{
+    "Title": "The Orphanage",
+    "Description": "",
+    "Phobias": ["clowns", "water", "ghosts"],
+    "Children": ["Potter's Field", "The Asylum", "Toy shelf", "Well", "Wailing attic"]
+    "Parent": ["Potter's Field", "The Asylum"],
+    "Image": ""
+}
