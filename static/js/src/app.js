@@ -16,17 +16,7 @@ class App extends React.Component {
                 ID: 1,
                 Title: "Introduction",
                 Phobias: [],
-                Description: "You open your eyes to darkness."
-                    + "\n"
-                    + "As you sit up to get your bearings, you realize you're on a dock."
-                    + "\n"
-                    + "As your eyes adjust, you make out the long shapes of buildings behind the trees on the island in front of you, but see no lights in their windows."
-                    + "\n"
-                    + "And something reeks."
-                    + "\n"
-                    + "You don't know what this place is or how you got here, but you know you shouldn't be here."
-                    + "\n"
-                    + "Something knocks against the dock.  You fight back a startled scream.  You turn around to find a small unmanned boat.",
+                Description: "You open your eyes to darkness.\nAs you sit up to get your bearings, you realize you're alone on a dock.\nYou scan the island in front of you.  While your eyes adjust to the dark, you start to make out the long shapes of buildings behind the trees, but see no light in their windows.\nAnd something reeks.\nYou don't know what this place is or how you got here, but you know you shouldn't be here.\nSomething knocks against the dock. You fight back a startled scream. You turn around to find a small unmanned boat.",
                 Children: [],
                 Parent: null
             }

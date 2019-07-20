@@ -1,0 +1,9 @@
+{
+    "Title": "Attic",
+    "FormalTitle": "The Attic Window",
+    "Description": "Upon closer investigation of the topmost story, you find the source of the creaking: the attic shutters thrashing and kicking almost of their own accord.  Suddenly the wind passes over the roof with an unruly shriek.  Like a very naughty child.  But that's impossible -- it must be more than a century since any child has lived here.  Or died here.",
+    "Phobias": ["Ghosts"],
+    "Children": []
+    "Parent": ["Orphanage"],
+    "Image": ""
+}
