@@ -1,8 +1,0 @@
-{
-    "Title": "Potter's Field",
-    "Description": "",
-    "Phobias": ["Stalkers", "death/corpses", "abandonment"],
-    "Children": ["The Woods", "The Orphanage", "The Beach", "Sexton", "Open trench", "Monument"]
-    "Parent": ["The Beach", "The Woods", "The Orphanage"],
-    "Image": ""
-}

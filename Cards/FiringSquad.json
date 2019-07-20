@@ -1,9 +1,9 @@
 {
-	"Title": "Firing Squad Wall",
-	"Description": "",
+    "Title": "FiringSquad",
+	"FormalTitle": "Firing Squad Wall",
+	"Description": "Bullet holes puncture the bricks.  Deep brown bloodstains outline the places where condemned prisoners stood as they were executed.",
     "Phobias":["Blood"],
-    "Children":["The Prison"],
-    "Parent":"The Prison",
+    "Children":[],
+    "Parent":["Prison"],
     "Image":""
-
 }

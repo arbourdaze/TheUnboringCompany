@@ -1,9 +1,9 @@
 {
-	"Title": "Guard Tower",
-	"Description": "",
+	"Title": "GuardTower",
+    "FormalTitle": "Guard Tower",
+	"Description": "The guard tower is deserted, but it seems to have a mind of its own.  You almost feel it watching you.",
     "Phobias":["Authority"],
-    "Children":["The Prison"],
-    "Parent":"The Prison",
+    "Children":[],
+    "Parent":["Prison"],
     "Image":""
-
 }

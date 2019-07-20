@@ -1,0 +1,9 @@
+{
+    "Title": "PlaneWreck",
+    "FormalTitle": "Plane Wreck",
+    "Description": "A small, mangled aircraft has washed ashore.  It must have crashed long ago, but it still smells like ash.  No one could have survived.",
+    "Phobias": ["Flying"],
+    "Children": [],
+    "Parent": ["Beach"],
+    "Image": ""
+}
