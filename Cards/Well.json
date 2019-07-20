@@ -1,8 +1,9 @@
 {
     "Title": "Well",
-    "Description": "",
-    "Phobias": ["water"],
-    "Children": [""]
-    "Parent": ["The Orphanage"],
+    "FormalTitle": "The Well",
+    "Description": "The water is even blacker than the ocean around this island, leaving you to wonder just how deep it is.  As you lean in to look, your lungs feel strangely heavy.  Surely this was not safe for an orphanage.",
+    "Phobias": ["Water"],
+    "Children": [],
+    "Parent": ["Orphanage"],
     "Image": ""
 }
