@@ -1,0 +1,9 @@
+{
+    "Title": "PottersField",
+    "FormalTitle": "Potter's Field",
+    "Description": "A wide field of disturbed earth.  Every few yards, a white stone marks a mass grave. A monument pays respects to those buried here. A sweet but pungent smell rises from an open trench. A lonely sexton wanders the grounds.",
+    "Phobias": [],
+    "Children": ["Woods", "Orphanage", "Sexton", "OpenTrench", "Monument"]
+    "Parent": ["Beach"],
+    "Image": ""
+}

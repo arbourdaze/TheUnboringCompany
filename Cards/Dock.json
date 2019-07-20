@@ -4,7 +4,7 @@
     "Description": "The boards are slippery and rotting.  You could take the boat, jump in the ocean, or you go ashore.  Where to now?",
     "Phobias":[],
     "Children":["Beach", "Ocean"],
-    "Parent":"Boat",
+    "Parent":["Boat"],
     "Image":""
 
 }

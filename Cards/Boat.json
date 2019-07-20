@@ -4,7 +4,7 @@
     "Description": "You want to sail as far away from this place as you can, but someone has taken the rudder off the boat.  It must be somewhere on land.\nThe dreadful thought sinks in: to get away from this island, you will have to explore it.",
     "Phobias":[],
     "Children":[],
-    "Parent":"Dock",
+    "Parent":["Dock"],
     "Image":""
 
 }

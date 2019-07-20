@@ -1,8 +1,9 @@
 {
     "Title": "Lighthouse",
-    "Description": "",
-    "Phobias": ["heights"],
-    "Children": [""]
-    "Parent": "The Beach",
+    "FormalTitle": "The Lighthouse",
+    "Description": "The rusted staircase has no handrails, but you brave it anyway.\nIt's a long way down to the rocks below.  With each gust of wind, you try not to lose your balance.",
+    "Phobias": ["Heights"],
+    "Children": []
+    "Parent": ["Beach"],
     "Image": ""
 }
