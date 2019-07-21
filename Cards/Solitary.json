@@ -1,7 +1,7 @@
 {
     "Title": "Solitary",
 	"FormalTitle": "Solitary Cell",
-	"Description": "You follow the stairs down, leaving what little light this island has outside.  A draft blows a door shut behind you.\nStraight ahead is a pitch black cell that could be as small as a closet or as large as a black hole -- you have no way of knowing its size.  You have no way of knowing whether you are alone in here.  And for a few moments of fumbling for the door, you have no way of knowing whether the way you are going is the way you came.",
+	"Description": "You follow the stairs down, leaving what little light this island has outside.  A draft blows a door shut behind you.\nYou find yourself standing in a pitch-black cell that could be as small as a closet or as large as a black hole -- you have no way of knowing its size.  You have no way of knowing whether you are alone in here.  And for a few moments of fumbling for the door, you have no way of knowing whether the way you are going is the way you came.",
     "Phobias":["Darkness"],
     "Children":[],
     "Parent":["Prison"],
