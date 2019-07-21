@@ -8,6 +8,13 @@ body {
     font-family:monospace;
 }
 
+.title {
+    text-align:center;
+    font-size:25px;
+    text-decoration:underline;
+    text-transform:uppercase;
+}
+
 .narrative {
     padding:2em;
     font-size:15px;
