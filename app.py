@@ -8,6 +8,13 @@ app = Flask(__name__)
 def index():
     return render_template('layout.html')
 
+@app.route('/get-card', methods=['GET', 'POST'])
+def get_card():
+    content = request.get_json()
+    with open('Cards/' + content['Title'] + '.json') as f:
+        data = json.load(f)
+    return jsonify(data);
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     content = request.get_json()

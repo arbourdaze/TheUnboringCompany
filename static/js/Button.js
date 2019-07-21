@@ -16,9 +16,7 @@ var Button = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Button.__proto__ || Object.getPrototypeOf(Button)).call(this, props));
 
-        _this.state = {
-            disabled: _this.props.disabled
-        };
+        _this.state = {};
         _this.callback = _this.callback.bind(_this);
         _this.enabler = _this.enabler.bind(_this);
         return _this;
@@ -27,9 +25,7 @@ var Button = function (_React$Component) {
     _createClass(Button, [{
         key: 'callback',
         value: function callback() {
-            if (!this.state.disabled) {
-                this.props.callback();
-            }
+            this.props.callback(this.props.arg);
         }
     }, {
         key: 'enabler',
@@ -42,7 +38,7 @@ var Button = function (_React$Component) {
             return React.createElement(
                 'div',
                 {
-                    className: 'unboring-button' + (this.props.classes.length > 0 && ' ' + this.props.classes) + (!this.enabler() && ' disabled'),
+                    className: 'custom-button ' + (this.props.classes.length > 0 && ' ' + this.props.classes) + (!this.enabler() && ' disabled'),
                     onClick: this.enabler() ? this.callback : undefined },
                 this.props.buttonText
             );

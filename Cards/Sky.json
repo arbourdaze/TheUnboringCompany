@@ -3,7 +3,7 @@
     "FormalTitle": "The Sky",
     "Description": "The view out to sea is pitch black.  Only when lightning strikes can you see an immense anvil cloud approaching you.  The tree line behind you starts to hiss as the wind grows uneasy.",
     "Phobias": ["Storms"],
-    "Children": []
+    "Children": [],
     "Parent": ["Beach"],
     "Image": ""
 }

@@ -25,21 +25,46 @@ var App = function (_React$Component) {
         _this.state = {
             nonphobias: [],
             card: {
-                ID: 1,
-                Title: "Introduction",
+                Title: "",
+                FormalTitle: "",
+                Description: "",
                 Phobias: [],
-                Description: "You open your eyes to darkness.\nAs you sit up to get your bearings, you realize you're alone on a dock.\nYou scan the island in front of you.  While your eyes adjust to the dark, you start to make out the long shapes of buildings behind the trees, but see no light in their windows.\nAnd something reeks.\nYou don't know what this place is or how you got here, but you know you shouldn't be here.\nSomething knocks against the dock. You fight back a startled scream. You turn around to find a small unmanned boat.",
                 Children: [],
-                Parent: null
+                Parent: [],
+                Image: []
             }
         };
         _this.update = _this.update.bind(_this);
-        _this.move = _this.move.bind(_this);
         _this.getCard = _this.getCard.bind(_this);
+        _this.move = _this.move.bind(_this);
         return _this;
     }
 
     _createClass(App, [{
+        key: 'getCard',
+        value: function getCard(title) {
+            var json = JSON.stringify({ Title: title });
+            var card = null;
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/get-card',
+                data: json,
+                dataType: 'json',
+                async: false,
+                success: function success(res) {
+                    card = res;
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
+            return card;
+        }
+    }, {
         key: 'update',
         value: function update(phobia, cardID) {
             var newNonPhobias = this.state.nonphobias;
@@ -48,51 +73,24 @@ var App = function (_React$Component) {
         }
     }, {
         key: 'move',
-        value: function move(cardID) {
-            this.setState({ card: this.getCard(cardID) });
-        }
-    }, {
-        key: 'getCard',
-        value: function getCard(cardID) {}
-    }, {
-        key: 'send',
-        value: function send(data, route) {
-            var json = JSON.stringify(data);
-            var that = this;
-
-            function successCallback(res, that) {
-                window.scrollTo(0, 0);
-                that.setState({ submitted: false });
-                that.setState({ results: res });
-                that.setState({ submitted: true });
-                if (debug) {
-                    console.log('success');
-                }
-            }
-
-            if (debug) {
-                console.log(json);
-            }
-
-            $.ajax({
-                type: 'POST',
-                contentType: 'application/json',
-                url: '/' + route,
-                data: json,
-                dataType: 'json',
-                success: function success(res) {
-                    successCallback(res, that);
-                },
-                error: function error() {
-                    if (debug) {
-                        console.log('error');
-                    }
-                }
-            });
+        value: function move(title) {
+            var newCard = this.getCard(title);
+            this.setState({ card: newCard });
         }
     }, {
         key: 'render',
         value: function render() {
+            if (this.state.card.Title === "") {
+                return React.createElement(Button, {
+                    classes: '',
+                    buttonText: 'Begin',
+                    arg: 'Intro',
+                    callback: this.move,
+                    enabler: function enabler() {
+                        return true;
+                    }
+                });
+            }
             return React.createElement(
                 'div',
                 null,

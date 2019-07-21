@@ -1,6 +1,6 @@
 {
 	"Title": "Beach",
-    "FormalTitle": "The Beach"
+    "FormalTitle": "The Beach",
 	"Description": "A rocky beach.\nA lighthouse towers above.  It seems to stare out at nothing.\nA plane wreck is scattered on the bank.\nYou hear distant thunder.",
     "Phobias":[],
     "Children":["Lighthouse","PlaneWreck","Sky","PottersField","Prison"],

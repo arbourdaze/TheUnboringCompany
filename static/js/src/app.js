@@ -13,17 +13,41 @@ class App extends React.Component {
         this.state = {
             nonphobias: [],
             card: {
-                ID: 1,
-                Title: "Introduction",
+                Title: "",
+                FormalTitle: "",
+                Description: "",
                 Phobias: [],
-                Description: "You open your eyes to darkness.\nAs you sit up to get your bearings, you realize you're alone on a dock.\nYou scan the island in front of you.  While your eyes adjust to the dark, you start to make out the long shapes of buildings behind the trees, but see no light in their windows.\nAnd something reeks.\nYou don't know what this place is or how you got here, but you know you shouldn't be here.\nSomething knocks against the dock. You fight back a startled scream. You turn around to find a small unmanned boat.",
                 Children: [],
-                Parent: null
+                Parent: [],
+                Image: []
             }
         };
         this.update = this.update.bind(this);
-        this.move = this.move.bind(this);
         this.getCard = this.getCard.bind(this);
+        this.move = this.move.bind(this);
+    }
+    
+    getCard(title) {
+        let json = JSON.stringify({ Title: title });
+        let card = null;
+        
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/get-card',
+            data: json,
+            dataType: 'json',
+            async: false,
+            success: function (res) {
+                card = res;
+            },
+            error: function() {
+                if (debug) {
+                    console.log('error');
+                }
+            }
+        });
+        return card;
     }
     
     update(phobia, cardID) {
@@ -32,49 +56,23 @@ class App extends React.Component {
         this.setState({nonphobias: newNonPhobias});
     }
     
-    move(cardID) {
-        this.setState({card: this.getCard(cardID)});
-    }
-    
-    getCard(cardID) {
-    }
-    
-    send(data, route) {
-        let json = JSON.stringify(data);
-        let that = this;
-
-        function successCallback(res, that) {
-            window.scrollTo(0,0);
-            that.setState({submitted: false});
-            that.setState({results: res});
-            that.setState({submitted: true});
-            if (debug) {
-                console.log('success');
-            }
-        }
-
-        if (debug) {
-            console.log(json);
-        }
-
-        $.ajax({
-            type: 'POST',
-            contentType: 'application/json',
-            url: '/' + route,
-            data: json,
-            dataType: 'json',
-            success: function (res) {
-                successCallback(res, that);
-            },
-            error: function () {
-                if (debug) {
-                    console.log('error');
-                }
-            }
-        });
+    move(title) {
+        let newCard = this.getCard(title);
+        this.setState({card: newCard});
     }
     
     render() {
+        if (this.state.card.Title === "") {
+            return (
+                <Button
+                    classes=""
+                    buttonText="Begin"
+                    arg="Intro"
+                    callback={this.move}
+                    enabler={function () {return true;}}
+                />
+            );
+        }
         return (
             <div>
                 <Card
