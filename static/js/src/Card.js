@@ -91,7 +91,7 @@ class Card extends React.Component {
         let buttonPad = this.getButtonPad();
         return (
             <div className="card">
-                <h2 className="title">{this.props.data.FormalTitle}</h2>
+                <p className="title">{this.props.data.FormalTitle}</p>
                 <div className="narrative">
                     {this.props.data.Description.split('\n').map((i,key) => {
                         return <p key={key}>{i}</p>;

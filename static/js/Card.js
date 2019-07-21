@@ -109,7 +109,7 @@ var Card = function (_React$Component) {
                 'div',
                 { className: 'card' },
                 React.createElement(
-                    'h2',
+                    'p',
                     { className: 'title' },
                     this.props.data.FormalTitle
                 ),
