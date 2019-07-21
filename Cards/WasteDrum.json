@@ -1,7 +1,7 @@
 {
 	"Title": "WasteDrum",
     "FormalTitle": "Radioactive Waste Drum",
-    "Description": "The trefoil on the side of the drum identifies its purpose: to store radioactive waste.  You hope it was merely discarded in these woods unused, and you hope you are merely imagining the headache and fever coming over you.",
+    "Description": "The trefoil on the side of the drum identifies its purpose: to store radioactive waste.  You hope it is unused, and you hope you are only imagining the headache and fever coming over you.",
     "Phobias":["Contamination"],
     "Children":[],
     "Parent":["Woods"],
