@@ -1,9 +1,10 @@
 {
-	"Title": "The Woods",
-	"Description": "",
-    "Phobias":["Bugs","Dogs"],
-    "Children":["Deer Carcass","Lone Wolf","Potter's Field"],
-    "Parent":"Potter's Field",
+    "Title": "Woods",
+	"FormalTitle": "The Woods",
+	"Description": "A wooded area.  The trees flex in the wind like bony fingers.\nA lone wolf stands at a distance, skeletally thin.\nSomething is causing a pile of leaves to stir.\nA suspicious-looking yellow barrel sticks out of the ground.",
+    "Phobias":[],
+    "Children":["LeafPile","LoneWolf","WasteDrum","Asylum"],
+    "Parent":["PottersField","Prison"],
     "Image":""
 
 }

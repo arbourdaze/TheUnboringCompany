@@ -1,9 +1,10 @@
 {
-	"Title": "Padded Cell",
-	"Description": "",
+	"Title": "PaddedCell",
+    "FormalTitle": "Padded Cell",
+	"Description": "The cell is more narrow than the hallway leading to it.  Somehow it seems to grows narrower by the second, and you feel your breath sucked away from you.  Just a panic attack, perhaps.  Several long gashes in clusters of five have shredded the padding on the walls.  One of them almost looks blood-stained.  Just rodents, moths or decades of wear, perhaps.\nOr maybe it was you.",
     "Phobias":["Confinement"],
-    "Children":["The Asylum"],
-    "Parent":"The Asylum",
+    "Children":[],
+    "Parent":["Asylum"],
     "Image":""
 
 }
