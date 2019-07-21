@@ -1,8 +1,0 @@
-{
-    "Title": "The Beach",
-    "Description": ""
-    "Phobias": ["flying", "heights", "storms", "sharks"],
-    "Children": ["Plane wreck", "Lighthouse", "Sky", "Dock"]
-    "Parent": ["Potter's Field", "The Prison", "Dock"],
-    "Image": ""
-}

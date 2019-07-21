@@ -1,0 +1,9 @@
+{
+	"Title": "Needle",
+    "FormalTitle": "Needle",
+	"Description": "As the one needle catches your eye, another catches your foot.  As you stifle a shriek and bend over to dislodge it, you lose your balance. You reflexively grab the edge of a table to steady yourself, nearly impaling your hand on an orbitoclast.",
+    "Phobias":["Needles"],
+    "Children":[],
+    "Parent":["Asylum"],
+    "Image":""
+}

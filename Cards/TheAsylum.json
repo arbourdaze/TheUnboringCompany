@@ -1,9 +1,0 @@
-{
-	"Title": "The Asylum",
-	"Description": "",
-    "Phobias":["Confinement","Needles"],
-    "Children":["Padded Cell","Needles","The Orphanage"],
-    "Parent":"The Prison",
-    "Image":""
-
-}

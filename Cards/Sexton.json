@@ -1,8 +1,9 @@
 {
     "Title": "Sexton",
-    "Description": "",
+    "FormalTitle": "The Sexton",
+    "Description": "Clearly this is the man who digs the trenches.  His skin is gray and his features are sunken.  He has not taken his eyes off of you since you entered the Potter's Field.  You try to speak to him, but he only stares back.\nYou only know he is alive by the fact that he is standing, and by an unsettling hunger in his expression.",
     "Phobias": ["Stalkers"],
     "Children": [""]
-    "Parent": ["Potter's Field"],
+    "Parent": ["PottersField"],
     "Image": ""
 }

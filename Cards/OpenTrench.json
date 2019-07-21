@@ -1,0 +1,9 @@
+{
+    "Title": "OpenTrench",
+    "FormalTitle": "Open Trench",
+    "Description": "You peer down into the trench and quickly realize it is still in use.  Hundreds of pine boxes are stacked with indignity, and the stench is so powerful, you swoon and nearly fall in.\nWho is bringing all these bodies to the island?  Surely they must be collected and ferried here from the morgues, prisons, nursing homes, underpasses and other most downtrodden places in the nearest city.  But what city is near to here?",
+    "Phobias": ["Corpses"],
+    "Children": []
+    "Parent": ["PottersField"],
+    "Image": ""
+}

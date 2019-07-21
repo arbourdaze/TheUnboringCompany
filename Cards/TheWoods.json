@@ -1,9 +1,0 @@
-{
-	"Title": "The Woods",
-	"Description": "",
-    "Phobias":["Bugs","Dogs"],
-    "Children":["Deer Carcass","Lone Wolf","Potter's Field"],
-    "Parent":"Potter's Field",
-    "Image":""
-
-}
