@@ -4,6 +4,6 @@
 	"Description": "Other than its rib cage distending as it breaths, the lone wolf stands motionless.  It seems unaware of you or any of its surroundings.  Then suddenly, with back hunched and mouth foaming, it begins to buck erratically.",
     "Phobias":["Dogs"],
     "Children":[],
-    "Parent":"Woods",
+    "Parent":["Woods"],
     "Image":""
 }

@@ -1,6 +1,6 @@
 {
     "Title": "Monument",
-    "Description": "Monument to the Dead",
+    "FormalTitle": "Monument to the Dead",
     "Description": "A plaque tells you who lies here: the homeless, the poor, inmates, orphans, executed prisoners, the unidentified and unidentifiable - abandoned here with no one to mourn them.",
     "Phobias": ["Abandonment"],
     "Children": [],

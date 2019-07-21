@@ -3,7 +3,7 @@
     "FormalTitle": "The Toy Chest",
     "Description": "You stare down into the crack between the lid and the box, and the face of a toy clown stares up at you.  A lifelike gleam suddenly flashes in its eyes.  Perhaps it was just the reflection of distant lightning, but that wouldn't explain why its grin appears to be widening...",
     "Phobias": ["Clowns"],
-    "Children": [""],
+    "Children": [],
     "Parent": ["Orphanage"],
     "Image": ""
 }
