@@ -10,5 +10,46 @@ body {
 
 .narrative {
     padding:2em;
-    font-size:20px;
+    font-size:15px;
+    text-indent: 5px;
+}
+
+.custom-button {
+    width:20em;
+    height:5%;
+    font-family:monospace;
+    border:outset;
+    text-align:center;
+    margin:0.5em;
+    padding:1em;
+    font-weight:bold;
+    display:inline-block;
+}
+
+.custom-button.disabled {
+    display:none;
+    color:darkgray;
+    border:solid lightgray;
+}
+
+.custom-button:hover {
+    cursor:pointer;
+    border:inset;
+}
+
+.custom-button.disabled:hover {
+    display:none;
+    background-color:lightgray;
+    cursor:not-allowed;
+    border:solid lightgray;
+}
+
+.card {
+    width:100%;
+}
+
+.button-pad {
+    width:100%;
+    text-align:center;
+    margin:auto;
 }

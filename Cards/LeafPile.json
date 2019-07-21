@@ -1,7 +1,7 @@
 {
-    "Title": "LeafPile":
+    "Title": "LeafPile",
 	"FormalTitle": "Leaf Pile",
-	"Description": "Gangly spiders and centipedes dart out from under the leaves as you climb onto the pile.  Slugs stick to your shoes.  As you approach the center, you discover the source of the movement: a frenzied mating ball of hundreds of snakes stirring the leaves beneath you.  A few of them have mistaken you for the female and are coiling up your legs with slicing speed."
+	"Description": "Gangly spiders and centipedes dart out from under the leaves as you climb onto the pile.  Slugs stick to your shoes.  As you approach the center, you discover the source of the movement: a frenzied mating ball of hundreds of snakes stirring the leaves beneath you.  A few of them have mistaken you for the female and are coiling up your legs with slicing speed.",
     "Phobias":["Creepy-Crawlies"],
     "Children":[],
     "Parent":["Woods"],

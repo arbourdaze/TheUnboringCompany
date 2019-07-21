@@ -17,65 +17,121 @@ var Card = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
 
         _this.state = {
-            phobia: _this.props.data.Phobia,
             nonphobias: _this.props.nonphobias
         };
-        _this.data = _this.props.data;
         _this.sendData = _this.sendData.bind(_this);
         _this.proceed = _this.proceed.bind(_this);
+        _this.getCard = _this.getCard.bind(_this);
+        _this.getButton = _this.getButton.bind(_this);
         _this.getButtonPad = _this.getButtonPad.bind(_this);
         _this.sendData();
         return _this;
     }
 
     _createClass(Card, [{
-        key: "sendData",
+        key: 'sendData',
         value: function sendData() {
-            if (this.data.Phobia) {
-                this.props.update(this.data.Phobia);
+            if (this.props.data.Phobias.length > 0) {
+                var newNonphobias = this.state.nonphobias;
+                newNonphobias = newNonphobias.concat(this.props.data.Phobias);
+                this.setState({ nonphobias: newNonphobias });
+                this.props.update(this.props.data.Phobias);
             }
         }
     }, {
-        key: "proceed",
-        value: function proceed(cardID) {
-            this.props.move(cardID);
+        key: 'proceed',
+        value: function proceed(title) {
+            this.props.move(title);
         }
     }, {
-        key: "getButtonPad",
+        key: 'getButton',
+        value: function getButton(destination) {
+            var generateKey = function generateKey(pre) {
+                return pre + '_' + new Date().getTime();
+            };
+            var that = this;
+            return React.createElement(Button, {
+                key: generateKey(destination.Title),
+                classes: '',
+                arg: destination.Title,
+                buttonText: destination.FormalTitle,
+                callback: this.proceed,
+                enabler: function enabler() {
+                    return !that.state.nonphobias.includes(destination.Phobias);
+                }
+            });
+        }
+    }, {
+        key: 'getCard',
+        value: function getCard(title) {
+            var json = JSON.stringify({ Title: title });
+            var card = null;
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/get-card',
+                data: json,
+                dataType: 'json',
+                async: false,
+                success: function success(res) {
+                    card = res;
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('Error: could not find card');
+                    }
+                }
+            });
+            return card;
+        }
+    }, {
+        key: 'getButtonPad',
         value: function getButtonPad() {
             var buttonList = [];
-            for (var childID in this.data.Children) {
-                var child = this.props.getChild(childID);
-                buttonList.push(React.createElement(Button, {
-                    classes: "",
-                    buttonText: child.Description,
-                    id: childID,
-                    callback: this.proceed,
-                    enabler: !this.props.nonphobias.includes(child.Phobia)
-                }));
+            var that = this;
+            var data = this.props.data;
+            for (var i = 0; i < data.Children.length; i++) {
+                var childCard = that.getCard(data.Children[i]);
+                buttonList.push(that.getButton(childCard));
+            }
+            for (var _i = 0; _i < data.Parent.length; _i++) {
+                var parentCard = that.getCard(data.Parent[_i]);
+                buttonList.push(that.getButton(parentCard));
             }
             return buttonList;
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
+            var buttonPad = this.getButtonPad();
             return React.createElement(
-                "div",
-                null,
+                'div',
+                { className: 'card' },
                 React.createElement(
-                    "div",
-                    { className: "narrative" },
-                    this.data.Description.split('\n').map(function (i, key) {
+                    'h2',
+                    { className: 'title' },
+                    this.props.data.FormalTitle
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'narrative' },
+                    this.props.data.Description.split('\n').map(function (i, key) {
                         return React.createElement(
-                            "p",
+                            'p',
                             { key: key },
                             i
                         );
                     })
                 ),
                 React.createElement(
-                    "div",
-                    { className: "buttonPad" },
+                    'div',
+                    { className: 'button-pad' },
+                    React.createElement(
+                        'p',
+                        null,
+                        buttonPad.length > 0 && "Where do you go?"
+                    ),
                     this.getButtonPad()
                 )
             );
