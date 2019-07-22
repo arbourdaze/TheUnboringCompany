@@ -32,10 +32,12 @@ var App = function (_React$Component) {
                 Children: [],
                 Parent: [],
                 Image: []
-            }
+            },
+            foundRudder: false
         };
         _this.update = _this.update.bind(_this);
         _this.getCard = _this.getCard.bind(_this);
+        _this.getNext = _this.getNext.bind(_this);
         _this.move = _this.move.bind(_this);
         return _this;
     }
@@ -65,23 +67,23 @@ var App = function (_React$Component) {
             return card;
         }
     }, {
-        key: 'getNextCard',
-        value: function getNextCard(title) {
+        key: 'getNext',
+        value: function getNext(title) {
             var json = JSON.stringify({
                 Title: title,
                 NonPhobias: this.state.nonphobias
             });
-            var card = null;
+            var response = null;
 
             $.ajax({
                 type: 'POST',
                 contentType: 'application/json',
-                url: '/get-next-card',
+                url: '/get-next',
                 data: json,
                 dataType: 'json',
                 async: false,
                 success: function success(res) {
-                    card = res;
+                    response = res;
                 },
                 error: function error() {
                     if (debug) {
@@ -90,7 +92,7 @@ var App = function (_React$Component) {
                 }
             });
 
-            return card;
+            return response;
         }
     }, {
         key: 'update',
@@ -102,12 +104,18 @@ var App = function (_React$Component) {
     }, {
         key: 'move',
         value: function move(title) {
-            var nextCard = this.getNextCard(title);
+            var response = this.getNext(title);
+            var nextCard = response.Card;
+            var foundRudder = response.FoundRudder;
             this.setState({ card: nextCard });
+            this.setState({ foundRudder: foundRudder });
         }
     }, {
         key: 'render',
         value: function render() {
+            if (this.state.foundRudder) {
+                return "Oops, you're dead.";
+            }
             if (this.state.card.Title === "") {
                 return React.createElement(Button, {
                     classes: '',

@@ -20,10 +20,12 @@ class App extends React.Component {
                 Children: [],
                 Parent: [],
                 Image: []
-            }
+            },
+            foundRudder: false
         };
         this.update = this.update.bind(this);
         this.getCard = this.getCard.bind(this);
+        this.getNext = this.getNext.bind(this);
         this.move = this.move.bind(this);
     }
     
@@ -50,22 +52,22 @@ class App extends React.Component {
         return card;
     }
     
-    getNextCard(title) {
+    getNext(title) {
         let json = JSON.stringify({
             Title: title,
             NonPhobias: this.state.nonphobias
         });
-        let card = null;
+        let response = null;
         
         $.ajax({
             type: 'POST',
             contentType: 'application/json',
-            url: '/get-next-card',
+            url: '/get-next',
             data: json,
             dataType: 'json',
             async: false,
             success: function (res) {
-                card = res;
+                response = res;
             },
             error: function() {
                 if (debug) {
@@ -74,7 +76,7 @@ class App extends React.Component {
             }
         });
         
-        return card;
+        return response;
     }
     
     update(phobia, cardID) {
@@ -84,11 +86,17 @@ class App extends React.Component {
     }
     
     move(title) {
-        let nextCard = this.getNextCard(title);
+        let response = this.getNext(title);
+        let nextCard = response.Card;
+        let foundRudder = response.FoundRudder;
         this.setState({card: nextCard});
+        this.setState({foundRudder: foundRudder});
     }
     
     render() {
+        if (this.state.foundRudder) {
+            return "Oops, you're dead.";
+        }
         if (this.state.card.Title === "") {
             return (
                 <Button

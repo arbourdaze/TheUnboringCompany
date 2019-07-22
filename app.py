@@ -15,12 +15,19 @@ def get_card():
         data = json.load(f)
     return jsonify(data);
     
-@app.route('/get-next-card', methods=['GET', 'POST'])
-def get_next_card():
+@app.route('/get-next', methods=['GET', 'POST'])
+def get_next():
     content = request.get_json()
-    with open('Cards/' + content['Title'] + '.json') as f:
-        data = json.load(f)
-    return jsonify(data);
+    title = content['Title']
+    card, monster = mw.getNext(content['Title'], content['NonPhobias'])
+    response = {}
+    if monster:
+        response['FoundRudder'] = True
+        response['Monster'] = monster
+    else:
+        reponse['FoundRudder'] = False
+    response['Card'] = card
+    return response
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
