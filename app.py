@@ -14,6 +14,13 @@ def get_card():
     with open('Cards/' + content['Title'] + '.json') as f:
         data = json.load(f)
     return jsonify(data);
+    
+@app.route('/get-next-card', methods=['GET', 'POST'])
+def get_next_card():
+    content = request.get_json()
+    with open('Cards/' + content['Title'] + '.json') as f:
+        data = json.load(f)
+    return jsonify(data);
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():

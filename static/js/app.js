@@ -65,6 +65,34 @@ var App = function (_React$Component) {
             return card;
         }
     }, {
+        key: 'getNextCard',
+        value: function getNextCard(title) {
+            var json = JSON.stringify({
+                Title: title,
+                NonPhobias: this.state.nonphobias
+            });
+            var card = null;
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/get-next-card',
+                data: json,
+                dataType: 'json',
+                async: false,
+                success: function success(res) {
+                    card = res;
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
+
+            return card;
+        }
+    }, {
         key: 'update',
         value: function update(phobia, cardID) {
             var newNonPhobias = this.state.nonphobias;
@@ -74,8 +102,8 @@ var App = function (_React$Component) {
     }, {
         key: 'move',
         value: function move(title) {
-            var newCard = this.getCard(title);
-            this.setState({ card: newCard });
+            var nextCard = this.getNextCard(title);
+            this.setState({ card: nextCard });
         }
     }, {
         key: 'render',

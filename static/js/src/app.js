@@ -50,6 +50,33 @@ class App extends React.Component {
         return card;
     }
     
+    getNextCard(title) {
+        let json = JSON.stringify({
+            Title: title,
+            NonPhobias: this.state.nonphobias
+        });
+        let card = null;
+        
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/get-next-card',
+            data: json,
+            dataType: 'json',
+            async: false,
+            success: function (res) {
+                card = res;
+            },
+            error: function() {
+                if (debug) {
+                    console.log('error');
+                }
+            }
+        });
+        
+        return card;
+    }
+    
     update(phobia, cardID) {
         let newNonPhobias = this.state.nonphobias;
         newNonPhobias = newNonPhobias.push(phobia);
@@ -57,8 +84,8 @@ class App extends React.Component {
     }
     
     move(title) {
-        let newCard = this.getCard(title);
-        this.setState({card: newCard});
+        let nextCard = this.getNextCard(title);
+        this.setState({card: nextCard});
     }
     
     render() {
