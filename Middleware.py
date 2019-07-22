@@ -4,239 +4,137 @@ import json
 import config as cf
 import secrets
 import sys
-import nltk
-from sklearn.naive_bayes import GaussianNB
-import vectorize
-from compositeBayes import CompositeBayes
 import random
 import operator
+import numpy as np
 
-nltk.download("stopwords")
-nltk.download('punkt')
+phobiaList = ["Clowns", "Water", "Ghosts", "Blood", "Needles",
+    "Confinement", "CreepyCrawlies", "Contamination", "Dogs", "Corpses/Death", 
+    "Stalkers", "Abandonment", "Authority", "Darkness", "Flying", "Height", "Storms"]
 
-MIN_DATA_REQUIRED = 5
-SEL_FILE = "selects.json"
-REJ_FILE = "rejects.json"
-WORD_BANK_FILE = "wordBank.json"
-BAYES_DATA_FILE = "bayesData.json"
+monsterList = {"Sexton": np.array([0,   0,   0,   0,   0,   1,   0,   0,   0,   1,   1,   0,   1,   1,   0,   0,   0]),
+ "Dogs": np.array([0  , 0 ,  0,   1,   0,   0,   0,   0 ,  1,   1,   0,   0,   0,   1,   0,   0,   0,]),
+ "Ghost Tornado": np.array([0 ,  1 ,  1,  0  , 0 ,  0,   0  , 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  1   ,1  , 1]), 
+ "Critter Infestation": np.array([0,   0 ,  0,   0  , 0 ,  0,   1 ,  1 ,  0,   0,   0,   0,   0,   0,   0 ,  0 ,  0]), 
+ "Radiation Spike": np.array([0,   0 ,  0  , 1 ,  0 ,  1 ,  0 ,  1 ,  0 ,  1   ,0 ,  0,   0 ,  1 ,  0 ,  0  , 0]), 
+ "Chasm": np.array([0   ,1  , 0 ,  0  , 0  , 0 ,  0  , 0  , 0  , 0  , 0  , 0 ,  0 ,  1  , 0 ,  1  , 0]), 
+ "Zombie Apocalypse": np.array([0 ,  0 ,  1  , 1,   0  , 0  , 0 ,  0,   0,   1  , 1  , 0 ,  0  , 1 ,  0  , 0 ,  0]),
+ "Mad Doctor": np.array([0  , 0 ,  0 ,  1,   1,   0  , 0 ,  1 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  0 ,  0]), 
+ "IT Clown": np.array([1 ,  0  , 0 ,  1,   0 ,  0 ,  0 ,  0 ,  0,   1  , 1 ,  0  , 0 ,  0 ,  0 ,  0 ,  0]), 
+ "Depressions Fog": np.array([0 ,  1  , 1 ,  0,   0 ,  0   ,0  , 0,   0 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  1]), 
+ "Warewolf": np.array([ 0,   0  , 0  , 1 ,  0 ,  0 ,  0 ,  1 ,  1  , 1 ,  1 ,  0  , 0 ,  0  , 0,   0,   0]), 
+ "Freak Storm": np.array([0 ,  1 ,  0  , 0  , 0 ,  0  , 0,   0,   0 ,  0 ,  0  , 1  , 0 ,  1 ,  1,   0  , 1]), 
+ "Steve": np.array([0,   0 ,  0 ,  0 ,  0 ,  0  , 0,   0 ,  0 ,  0 ,  0  , 0,   0 ,  0  , 0  , 0 ,  0])
+ }
 
-"""
-Activity JSON object
-{
-    Type: ""
-    Title: ""
-    BayesDescription: ""
-    Name: ""
-    Description: ""
-    Category: {0 --none, 1 --rejected, 2 -- selected}
+cache = []
+
+rudderless = []
+
+fearVector = {
+    "Clowns": 1,
+    "Water": 1,
+    "Ghosts": 1,
+    "Blood": 1,
+    "Needles": 1,
+    "Confinement": 1,
+    "CreepyCrawlies": 1,
+    "Contamination": 1,
+    "Dogs": 1,
+    "Corpses": 1,
+    "Stalkers": 1,
+    "Abandonment": 1,
+    "Authority": 1,
+    "Darkness": 1,
+    "Flying": 1,
+    "Height": 1,
+    "Storms": 1
 }
-"""
 
-class Bayes:
+rudderProbability = 0
+delta = 3
 
-    selections = []
-    rejections = []
-    model = None
-    selectionFile = ""
-    rejectionFile = ""
-    wordBankFile = ""
-    bayesDataFile = ""
-    wordBank = []
-    types = dict()
+def chooseMonster():
+    differenceMatrix = np.array(fearVector.values())
 
-    def __init__(self):
-        #TODO: Write save and load data functions
-        self.selectionFile = SEL_FILE
-        self.rejectionFile = REJ_FILE
-        self.wordBankFile = WORD_BANK_FILE
-        self.bayesDataFile = BAYES_DATA_FILE
-        self.model = CompositeBayes()
-        self.loadData()
+    row = 0
+    for arr in monsterList.values():
+        differenceMatrix[row] = np.subtract(arr, differenceMatrix[row])
+        row += 1
+        np.concatinate((differenceMatrix, np.array(fearVector.values())), axis=0)
 
-    def saveData(self):
-        #Write Data to file filename
-        #selectFile = open(SEL_FILE,"a") 
-        #rejectFile = open(REJ_FILE,"a")
+    np.delete(differenceMatrix, row, axis=0)
 
-        with open(SEL_FILE, 'w') as a:
-            json.dump(self.selections, a)
+    norms = np.linalg.norm(differenceMatrix, axis=1)
 
-        with open(REJ_FILE, 'w') as b:
-            json.dump(self.rejections, b)
+    indicies = np.argmin(norms)
 
-        with open(self.wordBankFile, 'w') as f:
-            temp = {"Words":self.wordBank}
-            json.dump(temp, f)
+    index = None
+    if len(indicies) > 1:
+        index = indicies[0]
+    else:
+        index = indicies
 
-        with open(self.bayesDataFile,'w') as f:
-            json.dump(self.types, f)
-
-    def loadData(self):
-        #Read data from file filename into selections and rejections accordingly
-        with open(SEL_FILE) as a:
-            temp = json.load(a)
-            if len(temp) == 0:
-                self.selections = []
-            else:
-                self.selections = temp
-        with open(REJ_FILE) as b:
-            temp = json.load(b)
-            if len(temp) == 0:
-                self.rejections = []
-            else:
-                self.rejections = temp
-        with open(self.wordBankFile) as f:
-            temp = json.load(f)
-            self.wordBank.extend(temp["Words"])
-
-        with open(self.bayesDataFile) as f:
-            self.types = json.load(f)
+    return monsterList.keys()[index]
 
 
-    def countData(self):
-        if len(self.selections) < MIN_DATA_REQUIRED or len(self.rejections) < MIN_DATA_REQUIRED:
-            return False
-        else:
-            return True
+def foundRudder():
+    num = random.randInt(1,100)
 
-    def parseItems(self, data):
-        vecs = vectorize.parse(data, self.types, self.wordBank)
-        return vecs
+    if num <= rudderProbability:
+        return True
+    else:
+        rudderProbability += delta
+        return False
 
-    def vectorizeItems(self, data):
-        return vectorize.vectorize(data, self.wordBank)
+def getNext(title, phobias):
 
-    #results is an array-like structure of discovery results
-    def getPredictions(self, results):
+    for phobia in phobias:
+        fearVector[phobia] = 0
 
-        types = []
-        titles = []
-        descs = []
-        for key in results:
-            types.append(key[0])
-            titles.append(key[1])
-            descs.append(key[2])
+    noRudder = True
 
-        return self.model.compositePredict(types,titles,descs)
-
-    #Using the new data, updates the probabilities
-    def fitData(self):
-        vectorizedData = vectorizeItems(self.selections.extend(self.rejections))
-
-        types = []
-        titles = []
-        descs = []
-        cats = []
-        for key in vectorizedData:
-            types.append(key[0])
-            titles.append(key[1])
-            descs.append(key[2])
-            cats.append(vectorizedData[key])
-
-        self.model.compositeFit(types,titles,descs, cats)
-
-def formatData(data):
-    formatted = {
-        "Type": data["Type"],
-        "Title": data["Title"],
-        "BayesDescription": data["Description"],
-        "Name": "",
-        "Description": "",
-        "Category": 0
-    }
-    return formatted
-
-def getFeedback(feedback):
-    bayes = Bayes()
-
-    feedback = json.loads(feedback)
-
-    for activity in feedback:
-        if activity["Category"] == 1:
-            bayes.rejections.append(activity)
-        elif activity["Category"] == 2:
-            bayes.selections.append(activity)
-
-
-    bayes.saveData()
-    return True
-
-def middleware(responses, mood):
-
-    #Initialize bayes object and load in files
-    bayes = Bayes()
+    nextCard = None
+    for card in cache:
+        if card["Title"] == title:
+            nextCard = card
+            break
 
     discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
-    #Load json object into python object
-    data = json.loads(responses)
-    
-    timeLimit = get_minutes(data)
-
-    results = [] #Object containing the json objects of all results returned
-    correctList = []
-
-
-    #Parse into keywords and make query
-    for topic in data["Topics"]:
-        keywords = []
-        if data[topic] is None:
-            continue
-        
-        elif "No" in data[topic]:
-            continue
-
-        for catagory in data["Liked" + topic]:
-            keywords.append(catagory)
-
-        if "Cooking" in topic:
-            topic = "Recipe"
-            
+    if nextCard is None:
+        noRudder = False
         response = makeQuery(keywords, discovery, topic)
-        res = response.result["results"]
-     
-        time_filter(res, timeLimit, correctList)
+        results = response.result["results"]
+        for result in results:
+            if result["Title"] == title:
+                nextCard = result
+                break
 
-    correctList = sorted(correctList, key=lambda k: k['result_metadata']['score'], reverse = True)
-   
+        if nextCard is None:
+            return False
 
-    formattedList = [formatData(correctList[i]) for i in range(len(correctList))]
-    parsedList = bayes.parseItems(formattedList)
-    #Run naive bayes
-    if bayes.countData():
-        #Perform Naive Bayes
+    gotRudder = False
 
-        bayes.fitData()
+    if not noRudder:
+        gotRudder = foundRudder()
 
-        vectorizedList = bayes.vectorizeItems(parsedList)
+    if gotRudder:
+        monster = chooseMonster()
 
-        guesses = bayes.getPredictions(vectorizedList)
+        return nextCard, monster
 
-        filteredList = [correctList[i] for i in range(len(correctList)) if guesses[i] == 2]
-        parsedList = [parsedList[i] for i in range(len(parsedList)) if guesses[i] == 2]
+    return nextCard, False
 
-        filteredList = filteredList[0:10]
-        parsedList = parsedList[0:10]
 
-        returns = get_response(filteredList, parsedList)
 
-        bayes.saveData()
-
-        return returns
-
-    correctList = correctList[0:10]
-    parsedList = parsedList[0:10]
-
-    #Convert json objects into something not terrible for reading
-    return get_response(correctList,parsedList)
-
-def makeQuery(keywords, discovery, topic):
+def makeQuery(title, discovery):
     result = None
 
     filterParam = "extracted_metadata.filename:\"" + topic + "\""
 
-    result = discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = filterParam,
-        query = ' '.join(keywords), count = cf.NUM_RESULTS)
+    result = discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = title,
+        query = title)
 
     return result
 
@@ -250,133 +148,3 @@ def makeQuery(keywords, discovery, topic):
 """
 
 
-# get bored minutes
-def get_minutes(data):
-
-    time = data["Time"]
-    hours = time["hours"]
-    minutes = time["minutes"]
-
-    totalTime = (int(hours) * 60) + int(minutes)
-
-    return totalTime
-
-
-# get movies infos from watson response
-#[{"Name":Name, "Description":Description}, {"Name":Name, "Description":Description}, ...]
-def get_response(responses, parsedList):
-    activities = []
-    typ = ""
-    title = ""
-    bayesDescription = ""
-    name = ""
-    description = ""
-    
-
-    for result,activity in zip(responses,parsedList):
-        score = str(result['result_metadata']['score'])
-        if "movie" in result["Type"]:
-            title = result["Title"]
-            year = result["Year"]
-            runtime = result["Runtime"]
-            genre = result["Genre"]
-            bayesDescription = result["Description"]
-
-            typ = "Movie"
-
-            name = "Movie: " + title
-            description = year + "; " + runtime + " minutes; " + genre + ";\n" + bayesDescription + score
-
-        elif "Recipe" in result["Type"]:
-            title = result["Title"]
-            preptime = str(int(result["preptime"]) + int(result["cooktime"]))
-            servings = str(result["servings"])
-            calories = str(result["calories"])
-            ingredients = ', '.join(result["ingredients"])
-            bayesDescription = result["Description"]
-
-            typ = "Recipe"
-
-            name = "Recipe: " + title
-            description = ("Preptime: " + preptime + "; Servings: "
-                 + servings + "; Calories: " + calories + ";\nIngredients: "
-                 + ingredients + ";\nInstructions: " + bayesDescription + score)
-
-        elif "Joke" in result["Type"]:
-            title = result["Title"]
-            bayesDescription = result["Description"]
-
-            typ = "Joke"
-
-            name = "Joke: " + title
-            description = bayesDescription + score
-
-        elif "game" in result["Type"]:
-            title = result["Title"]
-            genre = result["Genre"]
-            bayesDescription = result["Description"]
-
-            typ = "Game"
-
-            name = "Game: " + title
-            description = "Genre: " + genre + ";\nSummary: " + bayesDescription + score
-
-        elif "Riddle" in result["Type"]:
-            bayesDescription = result["Description"]
-            title = result["Title"]
-
-            typ = "Riddle"
-
-            name = "Riddle: " + bayesDescription
-            description = "Answer: " + title + score
-
-        elif "Video" in result["Type"]:
-            bayesDescription = result["Description"]
-            title = result["Title"]
-            link = result["Link"]
-            thumbnail = result["Thumbnail"]
-
-            typ = "Video"
-
-            name = "Video: " + title
-            description = "Summary: " + bayesDescription + ";\nLink: " + link + score 
-
-        category = 0
-
-        activity = {"Type":activity["Type"], "Title":activity["Title"], "BayesDescription":activity["BayesDescription"],"Name":name, "Description":description, "Category":category}
-
-        activity = json.dumps(activity)
-        activity = json.loads(activity)
-        activities.append(activity)
-
-    return json.dumps(activities)
-
-
-def time_filter(res, timeLimit, correctList):
-    for result in res:
-        if result["Type"] is "Movie":
-            if int(result["Runtime"]) < timeLimit:
-                correctList.append(result)
-        elif result["Type"] is "Recipe":
-            total = result["preptime"]+result["cooktime"]
-            if total < timeLimit:
-                correctList.append(result)
-        else:
-            correctList.append(result)
-
-
-def surpriseMe():
-    cats = ["Movie", "Joke", "Recipe", "Game", "Riddle", "Video"]
-    collect = []
-    for cat in cats:
-        discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
-        response = makeQuery("", discovery, cat)  
-        res = response.result["results"];
-        collect.append(res[random.randint(0,cf.NUM_RESULTS-1)])
-
-    random.shuffle(collect)
-    return get_response(collect)
-
-
-#with open("InputJSON.json","r") as js:
-#    print(middleware(js.read().replace('\n',''),"bad"))
