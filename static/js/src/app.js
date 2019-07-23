@@ -81,10 +81,10 @@ class App extends React.Component {
     }
     
     update() {
-        let phobias = this.state.card.phobias;
+        let phobias = this.state.card.Phobias;
         let newNonPhobias = this.state.nonphobias;
         for (let i = 0; i < phobias.length; i++) {
-            if (!newNonPhobias.includes(phobias[i]) {
+            if (!newNonPhobias.includes(phobias[i])) {
                 newNonPhobias.push(phobias[i]);
             }
         }
@@ -99,9 +99,11 @@ class App extends React.Component {
         if (!nextCard) {
             this.setState({error: true});
         }
+        let that = this;
 /*         let nextCard = this.getCard(title); */
-        this.setState({card: nextCard});
-        this.update();
+        this.setState({card: nextCard}, function () {
+            that.update();
+        });
         this.setState({foundRudder: foundRudder});
     }
     

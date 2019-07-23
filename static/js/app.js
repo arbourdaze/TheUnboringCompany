@@ -97,10 +97,13 @@ var App = function (_React$Component) {
         }
     }, {
         key: 'update',
-        value: function update(phobias, cardID) {
+        value: function update() {
+            var phobias = this.state.card.Phobias;
             var newNonPhobias = this.state.nonphobias;
             for (var i = 0; i < phobias.length; i++) {
-                newNonPhobias.push(phobias[i]);
+                if (!newNonPhobias.includes(phobias[i])) {
+                    newNonPhobias.push(phobias[i]);
+                }
             }
             this.setState({ nonphobias: newNonPhobias });
             console.log(this.state.nonphobias);
@@ -114,8 +117,11 @@ var App = function (_React$Component) {
             if (!nextCard) {
                 this.setState({ error: true });
             }
+            var that = this;
             /*         let nextCard = this.getCard(title); */
-            this.setState({ card: nextCard });
+            this.setState({ card: nextCard }, function () {
+                that.update();
+            });
             this.setState({ foundRudder: foundRudder });
         }
     }, {
@@ -152,7 +158,6 @@ var App = function (_React$Component) {
                 React.createElement(Card, {
                     data: this.state.card,
                     nonphobias: this.state.nonphobias,
-                    update: this.update,
                     move: this.move,
                     getCard: this.getCard
                 })
