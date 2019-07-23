@@ -33,7 +33,8 @@ var App = function (_React$Component) {
                 Parent: [],
                 Image: []
             },
-            foundRudder: false
+            foundRudder: false,
+            error: false
         };
         _this.update = _this.update.bind(_this);
         _this.getCard = _this.getCard.bind(_this);
@@ -107,12 +108,18 @@ var App = function (_React$Component) {
             var response = this.getNext(title);
             var nextCard = response.Card;
             var foundRudder = response.FoundRudder;
+            if (!nextCard) {
+                this.setState({ error: true });
+            }
             this.setState({ card: nextCard });
             this.setState({ foundRudder: foundRudder });
         }
     }, {
         key: 'render',
         value: function render() {
+            if (this.state.error) {
+                return "Something went horribly wrong.";
+            }
             if (this.state.foundRudder) {
                 return "Oops, you're dead.";
             }

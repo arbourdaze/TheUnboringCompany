@@ -21,7 +21,8 @@ class App extends React.Component {
                 Parent: [],
                 Image: []
             },
-            foundRudder: false
+            foundRudder: false,
+            error: false
         };
         this.update = this.update.bind(this);
         this.getCard = this.getCard.bind(this);
@@ -75,7 +76,7 @@ class App extends React.Component {
                 }
             }
         });
-        
+
         return response;
     }
     
@@ -89,11 +90,17 @@ class App extends React.Component {
         let response = this.getNext(title);
         let nextCard = response.Card;
         let foundRudder = response.FoundRudder;
+        if (!nextCard) {
+            this.setState({error: true});
+        }
         this.setState({card: nextCard});
         this.setState({foundRudder: foundRudder});
     }
     
     render() {
+        if (this.state.error) {
+            return "Something went horribly wrong.";
+        }
         if (this.state.foundRudder) {
             return "Oops, you're dead.";
         }
