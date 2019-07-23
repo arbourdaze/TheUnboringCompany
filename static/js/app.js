@@ -106,11 +106,13 @@ var App = function (_React$Component) {
         key: 'move',
         value: function move(title) {
             var response = this.getNext(title);
+            console.log(response);
             var nextCard = response.Card;
             var foundRudder = response.FoundRudder;
             if (!nextCard) {
                 this.setState({ error: true });
             }
+            /*         let nextCard = this.getCard(title); */
             this.setState({ card: nextCard });
             this.setState({ foundRudder: foundRudder });
         }
