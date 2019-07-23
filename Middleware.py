@@ -118,6 +118,8 @@ def getMove(title):
     if nextCard is None:
         return False
 
+    return True
+
 def getNext(title, phobias):
 
     for phobia in phobias:
