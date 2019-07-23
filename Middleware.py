@@ -104,7 +104,7 @@ def getNext(title, phobias):
 
     if nextCard is None:
         noRudder = False
-        response = makeQuery(keywords, discovery, topic)
+        response = makeQuery(title, discovery)
         results = response.result["results"]
         for result in results:
             if result["Title"] == title:
