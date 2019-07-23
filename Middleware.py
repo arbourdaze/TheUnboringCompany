@@ -109,7 +109,7 @@ def getCard(title):
 
 
 def makeMonsterMove(monster):
-
+    return True
 
 def getMove(title):
 
