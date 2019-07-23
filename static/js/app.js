@@ -118,21 +118,29 @@ var App = function (_React$Component) {
         key: 'render',
         value: function render() {
             if (this.state.error) {
-                return "Something went horribly wrong.";
+                return React.createElement(
+                    'div',
+                    { className: 'error-message' },
+                    'Something went horribly wrong.'
+                );
             }
             if (this.state.foundRudder) {
                 return "Oops, you're dead.";
             }
             if (this.state.card.Title === "") {
-                return React.createElement(Button, {
-                    classes: '',
-                    buttonText: 'Begin',
-                    arg: 'Intro',
-                    callback: this.move,
-                    enabler: function enabler() {
-                        return true;
-                    }
-                });
+                return React.createElement(
+                    'div',
+                    { className: 'button-pad', style: { marginTop: 10 + 'em' } },
+                    React.createElement(Button, {
+                        classes: '',
+                        buttonText: 'Begin',
+                        arg: 'Intro',
+                        callback: this.move,
+                        enabler: function enabler() {
+                            return true;
+                        }
+                    })
+                );
             }
             return React.createElement(
                 'div',

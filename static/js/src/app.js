@@ -99,20 +99,24 @@ class App extends React.Component {
     
     render() {
         if (this.state.error) {
-            return "Something went horribly wrong.";
+            return (
+                <div className="error-message">Something went horribly wrong.</div>
+            );
         }
         if (this.state.foundRudder) {
             return "Oops, you're dead.";
         }
         if (this.state.card.Title === "") {
             return (
-                <Button
-                    classes=""
-                    buttonText="Begin"
-                    arg="Intro"
-                    callback={this.move}
-                    enabler={function () {return true;}}
-                />
+                <div className="button-pad" style={{marginTop: 10 + 'em'}}>
+                    <Button
+                        classes=""
+                        buttonText="Begin"
+                        arg="Intro"
+                        callback={this.move}
+                        enabler={function () {return true;}}
+                    />
+                </div>
             );
         }
         return (

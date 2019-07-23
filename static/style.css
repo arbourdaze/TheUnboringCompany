@@ -60,3 +60,10 @@ body {
     text-align:center;
     margin:auto;
 }
+
+.error-message {
+    font-size:20px;
+    text-align:center;
+    padding-top:5em;
+    margin:auto;
+}
