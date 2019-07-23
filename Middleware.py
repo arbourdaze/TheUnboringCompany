@@ -155,8 +155,6 @@ def makeQuery(title, discovery):
     result = discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = filterParam,
         query = title)
 
-    print(json.dumps(result))
-
     return result
 """
     filter = excludes docs that don't mention filter
