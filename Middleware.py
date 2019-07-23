@@ -112,7 +112,7 @@ def getNext(title, phobias):
                 break
 
         if nextCard is None:
-            return False
+            return False, False
 
     gotRudder = False
 
