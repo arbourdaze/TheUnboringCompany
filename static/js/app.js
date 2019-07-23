@@ -97,16 +97,18 @@ var App = function (_React$Component) {
         }
     }, {
         key: 'update',
-        value: function update(phobia, cardID) {
+        value: function update(phobias, cardID) {
             var newNonPhobias = this.state.nonphobias;
-            newNonPhobias = newNonPhobias.push(phobia);
+            for (var i = 0; i < phobias.length; i++) {
+                newNonPhobias.push(phobias[i]);
+            }
             this.setState({ nonphobias: newNonPhobias });
+            console.log(this.state.nonphobias);
         }
     }, {
         key: 'move',
         value: function move(title) {
             var response = this.getNext(title);
-            console.log(response);
             var nextCard = response.Card;
             var foundRudder = response.FoundRudder;
             if (!nextCard) {

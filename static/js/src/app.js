@@ -80,15 +80,20 @@ class App extends React.Component {
         return response;
     }
     
-    update(phobia, cardID) {
+    update() {
+        let phobias = this.state.card.phobias;
         let newNonPhobias = this.state.nonphobias;
-        newNonPhobias = newNonPhobias.push(phobia);
+        for (let i = 0; i < phobias.length; i++) {
+            if (!newNonPhobias.includes(phobias[i]) {
+                newNonPhobias.push(phobias[i]);
+            }
+        }
         this.setState({nonphobias: newNonPhobias});
+        console.log(this.state.nonphobias);
     }
     
     move(title) {
         let response = this.getNext(title);
-        console.log(response);
         let nextCard = response.Card;
         let foundRudder = response.FoundRudder;
         if (!nextCard) {
@@ -96,6 +101,7 @@ class App extends React.Component {
         }
 /*         let nextCard = this.getCard(title); */
         this.setState({card: nextCard});
+        this.update();
         this.setState({foundRudder: foundRudder});
     }
     
@@ -126,7 +132,6 @@ class App extends React.Component {
                 <Card
                     data={this.state.card}
                     nonphobias={this.state.nonphobias}
-                    update={this.update}
                     move={this.move}
                     getCard={this.getCard}
                 />
