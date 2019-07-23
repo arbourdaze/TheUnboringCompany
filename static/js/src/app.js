@@ -88,6 +88,7 @@ class App extends React.Component {
     
     move(title) {
         let response = this.getNext(title);
+        console.log(response);
         let nextCard = response.Card;
         let foundRudder = response.FoundRudder;
         if (!nextCard) {
