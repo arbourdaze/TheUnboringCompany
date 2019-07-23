@@ -29,8 +29,6 @@ monsterList = {"Sexton": np.array([0,   0,   0,   0,   0,   1,   0,   0,   0,   
 
 cache = []
 
-rudderless = []
-
 fearVector = {
     "Clowns": 1,
     "Water": 1,
@@ -87,14 +85,9 @@ def foundRudder():
         rudderProbability += delta
         return False
 
-def getNext(title, phobias):
-
-    for phobia in phobias:
-        fearVector[phobia] = 0
-
-    noRudder = True
-
+def getCard(title):
     nextCard = None
+
     for card in cache:
         if card["Title"] == title:
             nextCard = card
@@ -111,8 +104,32 @@ def getNext(title, phobias):
                 nextCard = result
                 break
 
-        if nextCard is None:
-            return False, False
+    return nextCard
+
+
+
+def makeMonsterMove(monster):
+
+
+def getMove(title):
+
+    nextCard = None
+    nextCard = getCard(title)
+    if nextCard is None:
+        return False
+
+def getNext(title, phobias):
+
+    for phobia in phobias:
+        fearVector[phobia] = 0
+
+    noRudder = True
+    nextCard = None
+    
+    nextCard = getCard(title)
+
+    if nextCard is None:
+        return False, False
 
     gotRudder = False
 
@@ -131,12 +148,12 @@ def getNext(title, phobias):
 def makeQuery(title, discovery):
     result = None
 
-    filterParam = "extracted_metadata.filename:\"" + title + "\""
+    filterParam = "Title:\"" + title + "\""
 
     result = discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = filterParam,
         query = title)
 
-    return result
+    return result.results[0]
 
 """
     filter = excludes docs that don't mention filter
