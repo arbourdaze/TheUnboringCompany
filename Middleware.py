@@ -9,20 +9,20 @@ import operator
 import numpy as np
 
 phobiaList = ["Clowns", "Water", "Ghosts", "Blood", "Needles",
-    "Confinement", "CreepyCrawlies", "Contamination", "Dogs", "Corpses/Death", 
+    "Confinement", "CreepyCrawlies", "Contamination", "Dogs", "Corpses", 
     "Stalkers", "Abandonment", "Authority", "Darkness", "Flying", "Height", "Storms"]
 
 monsterList = {"Sexton": np.array([0,   0,   0,   0,   0,   1,   0,   0,   0,   1,   1,   0,   1,   1,   0,   0,   0]),
  "Dogs": np.array([0  , 0 ,  0,   1,   0,   0,   0,   0 ,  1,   1,   0,   0,   0,   1,   0,   0,   0,]),
- "Ghost Tornado": np.array([0 ,  1 ,  1,  0  , 0 ,  0,   0  , 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  1   ,1  , 1]), 
+ "Ghost Tornado": np.array([0 ,  1 ,  1,  0  , 0 ,  0,   0  , 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  1 ,  1 ,  1]), 
  "Critter Infestation": np.array([0,   0 ,  0,   0  , 0 ,  0,   1 ,  1 ,  0,   0,   0,   0,   0,   0,   0 ,  0 ,  0]), 
  "Radiation Spike": np.array([0,   0 ,  0  , 1 ,  0 ,  1 ,  0 ,  1 ,  0 ,  1   ,0 ,  0,   0 ,  1 ,  0 ,  0  , 0]), 
  "Chasm": np.array([0   ,1  , 0 ,  0  , 0  , 0 ,  0  , 0  , 0  , 0  , 0  , 0 ,  0 ,  1  , 0 ,  1  , 0]), 
  "Zombie Apocalypse": np.array([0 ,  0 ,  1  , 1,   0  , 0  , 0 ,  0,   0,   1  , 1  , 0 ,  0  , 1 ,  0  , 0 ,  0]),
  "Mad Doctor": np.array([0  , 0 ,  0 ,  1,   1,   0  , 0 ,  1 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  0 ,  0]), 
  "IT Clown": np.array([1 ,  0  , 0 ,  1,   0 ,  0 ,  0 ,  0 ,  0,   1  , 1 ,  0  , 0 ,  0 ,  0 ,  0 ,  0]), 
- "Depressions Fog": np.array([0 ,  1  , 1 ,  0,   0 ,  0   ,0  , 0,   0 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  1]), 
- "Warewolf": np.array([ 0,   0  , 0  , 1 ,  0 ,  0 ,  0 ,  1 ,  1  , 1 ,  1 ,  0  , 0 ,  0  , 0,   0,   0]), 
+ "Depression Fog": np.array([0 ,  1  , 1 ,  0,   0 ,  0   ,0  , 0,   0 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  1]), 
+ "Werewolf": np.array([ 0,   0  , 0  , 1 ,  0 ,  0 ,  0 ,  1 ,  1  , 1 ,  1 ,  0  , 0 ,  0  , 0,   0,   0]), 
  "Freak Storm": np.array([0 ,  1 ,  0  , 0  , 0 ,  0  , 0,   0,   0 ,  0 ,  0  , 1  , 0 ,  1 ,  1,   0  , 1]), 
  "Steve": np.array([0,   0 ,  0 ,  0 ,  0 ,  0  , 0,   0 ,  0 ,  0 ,  0  , 0,   0 ,  0  , 0  , 0 ,  0])
  }

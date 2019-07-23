@@ -20,10 +20,13 @@ class App extends React.Component {
                 Children: [],
                 Parent: [],
                 Image: []
-            }
+            },
+            foundRudder: false,
+            error: false
         };
         this.update = this.update.bind(this);
         this.getCard = this.getCard.bind(this);
+        this.getNext = this.getNext.bind(this);
         this.move = this.move.bind(this);
     }
     
@@ -50,6 +53,33 @@ class App extends React.Component {
         return card;
     }
     
+    getNext(title) {
+        let json = JSON.stringify({
+            Title: title,
+            NonPhobias: this.state.nonphobias
+        });
+        let response = null;
+        
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/get-next',
+            data: json,
+            dataType: 'json',
+            async: false,
+            success: function (res) {
+                response = res;
+            },
+            error: function() {
+                if (debug) {
+                    console.log('error');
+                }
+            }
+        });
+
+        return response;
+    }
+    
     update(phobia, cardID) {
         let newNonPhobias = this.state.nonphobias;
         newNonPhobias = newNonPhobias.push(phobia);
@@ -57,20 +87,36 @@ class App extends React.Component {
     }
     
     move(title) {
-        let newCard = this.getCard(title);
-        this.setState({card: newCard});
+        let response = this.getNext(title);
+        let nextCard = response.Card;
+        let foundRudder = response.FoundRudder;
+        if (!nextCard) {
+            this.setState({error: true});
+        }
+        this.setState({card: nextCard});
+        this.setState({foundRudder: foundRudder});
     }
     
     render() {
+        if (this.state.error) {
+            return (
+                <div className="error-message">Something went horribly wrong.</div>
+            );
+        }
+        if (this.state.foundRudder) {
+            return "Oops, you're dead.";
+        }
         if (this.state.card.Title === "") {
             return (
-                <Button
-                    classes=""
-                    buttonText="Begin"
-                    arg="Intro"
-                    callback={this.move}
-                    enabler={function () {return true;}}
-                />
+                <div className="button-pad" style={{marginTop: 10 + 'em'}}>
+                    <Button
+                        classes=""
+                        buttonText="Begin"
+                        arg="Intro"
+                        callback={this.move}
+                        enabler={function () {return true;}}
+                    />
+                </div>
             );
         }
         return (

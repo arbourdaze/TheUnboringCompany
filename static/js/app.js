@@ -32,10 +32,13 @@ var App = function (_React$Component) {
                 Children: [],
                 Parent: [],
                 Image: []
-            }
+            },
+            foundRudder: false,
+            error: false
         };
         _this.update = _this.update.bind(_this);
         _this.getCard = _this.getCard.bind(_this);
+        _this.getNext = _this.getNext.bind(_this);
         _this.move = _this.move.bind(_this);
         return _this;
     }
@@ -65,6 +68,34 @@ var App = function (_React$Component) {
             return card;
         }
     }, {
+        key: 'getNext',
+        value: function getNext(title) {
+            var json = JSON.stringify({
+                Title: title,
+                NonPhobias: this.state.nonphobias
+            });
+            var response = null;
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/get-next',
+                data: json,
+                dataType: 'json',
+                async: false,
+                success: function success(res) {
+                    response = res;
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
+
+            return response;
+        }
+    }, {
         key: 'update',
         value: function update(phobia, cardID) {
             var newNonPhobias = this.state.nonphobias;
@@ -74,22 +105,42 @@ var App = function (_React$Component) {
     }, {
         key: 'move',
         value: function move(title) {
-            var newCard = this.getCard(title);
-            this.setState({ card: newCard });
+            var response = this.getNext(title);
+            var nextCard = response.Card;
+            var foundRudder = response.FoundRudder;
+            if (!nextCard) {
+                this.setState({ error: true });
+            }
+            this.setState({ card: nextCard });
+            this.setState({ foundRudder: foundRudder });
         }
     }, {
         key: 'render',
         value: function render() {
+            if (this.state.error) {
+                return React.createElement(
+                    'div',
+                    { className: 'error-message' },
+                    'Something went horribly wrong.'
+                );
+            }
+            if (this.state.foundRudder) {
+                return "Oops, you're dead.";
+            }
             if (this.state.card.Title === "") {
-                return React.createElement(Button, {
-                    classes: '',
-                    buttonText: 'Begin',
-                    arg: 'Intro',
-                    callback: this.move,
-                    enabler: function enabler() {
-                        return true;
-                    }
-                });
+                return React.createElement(
+                    'div',
+                    { className: 'button-pad', style: { marginTop: 10 + 'em' } },
+                    React.createElement(Button, {
+                        classes: '',
+                        buttonText: 'Begin',
+                        arg: 'Intro',
+                        callback: this.move,
+                        enabler: function enabler() {
+                            return true;
+                        }
+                    })
+                );
             }
             return React.createElement(
                 'div',
