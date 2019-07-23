@@ -1,5 +1,6 @@
 :root {
     --text-color: mediumaquamarine;
+    --button-color: mediumaquamarine;
 }
 
 body {
@@ -11,6 +12,7 @@ body {
 .title {
     text-align:center;
     font-size:25px;
+    color:var(--button-color);
     text-decoration:underline;
     text-transform:uppercase;
 }
@@ -25,7 +27,8 @@ body {
     width:20em;
     height:5%;
     font-family:monospace;
-    border:outset;
+    border:outset var(--button-color);
+    color:var(--button-color);
     text-align:center;
     margin:0.5em;
     padding:1em;

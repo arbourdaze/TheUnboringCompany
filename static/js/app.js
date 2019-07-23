@@ -111,6 +111,7 @@ var App = function (_React$Component) {
             if (!nextCard) {
                 this.setState({ error: true });
             }
+            /*         let nextCard = this.getCard(title); */
             this.setState({ card: nextCard });
             this.setState({ foundRudder: foundRudder });
         }
