@@ -17,6 +17,7 @@ class JumpScare extends React.Component {
             <div>
                 <div className="button-pad">
                     <img src={'/static/img/' + this.props.monster.title + '.jpg'} />
+                    <br/>
                     <Button
                         classes=""
                         callback={this.run}
