@@ -22,12 +22,14 @@ class App extends React.Component {
                 Image: []
             },
             foundRudder: false,
+            jumpScare: false,
             error: false
         };
         this.update = this.update.bind(this);
         this.getCard = this.getCard.bind(this);
         this.getNext = this.getNext.bind(this);
         this.move = this.move.bind(this);
+        this.run = this.run.bind(this);
     }
     
     getCard(title) {
@@ -89,7 +91,6 @@ class App extends React.Component {
             }
         }
         this.setState({nonphobias: newNonPhobias});
-        console.log(this.state.nonphobias);
     }
     
     move(title) {
@@ -104,10 +105,23 @@ class App extends React.Component {
         this.setState({card: nextCard}, function () {
             that.update();
         });
-        this.setState({foundRudder: foundRudder});
+        this.setState({foundRudder: foundRudder}, function () {
+        });
+        console.log(foundRudder);
+    }
+    
+    run() {
+        this.setState({jumpScare: false});
     }
     
     render() {
+        if (this.state.jumpScare) {
+            return (
+                <JumpScare
+                    run={this.run}
+                />
+            );
+        }
         if (this.state.error) {
             return (
                 <div className="error-message">Something went horribly wrong.</div>

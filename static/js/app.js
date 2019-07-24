@@ -34,12 +34,14 @@ var App = function (_React$Component) {
                 Image: []
             },
             foundRudder: false,
+            jumpScare: false,
             error: false
         };
         _this.update = _this.update.bind(_this);
         _this.getCard = _this.getCard.bind(_this);
         _this.getNext = _this.getNext.bind(_this);
         _this.move = _this.move.bind(_this);
+        _this.run = _this.run.bind(_this);
         return _this;
     }
 
@@ -106,7 +108,6 @@ var App = function (_React$Component) {
                 }
             }
             this.setState({ nonphobias: newNonPhobias });
-            console.log(this.state.nonphobias);
         }
     }, {
         key: 'move',
@@ -122,11 +123,22 @@ var App = function (_React$Component) {
             this.setState({ card: nextCard }, function () {
                 that.update();
             });
-            this.setState({ foundRudder: foundRudder });
+            this.setState({ foundRudder: foundRudder }, function () {});
+            console.log(foundRudder);
+        }
+    }, {
+        key: 'run',
+        value: function run() {
+            this.setState({ jumpScare: false });
         }
     }, {
         key: 'render',
         value: function render() {
+            if (this.state.jumpScare) {
+                return React.createElement(JumpScare, {
+                    run: this.run
+                });
+            }
             if (this.state.error) {
                 return React.createElement(
                     'div',
