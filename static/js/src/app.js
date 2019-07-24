@@ -6,30 +6,31 @@ let debug = true;
 
 let root = document.querySelector('#root');
 
+const initialState = {
+    nonphobias: [],
+    card: {
+        Title: "",
+        FormalTitle: "",
+        Description: "",
+        Phobias: [],
+        Children: [],
+        Parent: [],
+        Image: []
+    },
+    monster: false,
+    error: false
+};
+
 class App extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = {
-            nonphobias: [],
-            card: {
-                Title: "",
-                FormalTitle: "",
-                Description: "",
-                Phobias: [],
-                Children: [],
-                Parent: [],
-                Image: []
-            },
-            foundRudder: false,
-            jumpScare: false,
-            error: false
-        };
+        this.state = initialState;
         this.update = this.update.bind(this);
         this.getCard = this.getCard.bind(this);
         this.getNext = this.getNext.bind(this);
         this.move = this.move.bind(this);
-        this.run = this.run.bind(this);
+        this.reset = this.reset.bind(this);
     }
     
     getCard(title) {
@@ -105,20 +106,19 @@ class App extends React.Component {
         this.setState({card: nextCard}, function () {
             that.update();
         });
-        this.setState({foundRudder: foundRudder}, function () {
-        });
-        console.log(foundRudder);
+        this.setState({monster: foundRudder});
     }
-    
-    run() {
-        this.setState({jumpScare: false});
+
+    reset() {
+        this.setState(initialState);
     }
     
     render() {
-        if (this.state.jumpScare) {
+        if (this.state.monster) {
             return (
                 <JumpScare
-                    run={this.run}
+                    monster={this.state.monster}
+                    run={this.reset}
                 />
             );
         }
@@ -126,9 +126,6 @@ class App extends React.Component {
             return (
                 <div className="error-message">Something went horribly wrong.</div>
             );
-        }
-        if (this.state.foundRudder) {
-            return "Oops, you're dead.";
         }
         if (this.state.card.Title === "") {
             return (

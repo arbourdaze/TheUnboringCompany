@@ -14,6 +14,21 @@ var debug = true;
 
 var root = document.querySelector('#root');
 
+var initialState = {
+    nonphobias: [],
+    card: {
+        Title: "",
+        FormalTitle: "",
+        Description: "",
+        Phobias: [],
+        Children: [],
+        Parent: [],
+        Image: []
+    },
+    monster: false,
+    error: false
+};
+
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
 
@@ -22,26 +37,12 @@ var App = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this.state = {
-            nonphobias: [],
-            card: {
-                Title: "",
-                FormalTitle: "",
-                Description: "",
-                Phobias: [],
-                Children: [],
-                Parent: [],
-                Image: []
-            },
-            foundRudder: false,
-            jumpScare: false,
-            error: false
-        };
+        _this.state = initialState;
         _this.update = _this.update.bind(_this);
         _this.getCard = _this.getCard.bind(_this);
         _this.getNext = _this.getNext.bind(_this);
         _this.move = _this.move.bind(_this);
-        _this.run = _this.run.bind(_this);
+        _this.reset = _this.reset.bind(_this);
         return _this;
     }
 
@@ -123,20 +124,20 @@ var App = function (_React$Component) {
             this.setState({ card: nextCard }, function () {
                 that.update();
             });
-            this.setState({ foundRudder: foundRudder }, function () {});
-            console.log(foundRudder);
+            this.setState({ monster: foundRudder });
         }
     }, {
-        key: 'run',
-        value: function run() {
-            this.setState({ jumpScare: false });
+        key: 'reset',
+        value: function reset() {
+            this.setState(initialState);
         }
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.jumpScare) {
+            if (this.state.monster) {
                 return React.createElement(JumpScare, {
-                    run: this.run
+                    monster: this.state.monster,
+                    run: this.reset
                 });
             }
             if (this.state.error) {
@@ -145,9 +146,6 @@ var App = function (_React$Component) {
                     { className: 'error-message' },
                     'Something went horribly wrong.'
                 );
-            }
-            if (this.state.foundRudder) {
-                return "Oops, you're dead.";
             }
             if (this.state.card.Title === "") {
                 return React.createElement(
