@@ -8,6 +8,8 @@ import random
 import operator
 import numpy as np
 
+discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
+
 phobiaList = ["Clowns", "Water", "Ghosts", "Blood", "Needles",
     "Confinement", "CreepyCrawlies", "Contamination", "Dogs", "Corpses", 
     "Stalkers", "Abandonment", "Authority", "Darkness", "Flying", "Height", "Storms"]
@@ -50,9 +52,55 @@ fearVector = {
 }
 
 rudderProbability = 0
-delta = 3
+delta = 7
 
-def chooseMonster():
+islandMap = {
+    "The Beach": ["Dock","Sky","Lighthouse","Plane Wreck","Prison","Potter's Field"],
+    "Dock": ["Boat", "Sharks","The Beach"],
+    "The Prison": ["Guard Tower", "Solitary Cell", "Firing Squad Wall", "The Beach"],
+    "Potter's Field": ["Sexton", "Open Trench", "The Woods", "The Orphanage", "The Beach"],
+    "The Orphanage": ["Toy Shelf", "Well", "Wailing Attic", "The Asylum", "Potter's Field"],
+    "The Asylum": ["Needles", "Padded Cell", "The Orphanage"],
+    "The Woods": ["Lone Wolf", "Deer Carcass", "Potter's Field"]
+}
+
+class Monster:
+
+    location = ""
+    playerLocation = ""
+    goalLocation = ""
+    title = ""
+    formalTitle = ""
+    description = ""
+    image = ""
+    phobias = ""
+    toMoveTo = []
+
+
+    def __init__(self, name):
+        result = makeQuery(name, playerLocation, discovery)
+        result = result.result["results"][0]
+
+        self.title = result["Title"]
+        self.location = result["Parent"][0]
+        self.image = result["Image"]
+        self.formalTitle = result["FormalTitle"]
+        self.description = result["Description"]
+        self.phobias = result["Phobias"]
+        self.playerLocation = playerLocation
+        self.goalLocation = playerLocation
+
+    def updatePlayerLocation(self, playerLocation):
+        self.playerLocation = playerLocation
+
+    def updateGoalLocation(self, playerLocation):
+        self.goalLocation = playerLocation
+
+    def calculatePath(self, location, goalLocation):
+        return False
+
+
+def chooseMonster(playerLocation):
     differenceMatrix = np.array(fearVector.values())
 
     row = 0
@@ -73,11 +121,14 @@ def chooseMonster():
     else:
         index = indicies
 
-    return monsterList.keys()[index]
+    monsterName = monsterList.keys()[index]
+
+    return Monster(monsterName, playerLocation)
 
 
 def foundRudder():
     num = random.randInt(1,100)
+    print("Probability " + str(rudderProbability))
 
     if num <= rudderProbability:
         return True
@@ -93,7 +144,6 @@ def getCard(title):
             nextCard = card
             break
 
-    discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
     if nextCard is None:
         noRudder = False
@@ -106,19 +156,18 @@ def getCard(title):
 
     return nextCard
 
+    
 
-
-def makeMonsterMove(monster):
-    return True
-
-def getMove(title):
+def getMove(title, monster):
 
     nextCard = None
     nextCard = getCard(title)
     if nextCard is None:
-        return False
+        return False, False
 
-    return True
+    return False, False
+
+    
 
 def getNext(title, phobias):
 
@@ -139,7 +188,7 @@ def getNext(title, phobias):
         gotRudder = foundRudder()
 
     if gotRudder:
-        monster = chooseMonster()
+        monster = chooseMonster(title)
 
         return nextCard, monster
 
