@@ -81,7 +81,7 @@ class fearGame:
     }
 
     def __init__(self):
-
+        return
 
 
     class Monster:
