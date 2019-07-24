@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
@@ -11,6 +10,10 @@
         <div id="root">
         </div>
         
+        <audio id="soundEffect">
+            <source src="{{url_for('static', filename='scream.wav')}}">
+        </audio>
+
         <script type="text/javascript" src="{{url_for('static', filename='jquery-3.4.1.min.js')}}"></script>
         
         <!-- Load React. -->
@@ -21,6 +24,7 @@
         <!-- Load our React component. -->
         <script src="{{url_for('static', filename='js/Button.js')}}"></script>
         <script src="{{url_for('static', filename='js/Card.js')}}"></script>
+        <script src="{{url_for('static', filename='js/JumpScare.js')}}"></script>
         <script src="{{url_for('static', filename='js/app.js')}}"></script>
         
     </body>

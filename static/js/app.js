@@ -14,6 +14,21 @@ var debug = true;
 
 var root = document.querySelector('#root');
 
+var initialState = {
+    nonphobias: [],
+    card: {
+        Title: "",
+        FormalTitle: "",
+        Description: "",
+        Phobias: [],
+        Children: [],
+        Parent: [],
+        Image: []
+    },
+    monster: false,
+    error: false
+};
+
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
 
@@ -22,24 +37,12 @@ var App = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-        _this.state = {
-            nonphobias: [],
-            card: {
-                Title: "",
-                FormalTitle: "",
-                Description: "",
-                Phobias: [],
-                Children: [],
-                Parent: [],
-                Image: []
-            },
-            foundRudder: false,
-            error: false
-        };
+        _this.state = initialState;
         _this.update = _this.update.bind(_this);
         _this.getCard = _this.getCard.bind(_this);
         _this.getNext = _this.getNext.bind(_this);
         _this.move = _this.move.bind(_this);
+        _this.reset = _this.reset.bind(_this);
         return _this;
     }
 
@@ -97,37 +100,52 @@ var App = function (_React$Component) {
         }
     }, {
         key: 'update',
-        value: function update(phobia, cardID) {
+        value: function update() {
+            var phobias = this.state.card.Phobias;
             var newNonPhobias = this.state.nonphobias;
-            newNonPhobias = newNonPhobias.push(phobia);
+            for (var i = 0; i < phobias.length; i++) {
+                if (!newNonPhobias.includes(phobias[i])) {
+                    newNonPhobias.push(phobias[i]);
+                }
+            }
             this.setState({ nonphobias: newNonPhobias });
         }
     }, {
         key: 'move',
         value: function move(title) {
             var response = this.getNext(title);
-            console.log(response);
             var nextCard = response.Card;
             var foundRudder = response.FoundRudder;
             if (!nextCard) {
                 this.setState({ error: true });
             }
+            var that = this;
             /*         let nextCard = this.getCard(title); */
-            this.setState({ card: nextCard });
-            this.setState({ foundRudder: foundRudder });
+            this.setState({ card: nextCard }, function () {
+                that.update();
+            });
+            this.setState({ monster: foundRudder });
+        }
+    }, {
+        key: 'reset',
+        value: function reset() {
+            this.setState(initialState);
         }
     }, {
         key: 'render',
         value: function render() {
+            if (this.state.monster) {
+                return React.createElement(JumpScare, {
+                    monster: this.state.monster,
+                    run: this.reset
+                });
+            }
             if (this.state.error) {
                 return React.createElement(
                     'div',
                     { className: 'error-message' },
                     'Something went horribly wrong.'
                 );
-            }
-            if (this.state.foundRudder) {
-                return "Oops, you're dead.";
             }
             if (this.state.card.Title === "") {
                 return React.createElement(
@@ -150,7 +168,6 @@ var App = function (_React$Component) {
                 React.createElement(Card, {
                     data: this.state.card,
                     nonphobias: this.state.nonphobias,
-                    update: this.update,
                     move: this.move,
                     getCard: this.getCard
                 })

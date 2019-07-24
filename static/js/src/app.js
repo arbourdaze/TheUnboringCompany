@@ -6,28 +6,31 @@ let debug = true;
 
 let root = document.querySelector('#root');
 
+const initialState = {
+    nonphobias: [],
+    card: {
+        Title: "",
+        FormalTitle: "",
+        Description: "",
+        Phobias: [],
+        Children: [],
+        Parent: [],
+        Image: []
+    },
+    monster: false,
+    error: false
+};
+
 class App extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = {
-            nonphobias: [],
-            card: {
-                Title: "",
-                FormalTitle: "",
-                Description: "",
-                Phobias: [],
-                Children: [],
-                Parent: [],
-                Image: []
-            },
-            foundRudder: false,
-            error: false
-        };
+        this.state = initialState;
         this.update = this.update.bind(this);
         this.getCard = this.getCard.bind(this);
         this.getNext = this.getNext.bind(this);
         this.move = this.move.bind(this);
+        this.reset = this.reset.bind(this);
     }
     
     getCard(title) {
@@ -80,33 +83,49 @@ class App extends React.Component {
         return response;
     }
     
-    update(phobia, cardID) {
+    update() {
+        let phobias = this.state.card.Phobias;
         let newNonPhobias = this.state.nonphobias;
-        newNonPhobias = newNonPhobias.push(phobia);
+        for (let i = 0; i < phobias.length; i++) {
+            if (!newNonPhobias.includes(phobias[i])) {
+                newNonPhobias.push(phobias[i]);
+            }
+        }
         this.setState({nonphobias: newNonPhobias});
     }
     
     move(title) {
         let response = this.getNext(title);
-        console.log(response);
         let nextCard = response.Card;
         let foundRudder = response.FoundRudder;
         if (!nextCard) {
             this.setState({error: true});
         }
+        let that = this;
 /*         let nextCard = this.getCard(title); */
-        this.setState({card: nextCard});
-        this.setState({foundRudder: foundRudder});
+        this.setState({card: nextCard}, function () {
+            that.update();
+        });
+        this.setState({monster: foundRudder});
+    }
+
+    reset() {
+        this.setState(initialState);
     }
     
     render() {
+        if (this.state.monster) {
+            return (
+                <JumpScare
+                    monster={this.state.monster}
+                    run={this.reset}
+                />
+            );
+        }
         if (this.state.error) {
             return (
                 <div className="error-message">Something went horribly wrong.</div>
             );
-        }
-        if (this.state.foundRudder) {
-            return "Oops, you're dead.";
         }
         if (this.state.card.Title === "") {
             return (
@@ -126,7 +145,6 @@ class App extends React.Component {
                 <Card
                     data={this.state.card}
                     nonphobias={this.state.nonphobias}
-                    update={this.update}
                     move={this.move}
                     getCard={this.getCard}
                 />

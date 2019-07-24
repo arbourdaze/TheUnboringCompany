@@ -7,21 +7,10 @@ class Card extends React.Component {
         this.state = {
             nonphobias: this.props.nonphobias
         };
-        this.sendData = this.sendData.bind(this);
         this.proceed = this.proceed.bind(this);
         this.getCard = this.getCard.bind(this);
         this.getButton = this.getButton.bind(this);
         this.getButtonPad = this.getButtonPad.bind(this);
-        this.sendData();
-    }
-    
-    sendData() {
-        if (this.props.data.Phobias.length > 0) {
-            let newNonphobias = this.state.nonphobias;
-            newNonphobias = newNonphobias.concat(this.props.data.Phobias);
-            this.setState({nonphobias: newNonphobias});
-            this.props.update(this.props.data.Phobias);
-        }
     }
     
     proceed(title) {

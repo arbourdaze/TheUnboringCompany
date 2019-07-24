@@ -19,26 +19,14 @@ var Card = function (_React$Component) {
         _this.state = {
             nonphobias: _this.props.nonphobias
         };
-        _this.sendData = _this.sendData.bind(_this);
         _this.proceed = _this.proceed.bind(_this);
         _this.getCard = _this.getCard.bind(_this);
         _this.getButton = _this.getButton.bind(_this);
         _this.getButtonPad = _this.getButtonPad.bind(_this);
-        _this.sendData();
         return _this;
     }
 
     _createClass(Card, [{
-        key: 'sendData',
-        value: function sendData() {
-            if (this.props.data.Phobias.length > 0) {
-                var newNonphobias = this.state.nonphobias;
-                newNonphobias = newNonphobias.concat(this.props.data.Phobias);
-                this.setState({ nonphobias: newNonphobias });
-                this.props.update(this.props.data.Phobias);
-            }
-        }
-    }, {
         key: 'proceed',
         value: function proceed(title) {
             this.props.move(title);
