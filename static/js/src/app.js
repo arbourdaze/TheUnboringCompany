@@ -102,7 +102,6 @@ class App extends React.Component {
             this.setState({error: true});
         }
         let that = this;
-/*         let nextCard = this.getCard(title); */
         this.setState({card: nextCard}, function () {
             that.update();
         });

@@ -34,7 +34,7 @@ var JumpScare = function (_React$Component) {
                 React.createElement(
                     'div',
                     { className: 'button-pad' },
-                    React.createElement('img', { src: '/static/img/' + this.props.monster + '.jpg' }),
+                    React.createElement('img', { src: '/static/img/' + this.props.monster.title + '.jpg' }),
                     React.createElement(Button, {
                         classes: '',
                         callback: this.run,
