@@ -187,7 +187,7 @@ class fearGame:
         noRudder = True
         nextCard = None
         
-        self.nextCard = getCard(title)
+        nextCard = self.getCard(title)
 
         if nextCard is None:
             return False, False
