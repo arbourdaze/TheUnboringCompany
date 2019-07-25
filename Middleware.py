@@ -201,7 +201,7 @@ class fearGame:
         indices = np.argmin(norms)
 
         index = None
-        if not np.isscalar(indicies):
+        if not np.isscalar(indices):
             index = indices[0]
         else:
             index = indices
