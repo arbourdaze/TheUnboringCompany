@@ -30,8 +30,7 @@ class fearGame:
     "Steve": np.array([0,   0 ,  0 ,  0 ,  0 ,  0  , 0,   0 ,  0 ,  0 ,  0  , 0,   0 ,  0  , 0  , 0 ,  0])
      }
 
-    cache = 
-    [
+    cache = [
         {
             "Title": "Beach",
             "FormalTitle": "The Beach",
