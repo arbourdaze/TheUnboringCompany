@@ -111,14 +111,14 @@ class fearGame:
             self.goalLocation = playerLocation
 
 
-    def chooseMonster(playerLocation):
-        differenceMatrix = np.array(fearVector.values())
+    def chooseMonster(self, playerLocation):
+        differenceMatrix = np.array(self.fearVector.values())
 
         row = 0
-        for arr in monsterList.values():
+        for arr in self.monsterList.values():
             differenceMatrix[row] = np.subtract(arr, differenceMatrix[row])
             row += 1
-            np.concatinate((differenceMatrix, np.array(fearVector.values())), axis=0)
+            np.concatinate((differenceMatrix, np.array(self.fearVector.values())), axis=0)
 
         np.delete(differenceMatrix, row, axis=0)
 
@@ -132,46 +132,47 @@ class fearGame:
         else:
             index = indicies
 
-        monsterName = monsterList.keys()[index]
+        monsterName = self.monsterList.keys()[index]
 
         return Monster(monsterName, playerLocation)
 
 
-    def foundRudder():
+    def foundRudder(self):
         num = random.randInt(1,100)
 
-        if num <= rudderProbability:
+        if num <= self.rudderProbability:
             return True
         else:
-            rudderProbability += delta
+            self.rudderProbability += self.delta
             return False
 
-    def getCard(title):
+    def getCard(self, title):
         nextCard = None
+        checkRudder = True
 
-        for card in cache:
+        for card in self.cache:
             if card["Title"] == title:
+                checkRudder = False
                 nextCard = card
                 break
 
 
         if nextCard is None:
-            noRudder = False
-            response = makeQuery(title, discovery)
+            response = self.makeQuery(title, discovery)
             results = response.result["results"]
             for result in results:
                 if result["Title"] == title:
                     nextCard = result
                     break
 
-        return nextCard
+        return nextCard, checkRudder
 
         
 
-    def getMove(title, monster):
+    def getMove(self, title, monster):
 
         nextCard = None
-        nextCard = getCard(title)
+        nextCard = self.getCard(title)
         if nextCard is None:
             return False, False
 
@@ -181,26 +182,24 @@ class fearGame:
 
     def getNext(self, title, phobias):
 
+        checkRudder = True
         for phobia in phobias:
             self.fearVector[phobia] = 0
 
-        noRudder = True
         nextCard = None
         
-        nextCard = self.getCard(title)
+        nextCard, checkRudder = self.getCard(title)
 
         if nextCard is None:
             return False, False
 
         gotRudder = False
 
-        if not noRudder:
+        if checkRudder:
             gotRudder = self.foundRudder()
 
         if gotRudder:
             monster = self.chooseMonster(title)
-
-
 
             return nextCard, monster
 
@@ -208,12 +207,12 @@ class fearGame:
 
 
 
-    def makeQuery(title, discovery):
+    def makeQuery(self, title, discovery):
         result = None
 
         filterParam = "Title:\"" + title + "\""
 
-        result = discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = filterParam,
+        result = self.discovery.query(environment_id = cf.env_id, collection_id = cf.col_id, filter = filterParam,
             query = title)
 
         return result
