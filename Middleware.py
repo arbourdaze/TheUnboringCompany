@@ -186,13 +186,13 @@ class fearGame:
 
 
     def chooseMonster(self, playerLocation):
-        differenceMatrix = np.array([list(fearVector.values())])
+        differenceMatrix = np.array([list(self.fearVector.values())])
 
-        for i in range(len(monsterList) - 1):
-            differenceMatrix = np.concatenate((differenceMatrix, np.array([list(fearVector.values())])), axis=0)
+        for i in range(len(self.monsterList) - 1):
+            differenceMatrix = np.concatenate((differenceMatrix, np.array([list(self.fearVector.values())])), axis=0)
 
         row = 0
-        for arr in list(monsterList.values()):
+        for arr in list(self.monsterList.values()):
             differenceMatrix[row,:] = np.subtract(arr, differenceMatrix[row,:])
             row += 1
 
