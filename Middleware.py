@@ -138,7 +138,7 @@ class fearGame:
 
 
     def foundRudder(self):
-        num = random.randInt(1,100)
+        num = random.randint(1,100)
 
         if num <= self.rudderProbability:
             return True
