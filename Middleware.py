@@ -15,19 +15,19 @@ class fearGame:
         "Confinement", "Creepy-Crawlies", "Contamination", "Dogs", "Corpses", 
         "Stalkers", "Abandonment", "Authority", "Darkness", "Flying", "Heights", "Storms"]
 
-    monsterList = {"Sexton": np.array([0,   0,   0,   0,   0,   1,   0,   0,   0,   1,   1,   0,   1,   1,   0,   0,   0]),
-    "Dogs": np.array([0  , 0 ,  0,   1,   0,   0,   0,   0 ,  1,   1,   0,   0,   0,   1,   0,   0,   0,]),
-    "Ghost Tornado": np.array([0 ,  1 ,  1,  0  , 0 ,  0,   0  , 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  1 ,  1 ,  1]), 
-    "Critter Infestation": np.array([0,   0 ,  0,   0  , 0 ,  0,   1 ,  1 ,  0,   0,   0,   0,   0,   0,   0 ,  0 ,  0]), 
-    "Radiation Spike": np.array([0,   0 ,  0  , 1 ,  0 ,  1 ,  0 ,  1 ,  0 ,  1   ,0 ,  0,   0 ,  1 ,  0 ,  0  , 0]), 
-    "Chasm": np.array([0   ,1  , 0 ,  0  , 0  , 0 ,  0  , 0  , 0  , 0  , 0  , 0 ,  0 ,  1  , 0 ,  1  , 0]), 
-    "Zombie Apocalypse": np.array([0 ,  0 ,  1  , 1,   0  , 0  , 0 ,  0,   0,   1  , 1  , 0 ,  0  , 1 ,  0  , 0 ,  0]),
-    "Mad Doctor": np.array([0  , 0 ,  0 ,  1,   1,   0  , 0 ,  1 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  0 ,  0]), 
-    "IT Clown": np.array([1 ,  0  , 0 ,  1,   0 ,  0 ,  0 ,  0 ,  0,   1  , 1 ,  0  , 0 ,  0 ,  0 ,  0 ,  0]), 
-    "Depression Fog": np.array([0 ,  1  , 1 ,  0,   0 ,  0   ,0  , 0,   0 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  1]), 
-    "Warewolf": np.array([ 0,   0  , 0  , 1 ,  0 ,  0 ,  0 ,  1 ,  1  , 1 ,  1 ,  0  , 0 ,  0  , 0,   0,   0]), 
-    "Freak Storm": np.array([0 ,  1 ,  0  , 0  , 0 ,  0  , 0,   0,   0 ,  0 ,  0  , 1  , 0 ,  1 ,  1,   0  , 1]), 
-    "Steve": np.array([0,   0 ,  0 ,  0 ,  0 ,  0  , 0,   0 ,  0 ,  0 ,  0  , 0,   0 ,  0  , 0  , 0 ,  0])
+    monsterList = {"sexton": np.array([0,   0,   0,   0,   0,   1,   0,   0,   0,   1,   1,   0,   1,   1,   0,   0,   0]),
+    "dogs": np.array([0  , 0 ,  0,   1,   0,   0,   0,   0 ,  1,   1,   0,   0,   0,   1,   0,   0,   0,]),
+    "ghosttornado": np.array([0 ,  1 ,  1,  0  , 0 ,  0,   0  , 0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  0 ,  1 ,  1 ,  1]), 
+    "creepycrawlyinfestation": np.array([0,   0 ,  0,   0  , 0 ,  0,   1 ,  1 ,  0,   0,   0,   0,   0,   0,   0 ,  0 ,  0]), 
+    "radiationspike": np.array([0,   0 ,  0  , 1 ,  0 ,  1 ,  0 ,  1 ,  0 ,  1   ,0 ,  0,   0 ,  1 ,  0 ,  0  , 0]), 
+    "chasm": np.array([0   ,1  , 0 ,  0  , 0  , 0 ,  0  , 0  , 0  , 0  , 0  , 0 ,  0 ,  1  , 0 ,  1  , 0]), 
+    "zombieapocalypse": np.array([0 ,  0 ,  1  , 1,   0  , 0  , 0 ,  0,   0,   1  , 1  , 0 ,  0  , 1 ,  0  , 0 ,  0]),
+    "maddoctor": np.array([0  , 0 ,  0 ,  1,   1,   0  , 0 ,  1 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  0 ,  0]), 
+    "itclown": np.array([1 ,  0  , 0 ,  1,   0 ,  0 ,  0 ,  0 ,  0,   1  , 1 ,  0  , 0 ,  0 ,  0 ,  0 ,  0]), 
+    "depressionfog": np.array([0 ,  1  , 1 ,  0,   0 ,  0   ,0  , 0,   0 ,  0 ,  0 ,  1 ,  0  , 1 ,  0 ,  0 ,  1]), 
+    "werewolf": np.array([ 0,   0  , 0  , 1 ,  0 ,  0 ,  0 ,  1 ,  1  , 1 ,  1 ,  0  , 0 ,  0  , 0,   0,   0]), 
+    "freakstorm": np.array([0 ,  1 ,  0  , 0  , 0 ,  0  , 0,   0,   0 ,  0 ,  0  , 1  , 0 ,  1 ,  1,   0  , 1]), 
+    "steve": np.array([0,   0 ,  0 ,  0 ,  0 ,  0  , 0,   0 ,  0 ,  0 ,  0  , 0,   0 ,  0  , 0  , 0 ,  0])
      }
 
     cache = [
@@ -148,18 +148,18 @@ class fearGame:
     class Monster:
 
         monsterLocations = {
-        "Sexton": "Potter's Field",
-        "Ghost Tornado": "Asylum",
-        "Critter Infestation": "Woods",
-        "Radiation Spike": "Radioactive Waste Drum",
-        "Chasm": "Open Trench",
-        "Zombie Apocalypse": "Potter's Field",
-        "Mad Doctor": "Asylum",
-        "IT Clown": "Prison",
-        "Depression Fog": "Dock",
-        "Warewolf": "Woods",
-        "Freak Storm": "Beach",
-        "Steve": "Sky"
+        "sexton": "Potter's Field",
+        "ghosttornado": "Asylum",
+        "creepycrawlyinfestation": "Woods",
+        "radiationspike": "Radioactive Waste Drum",
+        "chasm": "Open Trench",
+        "zombieapocalypse": "Potter's Field",
+        "maddoctor": "Asylum",
+        "itclown": "Prison",
+        "depressionfog": "Dock",
+        "werewolf": "Woods",
+        "freakstorm": "Beach",
+        "steve": "Sky"
         }
 
         location = ""

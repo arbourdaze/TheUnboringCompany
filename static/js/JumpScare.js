@@ -34,7 +34,7 @@ var JumpScare = function (_React$Component) {
                 React.createElement(
                     "div",
                     { className: "jump-scare-image-container" },
-                    React.createElement("img", { className: "jump-scare-image", src: '/static/img/' + this.props.monster.title + '.jpg' })
+                    React.createElement("img", { className: "jump-scare-image", src: '/static/img/' + this.props.monster + '.jpg' })
                 ),
                 React.createElement(
                     "div",

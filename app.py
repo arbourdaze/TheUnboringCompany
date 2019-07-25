@@ -24,7 +24,7 @@ def get_next():
     response = {}
     if monster:
         response['FoundRudder'] = True
-        response['Monster'] = monster
+        response['Monster'] = monster.title
     else:
         response['FoundRudder'] = False
     response['Card'] = card

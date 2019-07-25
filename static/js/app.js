@@ -123,7 +123,9 @@ var App = function (_React$Component) {
             this.setState({ card: nextCard }, function () {
                 that.update();
             });
-            this.setState({ monster: foundRudder });
+            if (foundRudder) {
+                this.setState({ monster: response.Monster });
+            }
         }
     }, {
         key: 'reset',
