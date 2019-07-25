@@ -139,7 +139,15 @@ class fearGame:
         "The Woods": ["Lone Wolf", "Deer Carcass", "Potter's Field"]
     }
 
-    monsterLocations = {
+    
+
+    def __init__(self):
+        return
+
+
+    class Monster:
+
+        monsterLocations = {
         "Sexton": "Potter's Field",
         "Ghost Tornado": "Asylum",
         "Critter Infestation": "Woods",
@@ -152,13 +160,7 @@ class fearGame:
         "Warewolf": "Woods",
         "Freak Storm": "Beach",
         "Steve": "Sky"
-    }
-
-    def __init__(self):
-        return
-
-
-    class Monster:
+        }
 
         location = ""
         playerLocation = ""
@@ -176,7 +178,7 @@ class fearGame:
             #result = result.result["results"][0]
 
             self.title = name
-            self.location = monsterLocation[name]
+            self.location = self.monsterLocations[name]
             self.image = result["Image"]
             self.formalTitle = result["FormalTitle"]
             self.description = result["Description"]
