@@ -179,12 +179,12 @@ class fearGame:
 
             self.title = name
             self.location = self.monsterLocations[name]
-            self.image = result["Image"]
-            self.formalTitle = result["FormalTitle"]
-            self.description = result["Description"]
-            self.phobias = result["Phobias"]
-            self.playerLocation = playerLocation
-            self.goalLocation = playerLocation
+            #self.image = result["Image"]
+            #self.formalTitle = result["FormalTitle"]
+            #self.description = result["Description"]
+            #self.phobias = result["Phobias"]
+            #self.playerLocation = playerLocation
+            #self.goalLocation = playerLocation
 
 
     def chooseMonster(self, playerLocation):
