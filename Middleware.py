@@ -158,7 +158,7 @@ class fearGame:
 
 
         if nextCard is None:
-            response = self.makeQuery(title, discovery)
+            response = self.makeQuery(title, self.discovery)
             results = response.result["results"]
             for result in results:
                 if result["Title"] == title:
