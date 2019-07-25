@@ -70,3 +70,11 @@ body {
     padding-top:5em;
     margin:auto;
 }
+
+.jump-scare-image-container {
+    text-align:center;
+}
+
+.jump-scare-image {
+    margin:auto;
+}

@@ -88,7 +88,7 @@ class Card extends React.Component {
                     }
                 </div>
                 <div className="button-pad">
-                    <p>{buttonPad.length > 0 && "Where do you go?"}</p>
+                    <p>{buttonPad.length > 0 && "What do you investigate next?"}</p>
                     {this.getButtonPad()}
                 </div>
             </div>
