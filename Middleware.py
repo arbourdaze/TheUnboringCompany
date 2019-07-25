@@ -122,7 +122,7 @@ class fearGame:
         "Authority": 1,
         "Darkness": 1,
         "Flying": 1,
-        "Height": 1,
+        "Heights": 1,
         "Storms": 1
     }
 

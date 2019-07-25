@@ -120,7 +120,6 @@ var App = function (_React$Component) {
                 this.setState({ error: true });
             }
             var that = this;
-            /*         let nextCard = this.getCard(title); */
             this.setState({ card: nextCard }, function () {
                 that.update();
             });
