@@ -21,28 +21,31 @@ var JumpScare = function (_React$Component) {
     }
 
     _createClass(JumpScare, [{
-        key: 'run',
+        key: "run",
         value: function run() {
             this.props.run();
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
             return React.createElement(
-                'div',
+                "div",
                 null,
                 React.createElement(
-                    'div',
-                    { className: 'button-pad' },
-                    React.createElement('img', { src: '/static/img/' + this.props.monster.title + '.jpg' }),
-                    React.createElement('br', null),
+                    "div",
+                    { className: "jump-scare-image-container" },
+                    React.createElement("img", { className: "jump-scare-image", src: '/static/img/' + this.props.monster.title + '.jpg' })
+                ),
+                React.createElement(
+                    "div",
+                    { className: "button-pad" },
                     React.createElement(Button, {
-                        classes: '',
+                        classes: "",
                         callback: this.run,
                         enabler: function enabler() {
                             return true;
                         },
-                        buttonText: 'Run!'
+                        buttonText: "Run!"
                     })
                 )
             );
