@@ -127,7 +127,7 @@ class fearGame:
     }
 
     rudderProbability = 0
-    delta = 6
+    delta = 1
 
     islandMap = {
         "The Beach": ["Dock","Sky","Lighthouse","Plane Wreck","Prison","Potter's Field"],
