@@ -208,7 +208,7 @@ class fearGame:
 
         monsterName = list(self.monsterList.keys())[index]
 
-        return Monster(monsterName, playerLocation)
+        return self.Monster(monsterName, playerLocation)
 
 
     def foundRudder(self):
