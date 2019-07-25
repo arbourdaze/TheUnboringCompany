@@ -115,7 +115,7 @@ class fearGame:
         differenceMatrix = np.array(list(self.fearVector.values()))
 
         for i in range(len(self.monsterList) - 1):
-            np.concatenate(differenceMatrix, np.array(list(self.fearVector.values())), axis=0)
+            np.concatenate((differenceMatrix, np.array(list(self.fearVector.values()))), axis=0)
 
         row = 0
         for arr in list(self.monsterList.values()):
