@@ -12,8 +12,8 @@ class fearGame:
     discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
     phobiaList = ["Clowns", "Water", "Ghosts", "Blood", "Needles",
-        "Confinement", "CreepyCrawlies", "Contamination", "Dogs", "Corpses", 
-        "Stalkers", "Abandonment", "Authority", "Darkness", "Flying", "Height", "Storms"]
+        "Confinement", "Creepy-Crawlies", "Contamination", "Dogs", "Corpses", 
+        "Stalkers", "Abandonment", "Authority", "Darkness", "Flying", "Heights", "Storms"]
 
     monsterList = {"Sexton": np.array([0,   0,   0,   0,   0,   1,   0,   0,   0,   1,   1,   0,   1,   1,   0,   0,   0]),
     "Dogs": np.array([0  , 0 ,  0,   1,   0,   0,   0,   0 ,  1,   1,   0,   0,   0,   1,   0,   0,   0,]),
@@ -113,7 +113,7 @@ class fearGame:
         "Blood": 1,
         "Needles": 1,
         "Confinement": 1,
-        "CreepyCrawlies": 1,
+        "Creepy-Crawlies": 1,
         "Contamination": 1,
         "Dogs": 1,
         "Corpses": 1,
@@ -122,7 +122,7 @@ class fearGame:
         "Authority": 1,
         "Darkness": 1,
         "Flying": 1,
-        "Height": 1,
+        "Heights": 1,
         "Storms": 1
     }
 
@@ -186,13 +186,13 @@ class fearGame:
 
 
     def chooseMonster(self, playerLocation):
-        differenceMatrix = np.array([list(self.fearVector.values())])
+        differenceMatrix = np.array([list(fearVector.values())])
 
-        for i in range(len(self.monsterList) - 1):
-            differenceMatrix = np.concatenate((differenceMatrix, np.array([list(self.fearVector.values())])), axis=0)
+        for i in range(len(monsterList) - 1):
+            differenceMatrix = np.concatenate((differenceMatrix, np.array([list(fearVector.values())])), axis=0)
 
         row = 0
-        for arr in list(self.monsterList.values()):
+        for arr in list(monsterList.values()):
             differenceMatrix[row,:] = np.subtract(arr, differenceMatrix[row,:])
             row += 1
 
@@ -201,7 +201,7 @@ class fearGame:
         indicies = np.argmin(norms)
 
         index = None
-        if len(indicies) > 1:
+        if type(indicies) is not int:
             index = indicies[0]
         else:
             index = indicies
