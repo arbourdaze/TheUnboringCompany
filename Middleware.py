@@ -206,7 +206,7 @@ class fearGame:
         else:
             index = indices
 
-        monsterName = self.monsterList.keys()[index]
+        monsterName = list(self.monsterList.keys())[index]
 
         return Monster(monsterName, playerLocation)
 
