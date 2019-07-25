@@ -198,13 +198,13 @@ class fearGame:
 
         norms = np.linalg.norm(differenceMatrix, axis=1)
 
-        indicies = np.argmin(norms)
+        indices = np.argmin(norms)
 
         index = None
-        if type(indicies) is not int:
-            index = indicies[0]
+        if not np.isscalar(indicies):
+            index = indices[0]
         else:
-            index = indicies
+            index = indices
 
         monsterName = self.monsterList.keys()[index]
 
