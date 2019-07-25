@@ -172,11 +172,11 @@ class fearGame:
 
 
         def __init__(self, name):
-            result = makeQuery(name, playerLocation, discovery)
-            result = result.result["results"][0]
+            #result = makeQuery(name, playerLocation, discovery)
+            #result = result.result["results"][0]
 
-            self.title = result["Title"]
-            self.location = result["Parent"][0]
+            self.title = name
+            self.location = monsterLocation[name]
             self.image = result["Image"]
             self.formalTitle = result["FormalTitle"]
             self.description = result["Description"]
