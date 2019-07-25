@@ -118,7 +118,7 @@ var Card = function (_React$Component) {
                     React.createElement(
                         'p',
                         null,
-                        buttonPad.length > 0 && "Where do you go?"
+                        buttonPad.length > 0 && "What do you investigate next?"
                     ),
                     this.getButtonPad()
                 )
