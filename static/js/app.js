@@ -130,7 +130,26 @@ var App = function (_React$Component) {
     }, {
         key: 'reset',
         value: function reset() {
-            this.setState(initialState);
+            var json = JSON.stringify({});
+            var that = this;
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                url: '/reset',
+                data: json,
+                dataType: 'json',
+                async: false,
+                success: function success() {
+                    that.setState(initialState, function () {
+                        console.log(that.state);
+                    });
+                },
+                error: function error() {
+                    if (debug) {
+                        console.log('error');
+                    }
+                }
+            });
         }
     }, {
         key: 'render',

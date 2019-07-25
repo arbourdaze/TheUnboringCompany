@@ -16,36 +16,38 @@ var JumpScare = function (_React$Component) {
 
         _this.state = {};
         _this.run = _this.run.bind(_this);
-        document.getElementById('soundEffect').play();
+        if (_this.props.monster !== 'steve') {
+            document.getElementById('soundEffect').play();
+        }
         return _this;
     }
 
     _createClass(JumpScare, [{
-        key: "run",
+        key: 'run',
         value: function run() {
             this.props.run();
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             return React.createElement(
-                "div",
-                null,
+                'div',
+                { className: 'jump-scare' },
                 React.createElement(
-                    "div",
-                    { className: "jump-scare-image-container" },
-                    React.createElement("img", { className: "jump-scare-image", src: '/static/img/' + this.props.monster + '.jpg' })
+                    'div',
+                    { className: 'jump-scare-image-container' },
+                    React.createElement('img', { className: 'jump-scare-image', src: '/static/img/' + this.props.monster + '.jpg' })
                 ),
                 React.createElement(
-                    "div",
-                    { className: "button-pad" },
+                    'div',
+                    { className: 'button-pad' },
                     React.createElement(Button, {
-                        classes: "",
+                        classes: '',
                         callback: this.run,
                         enabler: function enabler() {
                             return true;
                         },
-                        buttonText: "Run!"
+                        buttonText: 'Run!'
                     })
                 )
             );

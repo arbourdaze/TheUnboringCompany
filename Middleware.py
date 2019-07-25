@@ -149,6 +149,7 @@ class fearGame:
 
         monsterLocations = {
         "sexton": "Potter's Field",
+        "dogs": "Lone Wolf",
         "ghosttornado": "Asylum",
         "creepycrawlyinfestation": "Woods",
         "radiationspike": "Radioactive Waste Drum",
@@ -159,7 +160,7 @@ class fearGame:
         "depressionfog": "Dock",
         "werewolf": "Woods",
         "freakstorm": "Beach",
-        "steve": "Sky"
+        "steve": "Sky",
         }
 
         location = ""
@@ -186,6 +187,28 @@ class fearGame:
             #self.playerLocation = playerLocation
             #self.goalLocation = playerLocation
 
+    def reset(self):
+        self.fearVector = {
+            "Clowns": 1,
+            "Water": 1,
+            "Ghosts": 1,
+            "Blood": 1,
+            "Needles": 1,
+            "Confinement": 1,
+            "Creepy-Crawlies": 1,
+            "Contamination": 1,
+            "Dogs": 1,
+            "Corpses": 1,
+            "Stalkers": 1,
+            "Abandonment": 1,
+            "Authority": 1,
+            "Darkness": 1,
+            "Flying": 1,
+            "Heights": 1,
+            "Storms": 1
+        }
+        self.rudderProbability = 0
+        self.discovery = DiscoveryV1(version=cf.version,iam_apikey=cf.apikey,url=cf.url)
 
     def chooseMonster(self, playerLocation):
         differenceMatrix = np.array([list(self.fearVector.values())])

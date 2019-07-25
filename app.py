@@ -10,6 +10,12 @@ fg = fearGame()
 def index():
     return render_template('layout.html')
 
+@app.route('/reset', methods=['GET', 'POST'])
+def reset():
+    content = request.get_json()
+    fg.reset()
+    return jsonify([])
+
 @app.route('/get-card', methods=['GET', 'POST'])
 def get_card():
     content = request.get_json()

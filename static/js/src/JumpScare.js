@@ -5,7 +5,9 @@ class JumpScare extends React.Component {
         this.state = {
         };
         this.run = this.run.bind(this);
-        document.getElementById('soundEffect').play();
+        if (this.props.monster !== 'steve') {
+            document.getElementById('soundEffect').play();
+        }
     }
     
     run() {
@@ -14,7 +16,7 @@ class JumpScare extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="jump-scare">
                 <div className="jump-scare-image-container">
                     <img className="jump-scare-image" src={'/static/img/' + this.props.monster + '.jpg'} />
                 </div>

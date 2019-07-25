@@ -111,7 +111,26 @@ class App extends React.Component {
     }
 
     reset() {
-        this.setState(initialState);
+        let json = JSON.stringify({});
+        let that = this;
+        $.ajax({
+            type: 'POST',
+            contentType: 'application/json',
+            url: '/reset',
+            data: json,
+            dataType: 'json',
+            async: false,
+            success: function () {
+                that.setState(initialState, function () {
+                    console.log(that.state);
+                });
+            },
+            error: function() {
+                if (debug) {
+                    console.log('error');
+                }
+            }  
+        });
     }
     
     render() {
